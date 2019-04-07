@@ -20,8 +20,9 @@ describe 'Integration test of AddProject service and API gateway' do
     # THEN we should see a single project in the list
     _(res.success?).must_equal true
     appraisal = res.value!
-    _(appraisal.to_h.keys.sort).must_equal %i[folder project]
-    _(appraisal.project.owner.username).must_equal USERNAME
-    _(appraisal.folder.any_base_files?).must_equal true
+    _(appraisal[:appraised].to_h.keys.sort).must_equal %i[commits folder project]
+    _(appraisal[:appraised].project.owner.username).must_equal USERNAME
+    _(appraisal[:appraised].folder.any_base_files?).must_equal true
+    _(appraisal[:appraised].commits).wont_be_empty
   end
 end
