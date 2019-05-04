@@ -5,14 +5,12 @@ require 'roar/json'
 
 module CodePraise
   module Representer
-    # Represent idiomaticity offense information
-    class Offense < Roar::Decorator
+    class TestCase < Roar::Decorator
       include Roar::JSON
 
-      property :type
       property :message
-      property :location
-      property :line_count
+      property :is_functionality
+      property :expectation_count
       property :contributors
     end
   end

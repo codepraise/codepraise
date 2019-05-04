@@ -16,13 +16,15 @@ module CodePraise
 
       property :origin_id
       property :name
-      property :ssh_url
       property :fullname
+      property :http_url
+      property :ssh_url
+      property :size
       property :owner, extend: Representer::Member, class: OpenStruct
       collection :contributors, extend: Representer::Member, class: OpenStruct
 
       link :self do
-        "api/v1/projects/#{project_name}/#{owner_name}"
+        "#{Api.config.API_HOST}/api/v1/projects/#{project_name}/#{owner_name}"
       end
 
       private

@@ -37,7 +37,6 @@ module CodePraise
             .from_json(input[:response].payload)
             .yield_self { |report| input[:appraised] = report }
         end
-
         Success(input)
       rescue StandardError
         Failure('Error in our appraisal report -- please try again')

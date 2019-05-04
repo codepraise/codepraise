@@ -3,17 +3,15 @@
 require 'roar/decorator'
 require 'roar/json'
 
-require_relative 'contributor_representer'
-require_relative 'credit_share_representer'
-
 module CodePraise
   module Representer
     # Represents folder summary about repo's folder
-    class MethodContributions < Roar::Decorator
+    class MethodComplexity < Roar::Decorator
       include Roar::JSON
 
       property :name
-      property :line_credits
+      property :complexity
+      property :contributors
     end
   end
 end

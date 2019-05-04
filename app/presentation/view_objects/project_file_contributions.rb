@@ -13,7 +13,7 @@ module Views
 
     def num_lines_by(contributor_view)
       # @file.lines_by(contributor_view.entity).count
-      @file.credit_share.share[contributor_view.entity.username]
+      @file.line_credit_share.share[contributor_view.entity.username]
     end
   end
 end

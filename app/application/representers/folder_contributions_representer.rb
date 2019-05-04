@@ -15,10 +15,16 @@ module CodePraise
       include Roar::JSON
 
       property :path
-      property :line_count
-      property :total_credits
+      property :total_line_credits
+      property :total_method_credits
+      property :total_offenses
+      property :total_test_expectation
+      property :total_documentation
+      property :line_percentage
       property :any_subfolders?
       property :any_base_files?
+      property :average_complexity
+      property :test_coverage
       property :credit_share, extend: Representer::CreditShare, class: OpenStruct
       collection :base_files, extend: Representer::FileContributions, class: OpenStruct
       collection :subfolders, extend: Representer::FolderContributions, class: OpenStruct

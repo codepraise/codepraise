@@ -14,7 +14,7 @@
         // Collect progressbar element and percentage
         var progress = bar.getAttribute("style")
         var currentProgress = reg.exec(progress)[1]
-        
+
         if (isNaN(message)) {
           bar.setAttribute("style", "width:100%")
           bar.setAttribute("class", "progress-bar bg-danger progress-bar-striped")
@@ -58,7 +58,7 @@
               span style="padding-left: 15px;"
                 a.project.detail href="#{contributor.github_profile_url}"
                   = "#{contributor.username}"
-    
+
     table.table id="contribution_table"
       thead
         tr
@@ -100,3 +100,4 @@
             - proj_folder.contributors.each do |contributor|
               td.file.contribution
                 span #{file.num_lines_by(contributor)}
+

@@ -34,11 +34,11 @@ module Views
 
     def percent_credit_of(contributor_view)
       PercentPresenter.call(num_lines_by(contributor_view),
-                            @folder.total_credits)
+                            @folder.total_line_credits)
     end
 
     def num_lines_by(contributor_view)
-      @folder.credit_share.share[contributor_view.entity.username]
+      @folder.line_credit_share.share[contributor_view.entity.username]
     end
 
     def owner_name

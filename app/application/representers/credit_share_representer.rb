@@ -11,7 +11,9 @@ module CodePraise
     class CreditShare < Roar::Decorator
       include Roar::JSON
 
-      property :share
+      property :quality_credit
+      property :productivity_credit
+      property :ownership_credit
       collection :contributors, extend: Representer::Contributor,
                                 class: OpenStruct
     end
