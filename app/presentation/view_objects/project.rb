@@ -13,7 +13,7 @@ module Views
     end
 
     def praise_link
-      "/project/#{fullname}"
+      "/appraisal/#{fullname}"
     end
 
     def index_str

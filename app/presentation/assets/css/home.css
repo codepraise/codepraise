@@ -1,0 +1,76 @@
+#root .bg{
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background-color: var(--main-light-color);
+}
+
+#root .bg div{
+  margin-bottom: 1%;
+  flex: 1;
+}
+
+#root .bg .logo{
+  display: flex;
+  align-items: flex-end;
+}
+
+#root .bg .search-bar{
+  flex: 0;
+  position: relative;
+  width: 30vw;
+  background-color: white;
+  border: 2px solid #e5e5e5;
+  border-radius: 20px;
+  padding: 2px;
+}
+
+#root .bg .search-bar input{
+  width: 27vw;
+  height: 4vh;
+  border-radius: 15px;
+  outline: none;
+  text-indent: 12px;
+  margin-right: 1%;
+  border: none;
+}
+
+.clickable{
+  cursor: pointer;
+}
+
+#root .bg .search-bar .fa-search-plus{
+  margin-top: 1pt;
+  font-size: 2em;
+  color: #edeaea;
+  position:absolute;
+}
+
+#root .bg .projects{
+  flex: 2;
+  width: 35vw;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.projects .card{
+  font-size: 10pt;
+  max-width: 7vw;
+  max-height: 10vh;
+  border-radius: 5px;
+  color: white;
+  text-align: center;
+  margin-right: 3%;
+  box-shadow:  7px 7px 5px -5px grey;
+}
+
+.projects .card a{
+  color: white;
+}
+
+.test{
+  border-style: solid;
+}

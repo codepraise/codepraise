@@ -17,11 +17,11 @@ module Views
     end
 
     def ws_javascript
-      @config.API_HOST + '/faye/faye.js' if in_progress?
+      @config.API_HOST + '/faye/faye.js'
     end
 
     def ws_route
-      @config.API_HOST + '/faye/faye' if in_progress?
+      @config.API_HOST + '/faye/faye'
     end
   end
 end

@@ -15,7 +15,7 @@ module CodePraise
       private
 
       def validate_project(input)
-        if input[:watched_list].include? input[:requested].project_fullname
+        if input[:watched_list]&.include? input[:requested].project_fullname
           Success(input)
         else
           Failure('Please first request this project to be added to your list')

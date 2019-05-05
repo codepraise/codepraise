@@ -29,6 +29,7 @@ gem 'http', '~> 3.0'
 group :development, :test do
   gem 'pry-rescue'
   gem 'pry-stack_explorer'
+  gem 'roda-route_list'
 end
 
 # TESTING

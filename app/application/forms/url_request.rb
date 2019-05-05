@@ -5,7 +5,7 @@ require 'dry-validation'
 module CodePraise
   module Forms
     UrlRequest = Dry::Validation.Params do
-      URL_REGEX = %r{(http[s]?)\:\/\/(www.)?github\.com\/.*\/.*(?<!git)$}.freeze
+      URL_REGEX = %r{(http[s]?)\:\/\/(www.|)?github\.com\/.*\/.*(?<!git)}.freeze
 
       required(:remote_url).filled(format?: URL_REGEX)
 

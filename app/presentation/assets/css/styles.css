@@ -1,0 +1,10 @@
+:root {
+    --main-light-color: #dcf2f1;
+    --main-dark-color: #17A2B7;
+}
+
+.logo{
+    color: var(--main-dark-color);
+    font-weight: bold;
+    font-size: 24pt;
+}

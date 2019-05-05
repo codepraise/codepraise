@@ -152,6 +152,8 @@ GEM
       representable (~> 3.0.0)
     roda (3.13.0)
       rack
+    roda-route_list (2.1.0)
+      roda
     rubocop (0.60.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
@@ -225,6 +227,7 @@ DEPENDENCIES
   rerun
   roar
   roda (~> 3.8)
+  roda-route_list
   rubocop
   simplecov (~> 0.16)
   slim (~> 3.0)

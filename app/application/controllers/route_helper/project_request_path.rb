@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module CodePraise
-  module RouteHelpers
+  module RouteHelper
     # Application value for the path of a requested project
     class ProjectRequestPath
       def initialize(owner_name, project_name, request)

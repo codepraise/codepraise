@@ -1,0 +1,19 @@
+<div class="logo ">
+    <span> CodePraise </span>
+</div>
+<div class="search-bar ">
+    <input type="text" placeholder='https://github.com/OwnerName/ProjectName.git'>
+    <span class='clickable' id='search-btn'><i class="fas fa-search-plus"></i></a></span>
+</div>
+<div class="projects ">
+    <% @viewable_projects.each do |project| %>
+        <div class="card bg-info" id="<%= project.fullname %>">
+            <div class="card-body">
+                <a href="<%=project.praise_link%>">
+                    <p class="card-title"><%= project.name %></p>
+                    <p class="card-subtitle"><%= project.owner_name %></p>
+                </a>
+            </div>
+        </div>
+    <% end %>
+</div>
