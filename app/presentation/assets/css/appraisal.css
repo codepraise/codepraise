@@ -56,7 +56,7 @@
 
 #appraisal .side-bar .logo{
     font-size: 18pt;
-    color: var(--main-light-color);
+
     margin-bottom: 20%;
 }
 
@@ -65,6 +65,11 @@
     height: 100%;
     margin-right: 1%;
 }
+
+#appraisal .side-bar .logo a{
+    color: var(--main-light-color);
+}
+
 
 #appraisal .side-bar .folders{
     flex: 1;
@@ -106,5 +111,74 @@
 #appraisal .main{
     flex: 1;
     background-color: var(--dashboard-bg);
+    flex-direction: column;
+    height: 100vh;
+    width: 75vw;
+    padding: 1.5%;
 }
 
+#appraisal .main .bar{
+    height: 6vh;
+    display: flex;
+}
+
+#appraisal .main .bar .panel-name{
+    font-size: 18pt;
+    font-weight: bold;
+    /* text-shadow: 2pt 2pt gray; */
+}
+
+#appraisal .main .panel{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1%;
+}
+
+#appraisal .main .panel .tab{
+    display: flex;
+    flex-direction: column;
+    padding: 1%;
+    max-width: 29vw;
+    border-radius: 25pt;
+    box-shadow: 1px 1px 1px 1px gray;
+    margin-bottom: 1%;
+}
+
+#appraisal .main .panel .tab .category a{
+    margin: 1% 1%;
+    font-size: 12pt;
+    font-weight: bold;
+    color: gray;
+}
+
+#appraisal .main .panel .tab .category .selected{
+    color: black;
+}
+
+#appraisal .main .panel .chart-container{
+    display: flex;
+    flex: 1.2;
+    flex-direction: column;
+    padding: 0.5%;
+    background-color: white;
+    border-radius: 15px;
+}
+
+#appraisal .main .panel .chart-container .chart-title{
+    margin-bottom: 1%;
+    align-self: center;
+}
+
+#appraisal .main .panel .chart-container .charts{
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+#appraisal .main .panel .chart-container .charts .chart{
+    flex: 1;
+    height: 28vh;
+    width: 5vw;
+}

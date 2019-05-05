@@ -2,7 +2,8 @@
     --main-light-color: #dcf2f1;
     --main-dark-color: #17A2B7;
     --main-dark-color-op: rgba(22, 161, 182, 0.5);
-    --dashboard-bg: #eff3f7;
+    --dashboard-bg: #F4FBFE;
+    --dashboard-bar: #ffffff;
 }
 
 body{

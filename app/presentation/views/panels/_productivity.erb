@@ -1,0 +1,36 @@
+<div class="bar">
+    <div class="panel-name">
+        Individual Contribution
+    </div>
+</div>
+<div class="panel">
+    <div class="tab">
+        <div class="category">
+            <a href=""> <span class='selected'> Productivity </span> </a>
+            <a href=""> <span> Quality </span> </a>
+            <a href=""> <span> Responsiblity </span> </a>
+            <a href=""> <span> Functionality </span> </a>
+        </div>
+    </div>
+    <div class="chart-container">
+        <div class="chart-title">
+            <span class="title">
+            </span>
+            <span class="sub-title">
+
+            </span>
+        </div>
+        <div class="charts">
+            <div class="chart">
+                <% @line_chart = @panel_view.line_charts_weeks(1, 1) %>
+                <canvas id="commits_chart" data-type='line' data-labels='<%=@line_chart.labels%>' data-values='<%=@line_chart.dataset.to_json%>'></canvas>
+            </div>
+            <div class="chart">
+                <% @bar_chart = @panel_view.bar_chart_weeks %>
+                <canvas id="test" data-type='bar' data-labels='<%=@bar_chart.labels%>' data-values='<%=@bar_chart.dataset.to_json%>'></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="contributor-table">
+    </div>
+</div>

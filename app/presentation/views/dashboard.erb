@@ -5,7 +5,7 @@
         <div class="logo">
             <span>
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Logo_TV_2015.svg/1200px-Logo_TV_2015.svg.png" alt="logo">
-                 CodePraise
+                 <a href="/"> CodePraise </a>
             </span>
         </div>
         <div class="folders">
@@ -18,6 +18,6 @@
         </div>
     </div>
     <div class="main">
-
+        <%= partial("panels/#{@panel_view.type}") %>
     </div>
 <% end %>

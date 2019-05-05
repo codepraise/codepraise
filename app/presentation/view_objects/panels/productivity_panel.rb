@@ -1,48 +1,70 @@
 # frozen_string_literal: true
 
+require_relative 'panel'
+
 module Views
-  class ProductivityPanel
-    attr_reader :project, :folder, :commits
+  class ProductivityPanel < Panel
 
-    def initialize(appraisal)
-      @project = appraisal.project
-      @folder = appraisal.folder
-      @commits = appraisal.commits
+    attr_reader :commits_filter
+
+    def initialize(appraisl)
+      super(appraisl)
+      @commits_filter = CodePraise::Value::CommitsFilter.new(appraisl.commits)
     end
 
-    def project_name
-      project.name
+    def line_charts_weeks(start_week, end_week)
+      commits = @commits_filter.select_by_week(start_week, end_week)
+      labels = commits.map(&:date).map { |date| date_format(date) }
+      dataset = {
+        addition: commits.map(&:total_additions),
+        deletion: commits.map(&:total_deletions)
+      }
+      Chart.new(labels, dataset)
     end
 
-    def folder_tree
-      build_folder_tree(@folder.subfolders)
+    def bar_chart_weeks
+      labels = commits_by_week.keys
+      result = { additions: [], deletions: []}
+      commits_by_week.values.each_with_index do |commits, index|
+        result[:additions] << commits.map(&:total_additions).sum
+        result[:deletions] << commits.map(&:total_deletions).sum
+      end
+      dataset = {
+        addition: result[:additions],
+        deletion: result[:deletions]
+      }
+      Chart.new(labels, dataset)
+    end
+
+    def total_weeks
+      @commits_filter.weeks.length
+    end
+
+    def type
+      'productivity'
     end
 
     private
 
-    def build_folder_tree(folders)
-      unless folders.empty?
-        folders.map do |folder|
-          subfolders_html = ''
-          files_html = ''
-          subfolders_html = build_folder_tree(folder.subfolders) if folder.any_subfolders?
-          files_html = file_element(folder.base_files) if folder.any_base_files?
-          "<li class='folder'>  #{folder_element(folder)}  <ul class='children'> #{subfolders_html} #{files_html}  </ul> </li>"
-        end.join('')
+    def commits_by_week
+      commits = @commits_filter.group_by_week.reject do |_, v|
+        v.empty?
       end
+      commits_size = commits.length / 7
+
+      return resize_commits(commits_size) if commits_size / 7 > 1
+
+      commits
     end
 
-    def folder_element(folder)
-      "<span class='caret'></span>" \
-      "<a href=''> #{folder.path}  </a>"
+    def date_format(date)
+      Time.parse(date).strftime('%m/%d %H:%M')
     end
 
-    def file_element(files)
-      files.map do |file|
-        file.file_path.filename
-      end.sort_by(&:length).reverse.map do |filename|
-        "<li class='file'>  <a href=''> #{filename} </a> </li>"
-      end.join('')
+    def resize_commits(number)
+      @commits_filter.group_by_week(number).reject do |_, v|
+        v.empty?
+      end
     end
   end
 end
