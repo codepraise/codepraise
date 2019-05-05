@@ -7,7 +7,6 @@ window.onload = function(){
 
   if (in_path('appraisal')) {
     console.log('In the appraisal path.')
+    folder_menu()
   }
 }
-
-

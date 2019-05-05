@@ -1,6 +1,12 @@
 :root {
     --main-light-color: #dcf2f1;
     --main-dark-color: #17A2B7;
+    --main-dark-color-op: rgba(22, 161, 182, 0.5);
+    --dashboard-bg: #eff3f7;
+}
+
+body{
+    font-family: monospace;
 }
 
 .logo{
@@ -8,3 +14,22 @@
     font-weight: bold;
     font-size: 24pt;
 }
+
+.caret {
+    cursor: pointer;
+    user-select: none; /* Prevent text selection */
+}
+
+  /* Create the caret/arrow with a unicode, and style it */
+.caret::before {
+    content: "\25B6";
+    color: var(--main-light-color);
+    display: inline-block;
+    margin-right: 6px;
+}
+
+  /* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+.caret-down::before {
+    transform: rotate(90deg);
+}
+

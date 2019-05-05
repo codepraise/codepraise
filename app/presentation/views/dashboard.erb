@@ -1,5 +1,23 @@
 <% if @processing.in_progress? %>
     <%= partial('shares/progress_bar')  %>
 <% else %>
+    <div class="side-bar">
+        <div class="logo">
+            <span>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Logo_TV_2015.svg/1200px-Logo_TV_2015.svg.png" alt="logo">
+                 CodePraise
+            </span>
+        </div>
+        <div class="folders">
+                <div class="project_name">
+                    <a href=""><%= @panel_view.project_name %></a>
+                </div>
+                <ul class="folder-tree">
+                    <%= @panel_view.folder_tree %>
+                </ul>
+        </div>
+    </div>
+    <div class="main">
 
+    </div>
 <% end %>

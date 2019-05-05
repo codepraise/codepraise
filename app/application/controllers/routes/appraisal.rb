@@ -19,10 +19,15 @@ module CodePraise
           )
 
           appraisal = OpenStruct.new(result.value!)
+
           @processing = Views::AppraisalProcessing.new(
             App.config, appraisal.response
           )
-          view 'dashboard', locals: { path: @path, processing: @processing }
+
+          @panel_view = PanelHelper.new(appraisal, request.params['category'])
+            .view_obj
+
+          view 'dashboard', locals: { path: @path, processing: @processing, panel_view: @panel_view }
         end
       end
     end
