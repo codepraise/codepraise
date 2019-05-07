@@ -136,27 +136,42 @@
 }
 
 #appraisal .main .panel .tab{
-    display: flex;
-    flex-direction: column;
     padding: 1%;
-    max-width: 29vw;
     border-radius: 25pt;
     box-shadow: 1px 1px 1px 1px gray;
     margin-bottom: 1%;
+    width: fit-content;
 }
 
-#appraisal .main .panel .tab .category a{
+#appraisal .main .panel .tab .category{
+    width: max-content;
+    display: flex;
+}
+
+#appraisal .main .panel .tab .category div{
+    padding: 1%;
+}
+
+#appraisal .main .panel .tab .category div a{
+    width: 8vw;
     margin: 1% 1%;
     font-size: 12pt;
     font-weight: bold;
     color: gray;
 }
 
-#appraisal .main .panel .tab .category .selected{
+#appraisal .main .panel .tab .category div .selected{
     color: black;
 }
 
-#appraisal .main .panel .chart-container{
+/* Productivity Boards */
+
+#appraisal .main .panel .productivity{
+    display: flex;
+    flex-direction: column;
+}
+
+#appraisal .main .panel .productivity .up-board{
     display: flex;
     flex: 1.2;
     flex-direction: column;
@@ -165,20 +180,55 @@
     border-radius: 15px;
 }
 
-#appraisal .main .panel .chart-container .chart-title{
+#appraisal .main .panel .productivity .up-board .chart-title{
     margin-bottom: 1%;
     align-self: center;
 }
 
-#appraisal .main .panel .chart-container .charts{
+#appraisal .main .panel .productivity .up-board .charts{
     flex: 1;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
 }
 
-#appraisal .main .panel .chart-container .charts .chart{
+#appraisal .main .panel .productivity .up-board .charts .chart{
     flex: 1;
     height: 28vh;
     width: 5vw;
+}
+
+
+#appraisal .main .panel .productivity .down-board{
+    flex: 1;
+    display: flex;
+}
+
+#appraisal .main .panel .productivity .down-board .chart-container{
+    flex: 1;
+    margin-top: 2%;
+    display: flex;
+    flex-direction: column;
+}
+
+#appraisal .main .panel .productivity .down-board .chart-container .informations{
+    flex: 1;
+    margin-bottom: 2%;
+    background-color: white;
+}
+
+#appraisal .main .panel .productivity .down-board .chart-container .chart{
+    flex: 5.5;
+    background-color: white;
+}
+
+#appraisal .main .panel .productivity .down-board .contributor-table{
+    margin-left: 2%;
+    margin-top: 2%;
+    background-color: white;
+    display: flex;
+    flex: 1.5;
+    font-size: 0.5rem;
+    padding: 2%;
+    border-radius: 15px;
 }

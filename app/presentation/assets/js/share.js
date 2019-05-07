@@ -33,3 +33,41 @@ function progessing(bar, percentage, callback) {
     return callback();
   }
 }
+
+function create_all_chart(){
+  charts_element = document.querySelectorAll('.chart canvas')
+  charts = Array.from(charts_element).map(chart => {
+    if (chart == undefined) return;
+
+    customChart = new CustomChart(chart.id);
+    customChart.render();
+    return customChart;
+  });
+
+  return charts;
+}
+
+var test
+
+function update(charts, number){
+  main = document.querySelector('.main')
+  owner_name = main.dataset.owner
+  project_name = main.dataset.project
+  category = main.dataset.category
+
+  test = (data) => {
+    data = JSON.parse(data)['charts']
+    charts.forEach(chart => {
+      chart_data = data[chart.canvas.dataset.title]
+
+      if (chart_data){
+        test = chart_data
+        chart.canvas.dataset.labels = JSON.stringify(chart_data['labels']);
+        chart.canvas.dataset.values = JSON.stringify(chart_data['dataset']);
+        chart.update();
+        console.log(chart.canvas.dataset)
+      }
+    });
+  }
+  ajax_call(`/appraisal/${owner_name}/${project_name}?category=${category}&type=json&number=${number}`, 'GET', null, test)
+}

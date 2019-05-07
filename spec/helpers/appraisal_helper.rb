@@ -6,7 +6,7 @@ class AppraisalHelper
   attr_reader :appraisal
 
   def self.build_appraisal
-    request  = Request.new(USERNAME, PROJECT_NAME, '')
+    request  = Request.new('XuVic', PROJECT_NAME, '')
     gateway = CodePraise::Gateway::Api.new(CodePraise::App.config)
     result = gateway.appraise(request)
     appraisal = CodePraise::Representer::ProjectFolderContributions

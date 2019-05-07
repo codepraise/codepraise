@@ -16,6 +16,9 @@ module CodePraise
       property :total_additions
       property :total_deletions
       property :total_files
+      property :total_addition_credits
+      property :total_deletion_credits
+      property :total_credited_files
       collection :file_changes, extend: Representer::FileChange, class: OpenStruct
     end
   end

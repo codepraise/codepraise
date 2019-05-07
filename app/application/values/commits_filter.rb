@@ -8,7 +8,25 @@ module CodePraise
       WEEK = 7 * DAY
       MONTH = 30 * DAY
 
-      Commits = Struct.new(:commits, :date)
+      Commits = Struct.new(:commits, :date) do
+        def total_addition_credits
+          @total_addition_credits ||= commits.reduce(0) do |pre, commit|
+            pre + commit.total_addition_credits
+          end
+        end
+
+        def total_deletion_credits
+          @total_deletion_credits ||= commits.reduce(0) do |pre, commit|
+            pre + commit.total_deletion_credits
+          end
+        end
+
+        def select(email_id)
+          commits.select do |commit|
+            commit.committer.email_id == email_id
+          end
+        end
+      end
 
       def initialize(commits)
         @commits = commits.sort_by {|commit| Time.parse(commit.date)}
@@ -20,7 +38,10 @@ module CodePraise
         group_by_week.values[start_week - 1..end_week - 1].flatten
       end
 
-      def select_by_month
+      def select_by_contributor(email_id)
+        @commits.select do |commit|
+          commit.committer.email_id == email_id
+        end
       end
 
       def merge_by_day
@@ -29,7 +50,7 @@ module CodePraise
           start_date
         end
         merged_commits.map do |k, v|
-          Commits.new(commits: v, date: k)
+          Commits.new(v, k)
         end
       end
 
@@ -37,7 +58,7 @@ module CodePraise
         start_date = Time.parse(start_date) if start_date.is_a?(String)
         end_date = Time.parse(end_date) if end_date.is_a?(String)
         commits.select do |commit|
-          commit_time = Time.parse(commit.date)
+          commit_time = commit.date.is_a?(String) ? Time.parse(commit.date) : commit.date
           start_date <= commit_time && commit_time <= end_date
         end
       end
@@ -47,19 +68,19 @@ module CodePraise
         to = since + WEEK * number
         weeks_num = (total_weeks.to_f / number).ceil
         weeks_num.times.each_with_object({}) do |week, result|
-          result[week_name(week, number)] = commits_between(since, to, @commits)
+          result[week_name(week, number)] = commits_between(since, to, merge_by_day)
           since = to
           to = since + WEEK * number
         end
       end
 
       def week_name(week, number)
-        first_week = week * number + 1
+        last_week = (week + 1) * number
         if number == 1
-          "#{first_week} week"
+          "#{week + 1} week"
         else
-          last_week = (first_week * number) > weeks.last ? weeks.last : first_week * number
-          "#{first_week} ~ #{last_week} weeks"
+          last_week = weeks.last if last_week > weeks.last
+          "#{last_week - number + 1} ~ #{last_week} weeks"
         end
       end
 

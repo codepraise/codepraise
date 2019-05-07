@@ -8,9 +8,20 @@ window.onload = function(){
   if (in_path('appraisal')) {
     console.log('In the appraisal path.')
     folder_menu()
-    commitsChart = new CustomChart('commits_chart');
-    commitsChart.render();
-    test = new CustomChart('test');
-    test.render();
+    charts = create_all_chart()
+    main_chart = charts.find((chart) =>{
+      return chart.id == 'main'
+    })
+    main_chart.canvas.addEventListener('click', function(e){
+        eventElement = charts[1].chart.getElementAtEvent(e)[0]
+
+        if(eventElement == undefined) return;
+
+        label = charts[1].chart.data.labels[eventElement._index]
+        number = parseInt(eventElement._index)
+        console.log(number)
+        update(charts, number)
+    });
+
   }
 }

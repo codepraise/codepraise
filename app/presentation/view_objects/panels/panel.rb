@@ -5,6 +5,7 @@ module Views
     attr_reader :project, :folder, :commits
 
     Chart = Struct.new(:labels, :dataset, :title, :type)
+    Table = Struct.new(:thead, :tbody)
 
     def initialize(appraisal)
       @project = appraisal.project
@@ -16,12 +17,20 @@ module Views
       project.name
     end
 
+    def owner_name
+      project.owner.username
+    end
+
     def folder_tree
       build_folder_tree(@folder.subfolders)
     end
 
     def category
       %w[productivity quality responsibility functionality]
+    end
+
+    def divided(a, b)
+      b.positive? ? (a.to_f / b).round : b
     end
 
     private
@@ -40,7 +49,11 @@ module Views
 
     def folder_element(folder)
       "<span class='caret'></span>" \
-      "<a href=''> #{folder.path}  </a>"
+      "<a href=''> #{folder_name(folder)}  </a>"
+    end
+
+    def folder_name(folder)
+      folder.path.split('/').last
     end
 
     def file_element(files)

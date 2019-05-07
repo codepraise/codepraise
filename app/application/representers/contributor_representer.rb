@@ -11,6 +11,7 @@ module CodePraise
 
       property :username
       property :email
+      property :email_id
     end
   end
 end

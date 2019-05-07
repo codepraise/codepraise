@@ -17,7 +17,22 @@
                 </ul>
         </div>
     </div>
-    <div class="main">
-        <%= partial("panels/#{@panel_view.type}") %>
+    <div class="main" data-owner="<%= @panel_view.owner_name %>" data-project="<%= @panel_view.project_name %>" data-category="<%= @panel_view.type %>">
+        <div class="bar">
+            <div class="panel-name">
+                Individual Contribution
+            </div>
+        </div>
+        <div class="panel">
+            <div class="tab">
+                <div class="category">
+                    <div> <a href="" class="selected"> Productivity </a> </div>
+                    <div>  <a href=""> Quality </a>  </div>
+                    <div> <a href=""> Responsiblity </a> </div>
+                    <div> <a href=""> Functionality </a> </div>
+                </div>
+            </div>
+            <%= partial("panels/#{@panel_view.type}") %>
+        </div>
     </div>
 <% end %>

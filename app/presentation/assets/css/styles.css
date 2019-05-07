@@ -34,3 +34,7 @@ body{
     transform: rotate(90deg);
 }
 
+.test{
+    border-style: solid;
+  }
+
