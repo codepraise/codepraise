@@ -17,9 +17,12 @@ module CodePraise
     plugin :partials, views: 'app/presentation/views'
     plugin :render, engine: 'erb', views: 'app/presentation/views'
     plugin :assets, path: 'app/presentation/assets',
-                    css: ['styles.css', 'home.css', 'appraisal.css', 'project.css'],
-                    js: ['share.js','chart.js', 'dashboard.js', 'project.js', 'home.js', 'main.js']
-
+                    css: ['styles.css', 'dashboard.css', 'home.css',
+                          'quality.css', 'productivity.css', 'overview.css', 'ownership.css',
+                          'functionality.css', 'files.css',
+                          'individual_contribution.css', 'project.css', 'appraisal.css'],
+                    js: ['share.js', 'options.js', 'chart.js', 'dashboard.js',
+                         'home.js', 'main.js']
 
     use Rack::MethodOverride
 

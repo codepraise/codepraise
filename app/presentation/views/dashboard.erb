@@ -1,38 +1,87 @@
 <% if @processing.in_progress? %>
     <%= partial('shares/progress_bar')  %>
 <% else %>
-    <div class="side-bar">
+<div class="dashboard">
+    <div class="top-bar ">
         <div class="logo">
+            <a href="/"> <span>CodePraise</span> </a>
+        </div>
+        <div class="project_name">
             <span>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Logo_TV_2015.svg/1200px-Logo_TV_2015.svg.png" alt="logo">
-                 <a href="/"> CodePraise </a>
+                <%= "#{@panel_view.owner_name} / #{@panel_view.project_name}" %>
             </span>
         </div>
-        <div class="folders">
-                <div class="project_name">
-                    <a href=""><%= @panel_view.project_name %></a>
-                </div>
-                <ul class="folder-tree">
-                    <%= @panel_view.folder_tree %>
-                </ul>
-        </div>
-    </div>
-    <div class="main" data-owner="<%= @panel_view.owner_name %>" data-project="<%= @panel_view.project_name %>" data-category="<%= @panel_view.type %>">
-        <div class="bar">
-            <div class="panel-name">
-                Individual Contribution
+        <div class="tools">
+            <div class="message">
+                <span class="date">
+                    Created at
+                </span>
             </div>
-        </div>
-        <div class="panel">
-            <div class="tab">
-                <div class="category">
-                    <div> <a href="" class="selected"> Productivity </a> </div>
-                    <div>  <a href=""> Quality </a>  </div>
-                    <div> <a href=""> Responsiblity </a> </div>
-                    <div> <a href=""> Functionality </a> </div>
+            <div class="dropdown">
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown button
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Update</a>
+                    <a class="dropdown-item" href="#">Delete</a>
                 </div>
             </div>
-            <%= partial("panels/#{@panel_view.type}") %>
         </div>
     </div>
+    <div class="body">
+        <div class="side-bar ">
+            <a class="category" id='overview_page' href="<%="#{@panel_view.base_url}overview"%>">
+                <div class="icon">
+                    <i class="fas fa-tachometer-alt"></i>
+                </div>
+                <div class="text">
+                    Overview
+                </div>
+            </a>
+            <a class="category" id='productivity_page' href="<%="#{@panel_view.base_url}productivity"%>">
+                <div class="icon">
+                    <i class="fas fa-dumbbell"></i>
+                </div>
+                <div class="text">
+                    Productivity
+                </div>
+            </a>
+            <a class="category" id='quality_page'  href="<%="#{@panel_view.base_url}quality"%>">
+                <div class="icon">
+                    <i class="fas fa-drafting-compass"></i>
+                </div>
+                <div class="text">
+                    Quality
+                </div>
+            </a>
+            <a class="category" id='ownership_page' href="<%="#{@panel_view.base_url}ownership"%>">
+                <div class="icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="text">
+                    Ownership
+                </div>
+            </a>
+            <a class="category" id='functionality_page' href="<%="#{@panel_view.base_url}functionality"%>">
+                <div class="icon">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <div class="text">
+                    Functionality
+                </div>
+            </a>
+            <a class="category" id='files_page' href="<%="#{@panel_view.base_url}files"%>">
+                <div class="icon">
+                    <i class="fas fa-file-code"></i>
+                </div>
+                <div class="text">
+                    Folders / Files
+                </div>
+            </a>
+        </div>
+        <div class="content main" data-owner="<%= @panel_view.owner_name %>" data-project="<%= @panel_view.project_name %>" data-category="<%=@panel_view.page%>" >
+            <%= partial("shares/#{@panel_view.page}") %>
+        </div>
+    </div>
+</div>
 <% end %>

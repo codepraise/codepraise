@@ -1,0 +1,76 @@
+.dashboard{
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 120vh;
+}
+
+.dashboard .top-bar{
+    flex: 1;
+    display: flex;
+    background-color: var(--main-dark-color);
+    color: var(--light-text);
+    align-items: center;
+    padding: 0% 1% 0% 1%;
+}
+
+.dashboard .top-bar a{
+    color: var(--light-text);
+}
+
+.dashboard .top-bar .project_name{
+    margin-left: 1%;
+    font-size: 14pt;
+}
+
+.dashboard .top-bar .tools{
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    margin-right: 2%;
+}
+
+.dashboard .top-bar .tools .message{
+    margin-right: 10%;
+    white-space:nowrap;
+    margin-top: 6%;
+}
+
+.dashboard .body{
+    flex: 14;
+    display: flex;
+}
+
+.dashboard .body .side-bar{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--main-light-color);
+}
+
+.dashboard .body .side-bar .category{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 25%;
+    color: var(--light-text);
+}
+
+.dashboard .body .side-bar .selected{
+    color: var(--main-dark-color);
+    font-size: bold;
+}
+
+.dashboard .body .side-bar .category .text{
+    font-weight: bold;
+    font-size: 10pt;
+}
+
+.dashboard .body .content{
+    flex: 14;
+    display: flex;
+}
+
+

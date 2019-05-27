@@ -1,95 +1,96 @@
-var CustomChart = function(canvas_id, stacked=false, title='Chart Title'){
+var CustomChart = function(canvas_id){
 
-  const color = '75, 177, 209'
-  const background_color = [`rgba(${color},0.8)`, `rgba(${color},0.5)`, `rgba(${color},0.2)`]
-  const border_color = [`rgba(${color},0.8)`, `rgba(${color},0.8)`, `rgba(${color},0.8)`]
+  const main_color = '63,73,88'
+  const gradient_color = [`rgba(${main_color})`, `rgba(${main_color},0.7)`, `rgba(${main_color},0.4)`, `rgba(${main_color},0.2)`]
+  const colorful = [`rgba(42,50,57,0.8)`, `rgba(42,50,57,0.2)`]
+  const same_color = []
+  for(var i = 0; i<10; i++){
+    same_color.push(`rgba(${same_color})`)
+  }
 
-  this.id = canvas_id
-
-  this.render_dataset = function dataset(hash){
-    const result = []
+  this.render_dataset = function dataset(dataset){
+    let result = []
     let index = 0
-    Object.keys(hash).forEach( key => {
-      result.push(
-        {
-          label: key,
-          fill: false,
-          backgroundColor: background_color[index],
-          borderColor: border_color[index],
-          borderWidth: 2,
-          data: hash[key]
-        }
-      )
-      index += 1
-    })
+    let values = JSON.parse(dataset.values)
+    custom_options = (dataset.options == '' ? {} : JSON.parse(dataset.options));
+    color = gradient_color
+    if (custom_options['color'] == 'colorful'){ color = colorful }
+    if (custom_options['color'] == 'main'){color = same_color}
+    if (values instanceof(Array)){
+      result = [{
+        data: values,
+        borderWidth: 1,
+        backgroundColor: color
+      }]
+    }else{
+      Object.keys(values).forEach( key => {
+        result.push(
+          {
+            label: key,
+            fill: false,
+            backgroundColor: color[index],
+            borderColor: color[index],
+            borderWidth: 2,
+            data: values[key]
+          }
+        )
+        index += 1
+      })
+    }
+
     return result
   }
 
+  this.id = canvas_id
+
   this.canvas = document.getElementById(canvas_id)
-
-  // var observer = function(obj){
-
-  //   var mutationObserver = new MutationObserver(function(mutations) {
-  //     mutations.forEach(function(mutation) {
-  //       if (mutation.type == "attributes") {
-  //         obj.update()
-  //       }
-  //     });
-  //   });
-
-  //   mutationObserver.observe(obj.canvas, {
-  //     attributes: true
-  //   });
-  // }
-
-  // observer(this)
 
   this.type = this.canvas.dataset.type
 
   this.data = {
     labels: JSON.parse(this.canvas.dataset.labels),
-    datasets: this.render_dataset(JSON.parse(this.canvas.dataset.values))
+    datasets: this.render_dataset(this.canvas.dataset)
   }
-  this.options = {
-    maintainAspectRatio: false,
-    title: {
-      display: true,
-      text: title
-    },
-    legend: {
-      display: true,
-      position:'bottom'
-    },
-    tooltips: {
-      mode: 'label',
-      label: 'mylabel',
-      callbacks: {
-          label: function (tooltipItem, data) {
-              return tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-          }}
-    },
-    scales: {
-      yAxes: [{
-        stacked: stacked,
-        ticks: {
-          suggestedMin: 0
-        },
-        gridLines: {
-          display: false,
-          color: "rgba(255,99,132,0.2)"
-        }
-      }],
-      xAxes: [{
-        stacked: stacked,
-        // type: 'time',
-        // time:{
-        //   unit: 'day'
-        // },
-        gridLines: {
-          display: false
-        }
-      }]
+
+  this.options = function(custom_options){
+    options = Options
+    custom_options = (custom_options == '' ? {} : JSON.parse(custom_options));
+    options.gridline = custom_options['gridline'] || false;
+    options.stacked = custom_options['stacked'] || false;
+    options.title = custom_options['title'] || 'Chart Title';
+    options.legend = custom_options['legend'] || false;
+    options.xAxex.position = custom_options['x_position'] || 'bottom'
+    options.xAxex.type = custom_options['x_type'] || 'category'
+    if(custom_options['x_type'] == 'time'){
+      options.xAxex.time = {unit: custom_options['time_unit']}
     }
+    options.xAxex.label = custom_options['axes_label'] || false
+    options.xAxex.label_string = custom_options['x_label'] || ''
+    options.yAxex.type = custom_options['y_type'] || 'linear'
+    options.yAxex.label = custom_options['axes_label'] || false
+    options.yAxex.label_string = custom_options['y_label'] || ''
+    options.yAxex.position = custom_options['y_position'] || 'left'
+    options.yAxex.ticked = custom_options['y_ticked'] || false
+    options.yAxex.min = custom_options['y_min'] || 0
+    options.yAxex.max = custom_options['y_max'] || 1000
+    if (custom_options['tooltips'] == 'file_churn'){
+      options.callback = {
+        label: function(tooltipItem, data){
+          index = tooltipItem.index
+          dataset = data.datasets[0].data
+          title = dataset[index]['title']
+          commits = dataset[index]['x']
+          complexity = dataset[index]['y']
+          message = [
+            [`file: ${title}`],
+            [`commits: ${commits}`],
+            [`complexity: ${complexity}`]
+          ]
+          return message
+        }
+      }
+    }
+    return options.render()
   }
 }
 
@@ -97,8 +98,9 @@ CustomChart.prototype.render = function(){
   this.chart = new Chart(this.canvas, {
     type: this.type,
     data: this.data,
-    options: this.options
+    options: this.options(this.canvas.dataset.options)
   });
+  console.log(this.options(this.canvas.dataset.options))
 }
 
 CustomChart.prototype.update = function(){
@@ -108,9 +110,56 @@ CustomChart.prototype.update = function(){
 
   this.data = {
     labels: JSON.parse(this.canvas.dataset.labels),
-    datasets: this.render_dataset(JSON.parse(this.canvas.dataset.values))
+    datasets: this.render_dataset(this.canvas.dataset)
   }
   this.chart.destroy();
 
   this.render();
+}
+
+var TreeMap = function(canvas_id){
+  this.id = canvas_id
+  this.canvas = document.getElementById(canvas_id)
+  this.series = JSON.parse(this.canvas.dataset.values)
+  this.title =
+  this.config = function(series){
+    return {
+      graphset: [
+        {
+          type: "treemap",
+          title: {
+            text: "Please include coverage/.result.set.json in your repo"
+          },
+          plotarea: {
+            margin: "0 0 30 0"
+          },
+          tooltip: {},
+          options: {
+            "aspect-type": "transition",
+            "color-start": "#B5B8BD",
+            "color-end": '#3F4958',
+            "max-children": [30, 30, 30]
+          },
+          series: series
+        }
+      ]
+    }
+  }
+};
+
+TreeMap.prototype.render = function(){
+  this.chart = zingchart.render({
+    id: this.id,
+    data: this.config(this.series),
+    height: "100%",
+    width: "100%"
+  })
+}
+
+TreeMap.prototype.update = function(){
+  if (this.canvas == undefined) return;
+
+  this.series = JSON.parse(this.canvas.dataset.values);
+  this.chart.clear()
+  this.render()
 }

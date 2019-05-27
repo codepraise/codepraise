@@ -1,0 +1,157 @@
+.quality{
+    flex: 1;
+    padding: 1% 1% 1% 1%;
+    display: flex;
+    flex-direction: column;
+}
+
+.quality .title-bar{
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0% 1% 0% 1%;
+    border-bottom: solid 1pt var(--light-text);
+
+}
+
+.quality .title-bar .title{
+    font-size: 16pt;
+}
+
+.quality .panel{
+    margin-top: 1%;
+    flex: 20;
+    display: flex;
+    flex-direction: column;
+}
+
+.quality .panel .top{
+    flex: 1.35;
+    display: flex;
+}
+
+.quality .panel .top .left{
+    flex: 2;
+    display: flex;
+}
+
+.quality .panel .top .right{
+    flex: 5;
+    display: flex;
+}
+
+.quality .panel .bottom{
+    flex: 1;
+    display: flex;
+}
+
+.quality .panel .bottom .left{
+    flex: 1.2;
+    display: flex;
+}
+
+.quality .panel .bottom .right{
+    flex: 1;
+    display: flex;
+}
+
+.quality .panel .board{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border: solid 2pt var(--board-border);
+}
+
+.quality .panel .top .board{
+    margin-bottom: 2.5vh;
+}
+
+.quality .panel .left .board{
+    margin-right: 2.5vh;
+}
+
+.quality .panel .right .board{
+    margin-right: 2vh;
+}
+
+.quality .panel .a-board .titles{
+    flex: 1;
+    display: flex;
+}
+
+.quality .panel .a-board .tools{
+    flex: 0.8;
+    display: flex;
+}
+
+.quality .panel .a-board .elements{
+    flex: 9;
+    display: flex;
+    padding: 5%;
+    flex-direction: column;
+}
+
+.quality .panel .a-board .elements .element .issue{
+    font-size: 14pt;
+    font-weight: bold;
+}
+
+.quality .panel .a-board .elements .element .critcial{
+    margin-left: 5%;
+}
+
+.quality .panel .b-board .titles{
+    flex: 1;
+    display: flex;
+}
+
+.quality .panel .b-board .elements{
+    flex: 9.5;
+    display: flex;
+    flex-wrap: nowrap;
+    padding: 1%;
+}
+
+.quality .panel .b-board .elements .element{
+    flex: 1;
+    /* max-height: 40%;
+    min-width: 50%; */
+    padding: 0% 3% 0% 3%;
+}
+
+.quality .panel .c-board .titles{
+    flex: 1;
+    display: flex;
+}
+
+.quality .panel .c-board .tools{
+    flex: 1;
+    display: flex;
+}
+
+.quality .panel .c-board .tools .selector{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.quality .panel .c-board .tools .selector select{
+    height: 30pt;
+    font-size: 10pt;
+}
+
+.quality .panel .c-board .elements{
+    flex: 9;
+    display: flex;
+}
+
+.quality .panel .d-board .titles{
+    flex: 1;
+    display: flex;
+}
+
+.quality .panel .d-board .elements{
+    flex: 9;
+    display: flex;
+}

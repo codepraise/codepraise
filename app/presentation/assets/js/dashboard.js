@@ -15,3 +15,17 @@ function folder_menu(){
   });
   return true;
 }
+
+
+function change_page(){
+  page = document.querySelector('.page');
+  categories = document.querySelectorAll('.category');
+  categories.forEach(function(category){
+    if (category.id != `${page.id}_page`){
+      category.classList.remove('selected')
+    }else{
+      category.classList.add('selected')
+    }
+  });
+}
+

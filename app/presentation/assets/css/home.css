@@ -13,9 +13,17 @@
   flex: 1;
 }
 
+#root .bg .flash{
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  min-width: 20vw;
+}
+
 #root .bg .logo{
   display: flex;
   align-items: flex-end;
+  max-height: 10vh;
 }
 
 #root .bg .search-bar{

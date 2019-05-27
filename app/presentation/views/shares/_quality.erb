@@ -1,0 +1,85 @@
+<div class="quality page" id="quality">
+    <div class="title-bar">
+        <div class="title">
+            Quality
+        </div>
+    </div>
+    <div class="panel">
+        <div class="top ">
+            <div class="left ">
+                <div class="a-board board">
+                    <div class="titles ">
+                    </div>
+                    <div class="elements ">
+                    <% @panel_view.a_board.elements.each do |element| %>
+                        <div class="bar-title"> <%= element.title %> </div>
+                        <%= element.to_element %>
+                    <% end %>
+                    </div>
+                </div>
+            </div>
+            <div class="right ">
+                <div class="b-board board">
+                    <div class="titles">
+                    </div>
+                    <div class="elements ">
+                    <% @panel_view.b_board.elements.each do |element| %>
+                        <div class="element">
+                            <%= element.to_element %>
+                        </div>
+                    <% end %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom ">
+            <div class="left ">
+                <div class="c-board board">
+                    <div class="titles ">
+                    </div>
+                    <div class="tools">
+                    <div class="selector">
+                        <div class="label">test</div>
+                        <select class="custom-select custom-select-lg mb-3" id="issue">
+                        <option value="complexity">Files with Complexity Method</option>
+                        <option value="offenses">Code Style Offenses</option>
+                        <option value="documentation"> Unannotated Files</option>
+                        <option value="test">Low Test Coverage Files</option>
+                        </select>
+                    </div>
+                    <div class="selector">
+                        <div class="label">test</div>
+                        <select class="custom-select custom-select-lg mb-3" id="email_id">
+                        <option value="total">Total</option>
+                        <% @panel_view.contributors.each do |c| %>
+                            <option value="<%=c.email_id%>"> <%=c.email_id%> </option>
+                        <% end %>
+
+                        </select>
+                    </div>
+                    </div>
+                    <div class="elements ">
+                    <% @panel_view.c_board.elements.each do |element| %>
+                        <div class="element">
+                            <%= element.to_element %>
+                        </div>
+                    <% end %>
+                    </div>
+                </div>
+            </div>
+            <div class="right ">
+                <div class="d-board board">
+                    <div class="titles ">
+                    </div>
+                    <div class="elements ">
+                    <% @panel_view.d_board.elements.each do |element| %>
+                        <div class="element">
+                            <%= element.to_element %>
+                        </div>
+                    <% end %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

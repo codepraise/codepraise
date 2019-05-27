@@ -1,0 +1,62 @@
+<div class="ownership page" id="ownership">
+    <div class="title-bar">
+        <div class="title">
+            Ownership
+        </div>
+    </div>
+    <div class="panel">
+        <div class="top ">
+            <div class="left ">
+                <div class="a-board board">
+                    <div class="titles test">
+                    </div>
+                    <div class="elements test">
+                        <% @panel_view.a_board.elements.each do |element| %>
+                            <div class="bar-title"> <%= element.title %> </div>
+                            <%= element.to_element %>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+            <div class="right ">
+                <div class="b-board board">
+                    <div class="titles test">
+                    </div>
+                    <div class="tools test">
+                        <button class="btn btn-primary" id="pre"><</button>
+                    </div>
+                    <div class="elements test">
+                        <% @panel_view.b_board.elements.each do |element| %>
+                            <div class="element">
+                                <%= element.to_element %>
+                            </div>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom ">
+            <div class="c-board board">
+                <div class="titles test">
+                </div>
+                <div class="tools test">
+                    <div class="selector">
+                        <select class="custom-select custom-select-lg mb-3" id="ownership_selector">
+                            <option value="total">Total</option>
+                            <% @panel_view.contributors.each do |c| %>
+                            <option value="<%=c.email_id%>"> <%= c.email_id %> </option>
+                            <% end %>
+                        </select>
+                    </div>
+                </div>
+                <div class="elements test">
+                    <% @panel_view.c_board.elements.each do |element| %>
+                        <div class="element">
+                        <%= element.to_element %>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -25,6 +25,8 @@ gem 'roar'
 # Networking
 gem 'http', '~> 3.0'
 
+gem 'chainable_methods', '~> 0.2.1'
+
 # DEBUGGING
 group :development, :test do
   gem 'pry-rescue'

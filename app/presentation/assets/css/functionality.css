@@ -1,0 +1,92 @@
+.functionality{
+    flex: 1;
+    padding: 1% 1% 1% 1%;
+    display: flex;
+    flex-direction: column;
+}
+
+.functionality .title-bar{
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0% 1% 0% 1%;
+    border-bottom: solid 1pt var(--light-text);
+}
+
+.functionality .title-bar .title{
+    font-size: 16pt;
+}
+
+.functionality .panel{
+    margin-top: 1%;
+    flex: 20;
+    display: flex;
+    flex-direction: column;
+}
+
+.functionality .panel .board{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.functionality .panel .board .element{
+    flex: 1;
+    display: flex;
+}
+
+.functionality .panel .top{
+    flex: 1;
+    flex-direction: row;
+    display: flex;
+}
+
+.functionality .panel .top .left{
+    flex: 1.5;
+    display: flex;
+}
+
+.functionality .panel .top .left .titles{
+    flex: 1;
+}
+
+.functionality .panel .top .left .elements{
+    flex: 9;
+    display: flex;
+}
+
+.functionality .panel .top .right{
+    flex: 1;
+    display: flex;
+}
+
+.functionality .panel .top .right .titles{
+    flex: 1;
+}
+
+.functionality .panel .top .right .elements{
+    flex: 9;
+    display: flex;
+}
+
+.functionality .panel .bottom{
+    flex: 1;
+    display: flex;
+}
+
+.functionality .panel .bottom .titles{
+    flex: 1.2;
+}
+
+.functionality .panel .bottom .elements{
+    flex: 9;
+    display: flex;
+}
+
+.my-custom-scrollbar {
+    position: relative;
+    height: 40vh;
+    overflow: auto;
+    display: block;
+}

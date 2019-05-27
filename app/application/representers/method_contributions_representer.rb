@@ -16,6 +16,7 @@ module CodePraise
       property :line_credits
       property :line_percentage
       property :complexity
+      property :type
     end
   end
 end

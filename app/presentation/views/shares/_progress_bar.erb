@@ -2,7 +2,7 @@
 <div class="progress-bg">
     <div class="logo">
         <span>CodePraise</span>
-        <span class='msg'>Message</span>
+        <span class='msg'>Sending...</span>
     </div>
     <div class="progress-section">
         <div class="progress">
@@ -11,15 +11,38 @@
     </div>
 </div>
 <script>
-    channel = "<%=@processing.ws_channel_id%>";
+    channel_id = "<%=@processing.ws_channel_id%>";
     client = new Faye.Client("<%=@processing.ws_route%>");
-    progress_bar = document.querySelector('.progress-bg .progress-bar');
-    client.subscribe('/' + channel, function(message) {
-        result = progessing(progress_bar, message, () => { return true; })
-        if (result){
+
+    register_subscriber(client, channel_id, update_processing)
+
+    function update_processing(data) {
+        console.log(data)
+        progress_bar = document.querySelector('.progress-bg .progress-bar');
+        message = document.querySelector('.msg')
+        current_progress = parseInt(/(\d+)/.exec(progress_bar.style.width)[0]);
+
+        progress_number = parseInt(data['message']);
+        message.textContent = data['state']
+
+        if (progress_number > current_progress && progress_number <= 100){
+            progress_bar.setAttribute("style", `width:${progress_number}%`)
+        }
+
+        if (progress_number == 100){
             setTimeout(function () {
                 location.reload();
             }, 1000);
         }
-    });
+    }
+
+    function register_subscriber(client, channel_id, callback) {
+        client.subscribe('/' + channel_id, function(data) {
+            if (data['state'] == 'switch'){
+                register_subscriber(client, data['channel_id'], callback)
+            }else{
+                callback(data)
+            }
+        });
+    }
 </script>

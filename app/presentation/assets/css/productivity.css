@@ -1,0 +1,110 @@
+.productivity{
+    flex: 1;
+    padding: 1% 1% 1% 1%;
+    display: flex;
+    flex-direction: column;
+}
+
+.productivity .title-bar{
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0% 1% 0% 1%;
+    border-bottom: solid 1pt var(--light-text);
+}
+
+.productivity .title-bar .title{
+    font-size: 16pt;
+}
+
+.productivity .panel{
+    margin-top: 1%;
+    flex: 20;
+    display: flex;
+    flex-direction: row;
+}
+
+.productivity .panel .board{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border: solid 2pt var(--board-border);
+}
+
+.productivity .panel .left{
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+}
+
+.productivity .panel .left .a-board{
+    margin-right: 2%;
+}
+
+.productivity .panel .left .a-board .titles{
+    flex: 1;
+}
+
+.productivity .panel .left .a-board .tools{
+    flex: 1.5;
+    display: flex;
+}
+
+.productivity .panel .left .a-board .tools .double-slider{
+    flex: 3;
+}
+
+.productivity .panel .left .a-board .tools .selector{
+    flex: 1;
+}
+
+.productivity .panel .left .a-board .elements{
+    flex: 22;
+    flex-wrap: nowrap;
+    display: flex;
+    flex-direction: column;
+}
+
+.productivity .panel .right{
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+.productivity .panel .right .top, .productivity .panel .right .bottom{
+    flex: 1;
+    display: flex;
+}
+
+.productivity .panel .top .b-board{
+    margin-bottom: 3%;
+}
+
+.productivity .panel .top .b-board, .productivity .panel .bottom .c-board{
+    margin-right: 3%;
+}
+
+.productivity .panel .top .b-board .titles{
+    flex: 3;
+}
+
+.productivity .panel .top .b-board .elements{
+    flex: 20;
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.productivity .panel .bottom .c-board .titles{
+    flex: 3;
+}
+
+.productivity .panel .bottom .c-board .elements{
+    flex: 20;
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.productivity .element{
+    flex: 1;
+}

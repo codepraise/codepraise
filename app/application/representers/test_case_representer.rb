@@ -9,9 +9,10 @@ module CodePraise
       include Roar::JSON
 
       property :message
-      property :is_functionality
+      property :key_words
       property :expectation_count
       property :contributors
+      property :top_describe
     end
   end
 end

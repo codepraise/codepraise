@@ -1,0 +1,61 @@
+<div class="files page" id="files">
+    <div class="title-bar">
+        <div class="title">
+            Files
+        </div>
+        <div class="file_path">
+            <%= "#{@panel_view.name.capitalize} #{@panel_view.state.capitalize}" %>
+        </div>
+    </div>
+    <div class="panel">
+        <div class="left ">
+            <div class="top ">
+                <div class="a-board board">
+                    <div class="elements">
+                        <% @panel_view.a_board.elements.each do |element| %>
+                        <%= element.to_element %>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom ">
+                <div class="top">
+                    <div class="b-board board">
+                        <div class="titles test"></div>
+                        <div class="elements test">
+                        <% @panel_view.b_board.elements.each do |element| %>
+                            <div class="element">
+                            <%= element.to_element %>
+                            </div>
+                        <% end %>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom ">
+                    <div class="c-board board">
+                        <div class="titles test"></div>
+                        <div class="elements test">
+                                                <% @panel_view.c_board.elements.each do |element| %>
+                            <div class="element">
+                            <%= element.to_element %>
+                            </div>
+                        <% end %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right ">
+            <div class="d-board board">
+                <div class="titles "></div>
+                <div class="elements  folders">
+                    <div class="element folders">
+                        <ul class="folder-tree">
+                            <%= @panel_view.folder_tree %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

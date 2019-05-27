@@ -1,16 +1,29 @@
 # frozen_string_literal: true
 
+require_relative 'elements'
+
 module Views
   class Panel
-    attr_reader :project, :folder, :commits
-
-    Chart = Struct.new(:labels, :dataset, :title, :type)
-    Table = Struct.new(:thead, :tbody)
+    attr_reader :project, :folder, :commits, :contributors,
+                :quality_credit, :productivity_credit, :ownership_credit
+    include Elements
 
     def initialize(appraisal)
       @project = appraisal.project
       @folder = appraisal.folder
       @commits = appraisal.commits
+      @contributors = appraisal.folder.credit_share.contributors
+      @quality_credit = appraisal.folder.credit_share.quality_credit
+      @productivity_credit = appraisal.folder.credit_share.productivity_credit
+      @ownership_credit = appraisal.folder.credit_share.ownership_credit
+    end
+
+    def category_element
+      []
+    end
+
+    def panel_name
+      'Individual Contribution'
     end
 
     def project_name
@@ -22,18 +35,37 @@ module Views
     end
 
     def folder_tree
-      build_folder_tree(@folder.subfolders)
+      build_folder_tree(@folder.subfolders) + file_element(folder.base_files)
     end
 
-    def category
-      %w[productivity quality responsibility functionality]
+    def base_url
+      "/appraisal/#{owner_name}/#{project_name}?category="
     end
 
-    def divided(a, b)
-      b.positive? ? (a.to_f / b).round : b
+    def avg_complexity(email_id)
+      complexities = folder_filter.all_methods(email_id).map do |method|
+        method&.complexity.to_f
+      end.select(&:positive?)
+
+      return '_' if complexities.empty?
+
+      (complexities.sum / complexities.count).round
+    end
+
+    def has_test_coverage
+      !folder.test_coverage.is_a?(String)
     end
 
     private
+
+    def file_full_name(file)
+      "#{file.file_path.directory}#{file.file_path.filename}"
+    end
+
+    def date_format(date)
+      date = Time.parse(date) if date.is_a?(String)
+      date.strftime('%y/%m/%d')
+    end
 
     def build_folder_tree(folders)
       unless folders.empty?
@@ -49,7 +81,7 @@ module Views
 
     def folder_element(folder)
       "<span class='caret'></span>" \
-      "<a href=''> #{folder_name(folder)}  </a>"
+      "<a href='/appraisal/#{owner_name}/#{project_name}?category=files&folder=#{folder.path}'> #{folder_name(folder)}  </a>"
     end
 
     def folder_name(folder)
@@ -57,10 +89,12 @@ module Views
     end
 
     def file_element(files)
-      files.map do |file|
+      files = files.map do |file|
         file.file_path.filename
-      end.sort_by(&:length).reverse.map do |filename|
-        "<li class='file'>  <a href=''> #{filename} </a> </li>"
+      end
+      files.sort_by(&:length).reverse.map do |filename|
+        "<li class='file'> <a href='/appraisal/#{owner_name}/#{project_name}?category=files&folder=#{filename}'>
+        #{filename} </a> </li>"
       end.join('')
     end
   end

@@ -24,16 +24,15 @@ module CodePraise
             App.config, appraisal.response
           )
 
-          @panel_view = PanelHelper.new(appraisal, request.params['category'])
+          @panel_view = PanelHelper.new(appraisal, request)
             .view_obj
 
           if request.params['type']
-            number = request.params['number'].to_i
-            return Value::Charts.new(@panel_view.sub_charts(number)).to_json
+            Value::Elements.new(request, @panel_view).to_json
+          else
+            view 'dashboard', locals: { path: @path, processing: @processing,
+                                        panel_view: @panel_view }
           end
-
-          view 'dashboard', locals: { path: @path, processing: @processing,
-                                      panel_view: @panel_view }
         end
       end
     end

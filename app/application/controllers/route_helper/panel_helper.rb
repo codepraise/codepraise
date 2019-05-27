@@ -4,20 +4,34 @@ module CodePraise
   module RouteHelper
     class PanelHelper
       KLASS = {
-        'productivity' => Views::ProductivityPanel
+        'productivity' => Views::Productivity,
+        'quality' => Views::Quality,
+        'ownership' => Views::Ownership,
+        'functionality' => Views::Functionality,
+        'overview' => Views::Overview,
+        'files' => Views::Files
       }.freeze
 
-      def initialize(result, category = nil)
+      def initialize(result, request)
         @result = result
-        @category = category || 'productivity'
+        @request = request
+        @category = request.params['category'] || 'overview'
       end
 
       def view_obj
-        KLASS[@category].new(appraisal) if appraised?
+        if @category == 'files'
+          folder = @request['folder']
+          KLASS[@category].new(appraisal, folder) if appraised?
+        elsif appraised?
+          KLASS[@category].new(appraisal)
+        end
       end
 
       def appraisal
-        @result.appraised if appraised?
+        retrun nil unless appraised?
+
+        Representer::ProjectFolderContributions.new(OpenStruct.new)
+          .from_json(@result.appraised.content.to_json)
       end
 
       private

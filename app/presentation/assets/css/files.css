@@ -1,0 +1,116 @@
+.files{
+    flex: 1;
+    padding: 1% 1% 1% 1%;
+    display: flex;
+    flex-direction: column;
+}
+
+.files .title-bar{
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0% 1% 0% 1%;
+    border-bottom: solid 1pt var(--light-text);
+}
+
+.files .title-bar .title{
+    font-size: 16pt;
+}
+
+.files .title-bar .file_path{
+    margin-left: 3%;
+    font-size: 16pt;
+}
+
+.files .panel{
+    margin-top: 1%;
+    flex: 20;
+    display: flex;
+}
+
+.files .panel .board{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.files .panel .elements{
+    display: flex;
+}
+
+.files .panel .elements .element{
+    flex: 1;
+}
+
+.files .panel .left{
+    flex: 6;
+    display: flex;
+    flex-direction: column;
+}
+
+.files .panel .left .top{
+    flex: 1.5;
+    display: flex;
+}
+
+.files .panel .left .top .a-board .elements{
+    flex: 1;
+    display: flex;
+}
+
+.files .panel .left .top .a-board .elements{
+    flex: 1;
+    display: flex;
+}
+
+.files .panel .left .bottom{
+    flex: 5;
+    display: flex;
+    flex-direction: column;
+}
+
+.files .panel .left .bottom .top{
+    flex: 1;
+}
+
+.files .panel .left .bottom .top .titles{
+    flex: 1;
+}
+
+.files .panel .left .bottom .top .elements{
+    flex: 10;
+}
+
+.files .panel .left .bottom .bottom{
+    flex: 1;
+}
+
+.files .panel .left .bottom .bottom .titles{
+    flex: 1;
+}
+
+.files .panel .left .bottom .bottom .elements{
+    flex: 10;
+}
+
+.files .panel .right{
+    flex: 2;
+    display: flex;
+}
+
+.files .panel .right .d-board{
+    padding: 0% 1% 0% 1%;
+    border-radius: 10pt;
+    margin-right: 3%;
+    background-color: #F5F8FF;
+}
+
+.files .panel .right .d-board .titles{
+    flex: 1;
+}
+
+.files .panel .right .d-board .elements{
+    flex: 10;
+}
+

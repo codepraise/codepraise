@@ -1,0 +1,108 @@
+
+.ownership{
+    flex: 1;
+    padding: 1% 1% 1% 1%;
+    display: flex;
+    flex-direction: column;
+}
+
+.ownership .title-bar{
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0% 1% 0% 1%;
+    border-bottom: solid 1pt var(--light-text);
+}
+
+.ownership .title-bar .title{
+    font-size: 16pt;
+}
+
+.ownership .panel{
+    margin-top: 1%;
+    flex: 20;
+    display: flex;
+    flex-direction: column;
+}
+
+.ownership .panel .board{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.ownership .panel .element{
+    flex: 1;
+}
+
+.ownership .panel .top{
+    flex: 1.2;
+    display: flex;
+}
+
+.ownership .panel .top .left{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.ownership .panel .top .left .titles{
+    flex: 1;
+    display: flex;
+}
+
+.ownership .panel .top .left .elements{
+    flex: 10;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+.ownership .panel .top .left .elements{
+    display: flex;
+}
+
+.ownership .panel .top .right .titles{
+    flex: 1;
+    display: flex;
+}
+
+.ownership .panel .top .right .tools{
+    flex: 1;
+    display: flex;
+}
+
+.ownership .panel .top .right .tools button{
+    margin-left: auto;
+}
+
+.ownership .panel .top .right .elements{
+    flex: 10;
+    display: flex;
+}
+
+.ownership .panel .top .right{
+    flex: 3;
+    display: flex;
+}
+
+.ownership .panel .bottom{
+    flex: 1;
+    display: flex;
+}
+
+.ownership .panel .bottom .titles{
+    flex: 1.2;
+    display: flex;
+}
+
+.ownership .panel .bottom .tools{
+    flex: 1;
+    display: flex;
+}
+
+.ownership .panel .bottom .elements{
+    flex: 10;
+    display: flex;
+}

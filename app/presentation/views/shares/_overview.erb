@@ -1,0 +1,106 @@
+<div class="overview page" id='overview'>
+    <div class="title-bar">
+        <div class="title">
+            Overview
+        </div>
+        <div class="coverage">
+            Test Coverage: 60%
+        </div>
+    </div>
+    <div class="panel">
+        <div class="up">
+            <div class="left ">
+                <div class="a-board board">
+                    <div class="titles">
+                        <span class="title">
+                            <%= @panel_view.a_board.title %>
+                        </span>
+                    </div>
+                    <div class="informations">
+                        <% @panel_view.a_board.informations.each do |info| %>
+                        <div class="info">
+                            <span class='critical'> <%= info[:number] %> </span> <%= info[:unit] %>
+                        </div>
+                        <% end %>
+                    </div>
+                    <div class="elements">
+                        <% @panel_view.a_board.elements.each do |element| %>
+                            <%= element.to_element %>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+            <div class="mid ">
+                <div class="b-board board">
+                    <div class="titles">
+                        <span class="title">
+                            <%= @panel_view.b_board.title %>
+                        </span>
+                    </div>
+                    <div class="elements">
+                        <% @panel_view.b_board.elements.each do |element| %>
+                            <%= element.to_element %>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+            <div class="right ">
+                <div class="c-board board">
+                    <div class="titles ">
+                        <span class="title">
+                            <%= @panel_view.c_board.title %>
+                        </span>
+                    </div>
+                    <div class="informations ">
+                        <% @panel_view.c_board.informations.each do |info| %>
+                        <div class="info">
+                            <span class='critical'> <%= info[:number] %> </span> <%= info[:unit] %>
+                        </div>
+                        <% end %>
+                    </div>
+                    <div class="elements ">
+                        <% @panel_view.c_board.elements.each do |element| %>
+                            <div class="element">
+                            <%= element.to_element %>
+                            </div>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="d-board board">
+                <div class="titles ">
+                    <span class="title">
+                        <%= @panel_view.d_board.title %>
+                    </span>
+                    <span class="subtitle"></span>
+                </div>
+                <div class="tools">
+                    <div class="double-slider" data-days="<%=@panel_view.days_count%>" data-first="<%=@panel_view.first_date%>" data-last="<%=@panel_view.last_date%>">
+                        <div class="label">
+                           <span class="title"> Date: </span> <span id="start"></span> ~ <span id="end"></span>
+                        </div>
+                        <div id="slider-range">
+                        </div>
+                    </div>
+                    <div class="selector">
+                        <div class="label">test</div>
+                        <select class="custom-select custom-select-lg mb-3" id="unit_selector">
+                        <option value="day">Day</option>
+                        <option value="week">Week</option>
+                        <option value="month">Month</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="elements ">
+                    <% @panel_view.d_board.elements.each do |element| %>
+                        <div class="element">
+                            <%= element.to_element %>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,13 +1,21 @@
-<div class="logo ">
+<div class="flash">
+    <div class="alert alert-warning alert-dismissible hidden" role="alert">
+        <span></span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
+<div class="logo">
     <span> CodePraise </span>
 </div>
-<div class="search-bar ">
+<div class="search-bar">
     <input type="text" placeholder='https://github.com/OwnerName/ProjectName.git'>
     <span class='clickable' id='search-btn'><i class="fas fa-search-plus"></i></a></span>
 </div>
-<div class="projects ">
+<div class="projects">
     <% @viewable_projects.each do |project| %>
-        <div class="card bg-info" id="<%= project.fullname %>">
+        <div class="card bg-dark" id="<%= project.fullname %>">
             <div class="card-body">
                 <a href="<%=project.praise_link%>">
                     <p class="card-title"><%= project.name %></p>

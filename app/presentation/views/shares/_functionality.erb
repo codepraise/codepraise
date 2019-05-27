@@ -1,0 +1,47 @@
+<div class="functionality page" id='functionality'>
+    <div class="title-bar">
+        <div class="title">
+            Functioanlity
+        </div>
+    </div>
+    <div class="panel">
+        <div class="top ">
+            <div class="left  ">
+                <div class="a-board board ">
+                    <div class="titles test"></div>
+                    <div class="elements test">
+                        <% @panel_view.a_board.elements.each do |element| %>
+                            <div class="element">
+                            <%= element.to_element %>
+                            </div>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+            <div class="right ">
+                <div class="b-board board">
+                    <div class="titles test"></div>
+                    <div class="elements test">
+                         <% @panel_view.b_board.elements.each do |element| %>
+                            <div class="element">
+                            <%= element.to_element %>
+                            </div>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom ">
+            <div class="c-board board">
+                <div class="titles test"></div>
+                <div class="elements test">
+                    <% @panel_view.c_board.elements.each do |element| %>
+                            <div class="element my-custom-scrollbar">
+                            <%= element.to_element %>
+                            </div>
+                        <% end %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

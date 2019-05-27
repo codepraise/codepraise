@@ -33,7 +33,7 @@ module CodePraise
 
       def reify_appraisal(input)
         unless input[:response].processing?
-          Representer::ProjectFolderContributions.new(OpenStruct.new)
+          Representer::Appraisal.new(OpenStruct.new)
             .from_json(input[:response].payload)
             .yield_self { |report| input[:appraised] = report }
         end
