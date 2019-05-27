@@ -13,7 +13,7 @@ module Views
     end
 
     def a_board
-      title = 'Individual Code Churn'
+      title = 'Individual Project Progress'
       elements = contributors.map do |contributor|
         productivity_progress('day', nil, contributor.email_id)
       end
@@ -51,7 +51,7 @@ module Views
       max = max_addition(unit, between)
       options = { title: "#{email_id} Code Churn", scales: true, legend: true,
                   x_type: 'time', time_unit: unit.to_s, y_ticked: true,
-                  y_min: 0, y_max: max }
+                  y_min: 0, y_max: max, color: 'colorful' }
       Chart.new(labels, dataset, options, 'line', "#{email_id}_code_churn")
     end
 

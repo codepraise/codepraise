@@ -8,6 +8,9 @@
         <div class="left">
             <div class="a-board board">
                 <div class="titles ">
+                    <span class="title">
+                        <%= @panel_view.a_board.title %>
+                    </span>
                 </div>
                 <div class="tools">
                     <div class="double-slider" data-days="<%=@panel_view.days_count%>" data-first="<%=@panel_view.first_date%>" data-last="<%=@panel_view.last_date%>">
@@ -18,7 +21,7 @@
                         </div>
                     </div>
                     <div class="selector">
-                        <div class="label">test</div>
+                        <div class="label title">Time Unit: </div>
                         <select class="custom-select custom-select-lg mb-3" id="unit_selector">
                         <option value="day">Day</option>
                         <option value="week">Week</option>
@@ -39,6 +42,9 @@
             <div class="top">
                 <div class="b-board board">
                     <div class="titles ">
+                        <span class="title">
+                            <%= @panel_view.b_board.title %>
+                        </span>
                     </div>
                     <div class="elements ">
                     <% @panel_view.b_board.elements.each do |element| %>
@@ -51,7 +57,11 @@
             </div>
             <div class="bottom">
                 <div class="c-board board">
-                    <div class="titles "></div>
+                    <div class="titles ">
+                        <span class="title">
+                            <%= @panel_view.c_board.title %>
+                        </span>
+                    </div>
                     <div class="elements ">
                     <% @panel_view.c_board.elements.each do |element| %>
                         <div class="element">

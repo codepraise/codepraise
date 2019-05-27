@@ -12,11 +12,12 @@ Axex = function(){
 }
 
 Axex.prototype.render = function(){
-  ticks = {}
+  ticks = { fontSize: 16 }
   if(this.ticked){
     ticks = {
       suggestedMax: this.max,
-      suggestedMin: this.min
+      suggestedMin: this.min,
+      fontSize: 16
     }
   }
   return [{
@@ -29,7 +30,8 @@ Axex.prototype.render = function(){
     },
     scaleLabel: {
       display: this.label,
-      labelString: this.label_string
+      labelString: this.label_string,
+      fontSize: 16
     },
     position: this.position,
     ticks: ticks
@@ -67,7 +69,10 @@ Options = {
       },
       legend: {
         display: this.legend,
-        position: 'bottom'
+        position: 'bottom',
+        labels: {
+          fontSize: 16
+        }
       },
       scales: scales,
       tooltips: tooltips

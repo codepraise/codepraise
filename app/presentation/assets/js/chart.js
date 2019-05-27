@@ -1,6 +1,7 @@
 var CustomChart = function(canvas_id){
 
   const main_color = '63,73,88'
+  // const main_color = '14, 160, 204'
   const gradient_color = [`rgba(${main_color})`, `rgba(${main_color},0.7)`, `rgba(${main_color},0.4)`, `rgba(${main_color},0.2)`]
   const colorful = [`rgba(42,50,57,0.8)`, `rgba(42,50,57,0.2)`]
   const same_color = []

@@ -40,23 +40,39 @@
 
 .productivity .panel .left .a-board{
     margin-right: 2%;
+    padding: 0 3% 0 3%;
 }
 
 .productivity .panel .left .a-board .titles{
     flex: 1;
+    padding: 1%;
+    text-align: center;
 }
 
 .productivity .panel .left .a-board .tools{
     flex: 1.5;
     display: flex;
+    padding: 0 2% 0 2%;
 }
 
 .productivity .panel .left .a-board .tools .double-slider{
     flex: 3;
+    margin-right: 2%;
 }
 
 .productivity .panel .left .a-board .tools .selector{
     flex: 1;
+    display: flex;
+    align-items: baseline;
+    white-space:nowrap;
+    justify-items: baseline
+}
+
+.productivity .panel .left .a-board .tools .selector select{
+    margin-left: 5%;
+    max-height: 40pt;
+    font-size: 12pt;
+    max-width: 80pt;
 }
 
 .productivity .panel .left .a-board .elements{
@@ -79,14 +95,18 @@
 
 .productivity .panel .top .b-board{
     margin-bottom: 3%;
+    padding: 0 5% 0 5%;
 }
 
 .productivity .panel .top .b-board, .productivity .panel .bottom .c-board{
     margin-right: 3%;
+    padding: 0 2% 0 2%;
 }
 
 .productivity .panel .top .b-board .titles{
     flex: 3;
+    padding: 2% 0 0 0;
+    text-align: center;
 }
 
 .productivity .panel .top .b-board .elements{
@@ -97,6 +117,8 @@
 
 .productivity .panel .bottom .c-board .titles{
     flex: 3;
+    padding: 2% 0 0 0;
+    text-align: center;
 }
 
 .productivity .panel .bottom .c-board .elements{

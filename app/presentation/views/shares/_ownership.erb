@@ -8,9 +8,12 @@
         <div class="top ">
             <div class="left ">
                 <div class="a-board board">
-                    <div class="titles test">
+                    <div class="titles ">
+                        <span class="title">
+                            <%= @panel_view.a_board.title %>
+                        </span>
                     </div>
-                    <div class="elements test">
+                    <div class="elements ">
                         <% @panel_view.a_board.elements.each do |element| %>
                             <div class="bar-title"> <%= element.title %> </div>
                             <%= element.to_element %>
@@ -20,12 +23,15 @@
             </div>
             <div class="right ">
                 <div class="b-board board">
-                    <div class="titles test">
+                    <div class="titles ">
+                        <div class="title">
+                            <%= @panel_view.b_board.title %>
+                        </div>
                     </div>
-                    <div class="tools test">
-                        <button class="btn btn-primary" id="pre"><</button>
+                    <div class="tools ">
+                        <button class="btn btn-dark" id="pre"><</button>
                     </div>
-                    <div class="elements test">
+                    <div class="elements ">
                         <% @panel_view.b_board.elements.each do |element| %>
                             <div class="element">
                                 <%= element.to_element %>
@@ -37,9 +43,12 @@
         </div>
         <div class="bottom ">
             <div class="c-board board">
-                <div class="titles test">
+                <div class="titles ">
+                    <span class="title">
+                        <%= @panel_view.c_board.title %>
+                    </span>
                 </div>
-                <div class="tools test">
+                <div class="tools ">
                     <div class="selector">
                         <select class="custom-select custom-select-lg mb-3" id="ownership_selector">
                             <option value="total">Total</option>
@@ -49,7 +58,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="elements test">
+                <div class="elements ">
                     <% @panel_view.c_board.elements.each do |element| %>
                         <div class="element">
                         <%= element.to_element %>

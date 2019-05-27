@@ -1,5 +1,5 @@
 :root {
-    --main-light-color: #EDF5FC;
+    --main-light-color: #B5B8BD;
     --main-dark-color: #3F4A58;
     --main-dark-color-op: rgb(63,73,88, 0.6);;
     --dashboard-bg: #F3F5F7;
@@ -11,6 +11,7 @@
     --board-border: #EDF5FC;
     --light-text: #A8B2B8;
     --sub-dark-color: #0EA0CC;
+    --sub-light-color: #EDF5FC;
 }
 
 body{
@@ -78,10 +79,10 @@ body{
     margin-right: 5%;
 }
 .bars .bar .line .progress{
-    background-color: #E8F4F9;
+    background-color: var(--main-light-color);
 }
 .bars .bar .line .progress-bar{
-    background-color: #0EA0CC;
+    background-color: var(--main-dark-color);
 }
 .bars .bar .number{
     flex: 1;

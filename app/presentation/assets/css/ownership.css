@@ -30,6 +30,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    border: solid 2pt var(--board-border);
 }
 
 .ownership .panel .element{
@@ -47,8 +48,14 @@
     flex-direction: column;
 }
 
+.ownership .panel .top .board{
+    margin-right: 1vw;
+    margin-bottom: 1vw;
+}
+
 .ownership .panel .top .left .titles{
     flex: 1;
+    padding: 1% 0 0 4%;
     display: flex;
 }
 
@@ -61,23 +68,28 @@
 
 .ownership .panel .top .left .elements{
     display: flex;
+    padding: 0 5% 0 5%;
 }
 
 .ownership .panel .top .right .titles{
     flex: 1;
     display: flex;
+    padding: 1% 0 0 2%;
 }
 
 .ownership .panel .top .right .tools{
     flex: 1;
     display: flex;
+    padding: 0 2% 0 0;
 }
 
 .ownership .panel .top .right .tools button{
     margin-left: auto;
+    max-height: 30pt;
 }
 
 .ownership .panel .top .right .elements{
+    padding: 0 1.5% 0 1.5%;
     flex: 10;
     display: flex;
 }
@@ -94,6 +106,7 @@
 
 .ownership .panel .bottom .titles{
     flex: 1.2;
+    padding: 1% 0 0 1%;
     display: flex;
 }
 
@@ -102,7 +115,21 @@
     display: flex;
 }
 
+.ownership .panel .bottom .tools .selector{
+    margin-left: auto;
+    padding: 0 2% 0 0;
+    max-width: 120pt;
+}
+
+
+.ownership .panel .bottom .tools .selector select{
+    font-size: 14pt;
+    max-height: 30pt;
+    max-width: 120pt;
+}
+
 .ownership .panel .bottom .elements{
     flex: 10;
     display: flex;
+    padding: 0 1.5% 0 1.5%;
 }

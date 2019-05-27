@@ -9,6 +9,9 @@
             <div class="left ">
                 <div class="a-board board">
                     <div class="titles ">
+                        <span class="title">
+                            <%= @panel_view.a_board.title %>
+                        </span>
                     </div>
                     <div class="elements ">
                     <% @panel_view.a_board.elements.each do |element| %>
@@ -21,6 +24,9 @@
             <div class="right ">
                 <div class="b-board board">
                     <div class="titles">
+                        <span class="title">
+                            <%= @panel_view.b_board.title %>
+                        </span>
                     </div>
                     <div class="elements ">
                     <% @panel_view.b_board.elements.each do |element| %>
@@ -36,10 +42,13 @@
             <div class="left ">
                 <div class="c-board board">
                     <div class="titles ">
+                        <div class="title">
+                            <%= @panel_view.c_board.title %>
+                        </div>
                     </div>
                     <div class="tools">
                     <div class="selector">
-                        <div class="label">test</div>
+                        <div class="label">Issue Type</div>
                         <select class="custom-select custom-select-lg mb-3" id="issue">
                         <option value="complexity">Files with Complexity Method</option>
                         <option value="offenses">Code Style Offenses</option>
@@ -48,7 +57,7 @@
                         </select>
                     </div>
                     <div class="selector">
-                        <div class="label">test</div>
+                        <div class="label">Contributor</div>
                         <select class="custom-select custom-select-lg mb-3" id="email_id">
                         <option value="total">Total</option>
                         <% @panel_view.contributors.each do |c| %>
@@ -70,6 +79,9 @@
             <div class="right ">
                 <div class="d-board board">
                     <div class="titles ">
+                        <span class="title">
+                            <%= @panel_view.d_board.title %>
+                        </span>
                     </div>
                     <div class="elements ">
                     <% @panel_view.d_board.elements.each do |element| %>

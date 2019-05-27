@@ -50,11 +50,11 @@ module Views
     def quality_issues
       lines = [{ name: 'Category', number: 'Total' }]
       tech_debt = folder_filter.tech_debt.map(&:count)
-      max = tech_debt.sum
-      lines.push(line_hash('Complexity Methods', tech_debt[0], max))
-      lines.push(line_hash('Code Style Offenses', tech_debt[1], max))
-      lines.push(line_hash('Unannotated Files', tech_debt[2], max))
-      lines.push(line_hash('Low Test Coverage Files', tech_debt[3], max))
+      # max = tech_debt.sum
+      lines.push(line_hash('Complexity Methods', tech_debt[0], nil))
+      lines.push(line_hash('Code Style Offenses', tech_debt[1], nil))
+      lines.push(line_hash('Unannotated Files', tech_debt[2], nil))
+      lines.push(line_hash('Low Test Coverage Files', tech_debt[3], nil))
       Bars.new(lines)
     end
 
@@ -79,7 +79,8 @@ module Views
     end
 
     def line_hash(name, number, max)
-      { name: name, line: { width: Math.percentage(number, max), max: max }, number: number }
+      line = { width: Math.percentage(number, max), max: max } if max
+      { name: name, line: line, number: number }
     end
 
     def ownership_chart
@@ -97,7 +98,7 @@ module Views
         deletions: all_commits.map(&:total_deletion_credits)
       }
       options = { title: 'productivity progress', scales: true, legend: true,
-                  x_type: 'time', time_unit: unit.to_s }
+                  x_type: 'time', time_unit: unit.to_s, color: 'colorful' }
       Chart.new(labels, dataset, options, 'line', 'all_commits')
     end
 

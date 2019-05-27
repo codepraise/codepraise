@@ -5,7 +5,7 @@
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  background-color: var(--main-light-color);
+  background-color: var(--sub-light-color);
 }
 
 #root .bg div{

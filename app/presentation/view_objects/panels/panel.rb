@@ -52,6 +52,14 @@ module Views
       (complexities.sum / complexities.count).round
     end
 
+    def project_coverage
+      if has_test_coverage
+        (folder.test_coverage * 100).round
+      else
+        folder.test_coverage
+      end
+    end
+
     def has_test_coverage
       !folder.test_coverage.is_a?(String)
     end

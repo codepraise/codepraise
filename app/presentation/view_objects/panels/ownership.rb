@@ -13,21 +13,19 @@ module Views
     end
 
     def a_board
-      title = ''
+      title = 'Collective Score'
       elements = collective_ownership
       Board.new(title, nil, nil, elements)
     end
 
     def b_board
       title = 'Code Ownership'
-      subtitle = 'This chart shows the team member is mainly responsible for which ' \
-                 'part of the project.'
       elements = [project_ownership_chart]
-      Board.new(title, subtitle, nil, elements)
+      Board.new(title, nil, nil, elements)
     end
 
     def c_board
-      title = "#{contributors.first.email_id}'s Ownership Distribution'"
+      title = "Ownership Distribution"
       elements = [ownership_distribution]
       Board.new(title, nil, nil, elements)
     end

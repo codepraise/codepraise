@@ -77,6 +77,8 @@
 
 .quality .panel .a-board .titles{
     flex: 1;
+    padding: 3% 0 0 3%;
+    text-align: center;
     display: flex;
 }
 
@@ -104,6 +106,7 @@
 .quality .panel .b-board .titles{
     flex: 1;
     display: flex;
+    padding: 1% 0 0 2%;
 }
 
 .quality .panel .b-board .elements{
@@ -120,25 +123,36 @@
     padding: 0% 3% 0% 3%;
 }
 
+.quality .panel .c-board{
+    padding: 0 2% 0 2%;
+}
+
+
 .quality .panel .c-board .titles{
     flex: 1;
     display: flex;
+    padding: 1% 0 0 0;
 }
 
 .quality .panel .c-board .tools{
     flex: 1;
     display: flex;
+    padding: 0 2% 0 60%;
 }
 
 .quality .panel .c-board .tools .selector{
     flex: 1;
     display: flex;
     flex-direction: column;
+    max-width: fit-content;
+    margin-right: 3%;
 }
 
 .quality .panel .c-board .tools .selector select{
-    height: 30pt;
+    max-height: 30pt;
     font-size: 10pt;
+    max-width: 190pt;
+    margin-top: 2%;
 }
 
 .quality .panel .c-board .elements{
@@ -149,9 +163,11 @@
 .quality .panel .d-board .titles{
     flex: 1;
     display: flex;
+    padding: 2% 0 0 2%;
 }
 
 .quality .panel .d-board .elements{
     flex: 9;
     display: flex;
+    padding: 2%;
 }

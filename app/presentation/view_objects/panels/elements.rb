@@ -52,6 +52,8 @@ module Views
       end
 
       def line_element(line)
+        return '' unless line
+
         "<div class='bar'>" \
           "<div class='name'>#{line[:name]}</div>" \
           "<div class='line'>#{progress_bar(line[:line])}</div>" \

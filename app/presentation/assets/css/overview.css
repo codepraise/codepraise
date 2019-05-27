@@ -103,24 +103,41 @@
     border: solid 2pt var(--board-border);
     display: flex;
     flex-direction: column;
-    padding: 0% 0.75% 0% 0.75%;
+    padding: 1% 0.75% 0% 0.75%;
 }
 
 .overview .panel .bottom .board .titles{
     flex: 1;
+    text-align: center;
 }
 
 .overview .panel .bottom .board .tools{
     flex: 1;
     display: flex;
+    padding: 0 3% 0 3%;
+    align-items: flex-end;
+    justify-items: flex-end;
+    margin-bottom: 1%;
 }
 
 .overview .panel .bottom .board .tools .double-slider{
-    flex: 3;
+    flex: 8;
 }
 
 .overview .panel .bottom .board .tools .selector{
     flex: 1;
+    margin-left: 5%;
+    display: flex;
+    align-items: baseline;
+    white-space:nowrap;
+    justify-items: baseline;
+}
+
+.overview .panel .bottom .board .tools .selector select{
+    margin-left: 10%;
+    max-height: 40pt;
+    font-size: 12pt;
+    max-width: 80pt;
 }
 
 .overview .panel .bottom .board .elements{

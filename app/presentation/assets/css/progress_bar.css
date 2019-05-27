@@ -1,0 +1,35 @@
+#appraisal .progress-bg{
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    background-color: var(--main-light-color);
+}
+
+#appraisal .progress-bg .logo{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 3%;
+    color: var(--main-dark-color)
+}
+
+#appraisal .progress-bg .logo .msg{
+    margin-top: 5%;
+    margin-left: 10%;
+}
+
+#appraisal .progress-bg .progress-section{
+    flex: 1;
+    display: flex;
+    width: 50vw;
+}
+
+#appraisal .progress-bg .progress-section .progress{
+    flex: 1;
+    background-color: white;
+}

@@ -39,12 +39,13 @@ module Views
     end
 
     def c_board
+      title = 'Issue Distribution'
       elements = [debt_chart('complexity')]
-      Board.new(nil, nil, nil, elements)
+      Board.new(title, nil, nil, elements)
     end
 
     def d_board
-      title = ''
+      title = 'File Churn'
       elements = [file_churn]
       Board.new(title, nil, nil, elements)
     end
@@ -158,7 +159,8 @@ module Views
         methods = folder_filter.all_methods(contributor.email_id)
         credit = category == 'complexity' ? avg_complexity(methods) : avg_simplicity(methods)
         result[contributor.email_id] = [{
-          y: credit, x: methods.count, r: 10
+          y: credit, x: methods.count,
+          r: (Math.percentage(credit, methods.count).abs + 10) / 2
         }]
       end
       options = { title: category.to_s, scales: true, x_type: 'linear', legend: true,
@@ -171,11 +173,13 @@ module Views
         offenses = folder_filter.total_offenses(contributor.email_id).count * -1
         line_count = productivity_credit['line_credits'][contributor.email_id]
         result[contributor.email_id] = [{
-          y: offenses, x: line_count, r: (Math.percentage(offenses, line_count).abs + 10) / 2
+          y: offenses, x: line_count,
+          r: (Math.percentage(offenses, line_count).abs + 10) / 2
         }]
       end
       options = { title: 'code style offenses', scales: true, x_type: 'linear',
-                  legend: true }
+                  legend: true, axes_label: true, x_label: 'line_count',
+                  y_label: 'offense_count' }
       Chart.new(nil, dataset, options, 'bubble', 'offenses_chart')
     end
 
@@ -184,10 +188,12 @@ module Views
         documentation = quality_credit['documentation_credits'][contributor.email_id].to_i
         methods = folder_filter.all_methods(contributor.email_id)
         result[contributor.email_id] = [{
-          y: documentation, x: methods.count, r: 10
+          y: documentation, x: methods.count,
+          r: (Math.percentage(documentation, methods.count).abs + 10) / 2
         }]
       end
-      options = { title: 'documentation', scales: true, x_type: 'linear', legend: true }
+      options = { title: 'documentation', scales: true, x_type: 'linear', legend: true,
+                  axes_label: true, x_label: 'method_count', y_label: 'documentation_count' }
       Chart.new(nil, dataset, options, 'bubble', 'documentation_chart')
     end
 
@@ -196,10 +202,12 @@ module Views
         test = quality_credit['test_credits'][contributor.email_id].to_i
         line_count = productivity_credit['line_credits'][contributor.email_id]
         result[contributor.email_id] = [{
-          y: test, x: line_count, r: 10
+          y: test, x: line_count,
+          r: (Math.percentage(test, line_count).abs + 10) / 2
         }]
       end
-      options = { title: 'test code', scales: true, x_type: 'linear', legend: true }
+      options = { title: 'test code', scales: true, x_type: 'linear', legend: true,
+                  axes_label: true, x_label: 'line_count', y_label: 'test_code' }
       Chart.new(nil, dataset, options, 'bubble', 'test_chart')
     end
 

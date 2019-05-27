@@ -19,8 +19,7 @@ module CodePraise
     plugin :assets, path: 'app/presentation/assets',
                     css: ['styles.css', 'dashboard.css', 'home.css',
                           'quality.css', 'productivity.css', 'overview.css', 'ownership.css',
-                          'functionality.css', 'files.css',
-                          'individual_contribution.css', 'project.css', 'appraisal.css'],
+                          'functionality.css', 'files.css', 'progress_bar.css'],
                     js: ['share.js', 'options.js', 'chart.js', 'dashboard.js',
                          'home.js', 'main.js']
 

@@ -115,7 +115,7 @@ module CodePraise
       def complexity_methods(email_id = nil)
         all_methods.select do |method|
           method.complexity > 18 &&
-            (email_id ? method.line_percentage[email_id].to_i > threshold : true)
+            (email_id ? method.line_percentage[email_id].to_i >= threshold : true)
         end
       end
 

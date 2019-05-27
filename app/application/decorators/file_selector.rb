@@ -20,7 +20,7 @@ module CodePraise
           return files unless email_id
 
           files.select do |file|
-            file.line_percentage[email_id].to_i > threshold
+            file.line_percentage[email_id].to_i >= threshold
           end
         end
 
