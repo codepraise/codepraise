@@ -28,6 +28,7 @@
 .functionality .panel .board{
     flex: 1;
     display: flex;
+    border: solid 2pt var(--board-border);
     flex-direction: column;
 }
 
@@ -42,18 +43,29 @@
     display: flex;
 }
 
+.functionality .panel .top .board{
+    margin-bottom: 1.5vw;
+}
+
 .functionality .panel .top .left{
     flex: 1.5;
     display: flex;
 }
 
+.functionality .panel .top .left .a-board{
+    margin-right: 2%;
+}
+
 .functionality .panel .top .left .titles{
     flex: 1;
+    text-align: center;
+    padding: 1% 0 0 0;
 }
 
 .functionality .panel .top .left .elements{
     flex: 9;
     display: flex;
+    padding: 0 2% 0 2%;
 }
 
 .functionality .panel .top .right{
@@ -61,12 +73,19 @@
     display: flex;
 }
 
+.functionality .panel .top .right .b-board{
+    margin-right: 1vw;
+}
+
 .functionality .panel .top .right .titles{
     flex: 1;
+    text-align: center;
+    padding: 1% 0 0 0;
 }
 
 .functionality .panel .top .right .elements{
     flex: 9;
+    padding: 0 2% 0 2%;
     display: flex;
 }
 
@@ -75,13 +94,20 @@
     display: flex;
 }
 
+.functionality .panel .bottom .c-board{
+    margin-right: 1vw;
+}
+
 .functionality .panel .bottom .titles{
     flex: 1.2;
+    text-align: center;
+    padding: 1% 0 0 0;
 }
 
 .functionality .panel .bottom .elements{
     flex: 9;
     display: flex;
+    padding: 0 1% 0 1%;
 }
 
 .my-custom-scrollbar {

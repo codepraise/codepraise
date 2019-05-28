@@ -42,7 +42,7 @@ body{
     color: var(--main-dark-color);
 }
 
-.sub-title{
+.subtitle{
     font-size: 11pt;
     margin-left: 1%;
     color: var(--main-dark-color-op);

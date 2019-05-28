@@ -21,8 +21,12 @@
             <div class="bottom ">
                 <div class="top">
                     <div class="b-board board">
-                        <div class="titles test"></div>
-                        <div class="elements test">
+                        <div class="titles ">
+                            <div class="title">
+                            <%= @panel_view.b_board.title %>
+                            </div>
+                        </div>
+                        <div class="elements ">
                         <% @panel_view.b_board.elements.each do |element| %>
                             <div class="element">
                             <%= element.to_element %>
@@ -33,9 +37,13 @@
                 </div>
                 <div class="bottom ">
                     <div class="c-board board">
-                        <div class="titles test"></div>
-                        <div class="elements test">
-                                                <% @panel_view.c_board.elements.each do |element| %>
+                        <div class="titles ">
+                            <div class="title">
+                            <%= @panel_view.c_board.title %>
+                            </div>
+                        </div>
+                        <div class="elements ">
+                            <% @panel_view.c_board.elements.each do |element| %>
                             <div class="element">
                             <%= element.to_element %>
                             </div>

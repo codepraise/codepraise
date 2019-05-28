@@ -11,20 +11,21 @@ module Views
     end
 
     def a_board
-      title = ''
-      subtitle = ''
+      title = 'Test Cases with Different KeyWords'
+      subtitle = 'click the bar to change other charts.'
       elements = [key_word_chart]
       Board.new(title, subtitle, nil, elements)
     end
 
     def b_board
-      title = ''
+      title = 'Individual Contribution'
+      subtitle = '(test case count)'
       elements = [key_word_contributor_chart]
-      Board.new(title, nil, nil, elements)
+      Board.new(title, subtitle, nil, elements)
     end
 
     def c_board
-      title = ''
+      title = 'Test Case Detail'
       subtitle = ''
       elements = [test_cases_detail_table]
       Board.new(title, subtitle, nil, elements)
@@ -85,7 +86,7 @@ module Views
     def contributors_string(contributors)
       contributors.map do |k, v|
         "#{k}: #{v}"
-      end.join('<br>')
+      end.join('')
     end
 
     def page

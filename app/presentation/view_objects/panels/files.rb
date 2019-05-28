@@ -23,13 +23,13 @@ module Views
     end
 
     def b_board
-      title = ''
+      title = 'Folder/File Ownership Breakdown'
       elements = [break_down]
       Board.new(title, nil, nil, elements)
     end
 
     def c_board
-      title = ''
+      title = 'Folder/File Daily Progress'
       elements = [progress]
       Board.new(title, nil, nil, elements)
     end
@@ -62,7 +62,7 @@ module Views
         addition: commits.map(&:total_addition_credits),
         deletion: commits.map(&:total_deletion_credits)
       }
-      options = {  legend: true }
+      options = { legend: true, color: 'colorful', title: 'folder/file progress' }
       Chart.new(labels, dataset, options, 'line', 'progress')
     end
 
@@ -127,7 +127,7 @@ module Views
     end
 
     def documentation_count
-      credit_share.quality_credit['documentation_credits'].values.sum
+      credit_share.quality_credit['documentation_credits'].values.sum.round
     end
 
     def test_coverage
