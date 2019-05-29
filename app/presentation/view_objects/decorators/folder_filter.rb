@@ -2,7 +2,7 @@
 
 require_relative 'file_selector'
 
-module CodePraise
+module Views
   module Decorator
     # Filter Folders or Files with some condition
     class FolderFilter < SimpleDelegator

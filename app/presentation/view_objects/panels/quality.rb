@@ -14,19 +14,13 @@ module Views
       100..(1.0 / 0.0) => 0,
       0 => 0
     }.freeze
-    # TECH_DEBT = {
-    #   complexity: 'Number of Complexity Methods',
-    #   offenses: 'Number of Code Style Offenses',
-    #   documentation: 'Number of Unannotated Files',
-    #   test: 'Number of Low Test Coverage Files'
-    # }.freeze
     TECH_DEBT = ['Number of Complexity Methods', 'Number of Code Style Offenses',
                  'Number of Unannotated Files',
                  'Number of Low Test Coverage Files'].freeze
 
     def initialize(appraisal)
       super(appraisal)
-      @folder_filter = CodePraise::Decorator::FolderFilter.new(appraisal.folder, contributors)
+      @folder_filter = Decorator::FolderFilter.new(appraisal.folder, contributors)
     end
 
     def a_board

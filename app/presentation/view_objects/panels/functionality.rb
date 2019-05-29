@@ -1,12 +1,15 @@
 # frozen_string_literal: true
 
+require_relative 'panel'
+
+
 module Views
   class Functionality < Panel
     attr_reader :folder_filter, :test_cases
 
     def initialize(appraisal)
       super(appraisal)
-      @folder_filter = CodePraise::Decorator::FolderFilter.new(appraisal.folder, contributors)
+      @folder_filter = Decorator::FolderFilter.new(appraisal.folder, contributors)
       @test_cases = @folder_filter.test_cases
     end
 

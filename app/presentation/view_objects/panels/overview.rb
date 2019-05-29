@@ -1,13 +1,16 @@
 # frozen_string_literal: true
 
+require_relative 'panel'
+
+
 module Views
   class Overview < Panel
     attr_reader :folder_filter, :commits_filter
 
     def initialize(appraisal)
       super(appraisal)
-      @folder_filter = CodePraise::Decorator::FolderFilter.new(folder, contributors)
-      @commits_filter = CodePraise::Decorator::CommitsFilter.new(appraisal.commits)
+      @folder_filter = Decorator::FolderFilter.new(folder, contributors)
+      @commits_filter = Decorator::CommitsFilter.new(appraisal.commits)
     end
 
     def a_board

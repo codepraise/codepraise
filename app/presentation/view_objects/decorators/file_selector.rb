@@ -2,7 +2,7 @@
 
 require 'chainable_methods'
 
-module CodePraise
+module Views
   module Decorator
     # Select Files by using the Chainable Method.
     # This class encapsulate the files object so the selector moduel can

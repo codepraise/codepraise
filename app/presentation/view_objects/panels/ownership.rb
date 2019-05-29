@@ -9,7 +9,7 @@ module Views
     def initialize(appraisal)
       super(appraisal)
       @root_folder = appraisal.folder
-      @folder_filter = CodePraise::Decorator::FolderFilter.new(root_folder, contributors)
+      @folder_filter = Decorator::FolderFilter.new(root_folder, contributors)
     end
 
     def a_board

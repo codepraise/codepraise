@@ -9,8 +9,8 @@ module Views
 
     def initialize(appraisal)
       super(appraisal)
-      @commits_filter = CodePraise::Decorator::CommitsFilter.new(appraisal.commits)
-      @folder_filter = CodePraise::Decorator::FolderFilter.new(appraisal.folder, contributors)
+      @commits_filter = Decorator::CommitsFilter.new(appraisal.commits)
+      @folder_filter = Decorator::FolderFilter.new(appraisal.folder, contributors)
       @method_count = productivity_credit['method_credits']
       @line_count = productivity_credit['line_credits']
     end

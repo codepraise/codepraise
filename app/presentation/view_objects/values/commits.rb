@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module CodePraise
+module Views
   module Value
     # Wrap multiple commits together
     class Commits

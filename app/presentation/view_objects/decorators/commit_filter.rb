@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-module CodePraise
+require_relative '../values/init'
+
+module Views
   module Decorator
     # Filter Commits with Time Range or Time Unit
     class CommitsFilter

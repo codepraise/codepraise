@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
+require_relative 'panel'
+
 module Views
   class Files < Panel
     attr_reader :folder_filter, :root, :state, :credit_share, :commits_filter
 
     def initialize(appraisal, root)
       super(appraisal)
-      @commits_filter = CodePraise::Decorator::CommitsFilter.new(appraisal.commits)
-      @folder_filter = CodePraise::Decorator::FolderFilter.new(appraisal.folder, contributors)
+      @commits_filter = Decorator::CommitsFilter.new(appraisal.commits)
+      @folder_filter = Decorator::FolderFilter.new(appraisal.folder, contributors)
       @root = root.nil? ? @folder_filter.folders[0] : @folder_filter.find_folder(folder, root)
       @state = 'folder'
       if @root.nil?
