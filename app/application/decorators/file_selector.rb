@@ -4,7 +4,11 @@ require 'chainable_methods'
 
 module CodePraise
   module Decorator
-    class FileSelector < SimpleDelegator
+    # Select Files by using the Chainable Method.
+    # This class encapsulate the files object so the selector moduel can
+    # reuse this files object
+    class FileSelector
+      # Declare Chainable Methods
       module Selector
         include ChainableMethods
 
@@ -76,7 +80,8 @@ module CodePraise
           return false if files.empty?
 
           files.each do |file|
-            return false if file.test_coverage && !file.test_coverage.message.nil?
+            test_coverage = file.test_coverage
+            return false if test_coverage && !test_coverage.message.nil?
           end
           true
         end

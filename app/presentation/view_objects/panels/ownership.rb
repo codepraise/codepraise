@@ -13,9 +13,10 @@ module Views
     end
 
     def a_board
-      title = 'Collective Score'
+      title = 'Collective Ownership'
+      subtitle = 'Collective Score is the dispersion level of contribution.'
       elements = collective_ownership
-      Board.new(title, nil, nil, elements)
+      Board.new(title, subtitle, nil, elements)
     end
 
     def b_board
@@ -78,32 +79,6 @@ module Views
       }
     end
 
-    def table
-      thead = ["Contributor", "CollectiveCredit", "OwnedFiles"]
-      Table.new(thead, contributors_credits.values, 'main_table')
-    end
-
-    def contributors_credits
-      @contributors.each_with_object({}) do |contributor, result|
-        result[contributor.email_id] = tbody(contributor.email_id)
-      end
-    end
-
-    def tbody(email_id)
-      ownership_credit = root_folder.credit_share.ownership_credit[email_id]
-      [email_id, ownership_credit, owned_files(email_id)]
-    end
-
-    def owned_files(email_id)
-      folder_filter.files.select do |file|
-        file.line_percentage[email_id].to_i > 33
-      end.count
-    end
-
-    def email_id?(email_id)
-      contributors.map(&:email_id).include?(email_id)
-    end
-
     def project_ownership_chart(foldername=nil)
       if foldername&.include?('basefiles')
         foldername = foldername.sub(/\/basefiles/, '')
@@ -144,17 +119,15 @@ module Views
 
     def individual_ownership(email_id = nil)
       email_id ||= contributors.first.email_id
-      title = "#{email_id}'s Ownership Distribution'"
       dataset = individual_stucture(root_folder, {}, email_id)
       dataset = nil if root_folder.line_percentage[email_id].zero?
-
-      Chart.new(nil, [dataset], { title: "#{email_id}'s Code Ownership'"}, 'treemap', 'treemap')
+      options = { title: "#{email_id} Code Onwership" }
+      Chart.new(nil, [dataset], options, 'treemap', 'treemap')
     end
 
     def ownership_distribution
-      title = ''
       dataset = ownership_structure(folder, {})
-      Chart.new(nil, [dataset], { title: "test"}, 'treemap', 'treemap')
+      Chart.new(nil, [dataset], {}, 'treemap', 'treemap')
     end
 
     def individual_stucture(folder, hash, email_id)

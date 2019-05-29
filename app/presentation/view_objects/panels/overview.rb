@@ -103,15 +103,15 @@ module Views
     end
 
     def days_count
-      commits_filter.all_days.count
+      commits_filter.all_dates.count
     end
 
     def first_date
-      commits_filter.all_days.first
+      commits_filter.all_dates.first
     end
 
     def last_date
-      commits_filter.all_days.last
+      commits_filter.all_dates.last
     end
 
     def page

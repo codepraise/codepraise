@@ -56,7 +56,7 @@
 .ownership .panel .top .left .titles{
     flex: 1;
     padding: 1% 0 0 4%;
-    display: flex;
+    text-align: center;
 }
 
 .ownership .panel .top .left .elements{
@@ -73,7 +73,7 @@
 
 .ownership .panel .top .right .titles{
     flex: 1;
-    display: flex;
+    text-align: center;
     padding: 1% 0 0 2%;
 }
 
@@ -107,7 +107,7 @@
 .ownership .panel .bottom .titles{
     flex: 1.2;
     padding: 1% 0 0 1%;
-    display: flex;
+    text-align: center;
 }
 
 .ownership .panel .bottom .tools{

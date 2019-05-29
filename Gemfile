@@ -25,6 +25,7 @@ gem 'roar'
 # Networking
 gem 'http', '~> 3.0'
 
+# Pipe operator for method chaining
 gem 'chainable_methods', '~> 0.2.1'
 
 # DEBUGGING

@@ -55,14 +55,15 @@ module Views
       Chart.new(labels, dataset, options, 'bar', 'break_down')
     end
 
-    def progress(unit = nil, between = nil)
+    def progress
       commits = commits_filter.by_path(name)
       labels = commits.map(&:date)
       dataset = {
         addition: commits.map(&:total_addition_credits),
         deletion: commits.map(&:total_deletion_credits)
       }
-      options = { legend: true, color: 'colorful', title: 'folder/file progress' }
+      options = { legend: true, color: 'colorful', title: 'folder/file progress',
+                  x_type: 'time', time_unit: 'day' }
       Chart.new(labels, dataset, options, 'line', 'progress')
     end
 
@@ -100,7 +101,7 @@ module Views
       infos = contributors.map do |c|
         {
           name: c.email_id,
-          number: root.line_percentage[c.email_id].to_i
+          number: "#{root.line_percentage[c.email_id].to_i}%"
         }
       end
       SmallTable.new('Ownership', infos)

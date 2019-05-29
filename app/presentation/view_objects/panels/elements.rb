@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Views
+  # HTML Elements
   module Elements
     Chart = Struct.new(:labels, :dataset, :options, :type, :id, :title, :subtitle) do
       def to_element
@@ -40,10 +41,12 @@ module Views
         "<div class='bars element'>" \
           "#{no_first ? '' : first_line(lines[0])}" \
           "#{lines[1..-1].map { |line| line_element(line) }.join('')}" \
-        "</div>"
+        '</div>'
       end
 
       def first_line(line)
+        return '' if line.empty?
+
         "<div class='bar first'>" \
           "<div class='name'>#{line[:name]}</div>" \
           "<div class='line'>#{progress_bar(line[:line])}</div>" \

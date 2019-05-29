@@ -14,12 +14,15 @@ module Views
       100..(1.0 / 0.0) => 0,
       0 => 0
     }.freeze
-    TECH_DEBT = {
-      complexity: 'Number of Complexity Methods',
-      offenses: 'Number of Code Style Offenses',
-      documentation: 'Number of Unannotated Files',
-      test: 'Number of Low Test Coverage Files'
-    }.freeze
+    # TECH_DEBT = {
+    #   complexity: 'Number of Complexity Methods',
+    #   offenses: 'Number of Code Style Offenses',
+    #   documentation: 'Number of Unannotated Files',
+    #   test: 'Number of Low Test Coverage Files'
+    # }.freeze
+    TECH_DEBT = ['Number of Complexity Methods', 'Number of Code Style Offenses',
+                 'Number of Unannotated Files',
+                 'Number of Low Test Coverage Files'].freeze
 
     def initialize(appraisal)
       super(appraisal)
@@ -28,25 +31,25 @@ module Views
 
     def a_board
       title = 'Quality Issues'
-      elements = individual_issues
+      elements = quality_problems
       Board.new(title, nil, nil, elements)
     end
 
     def b_board
+      title = 'File Churn'
+      elements = [file_churn]
+      Board.new(title, nil, nil, elements)
+    end
+
+    def c_board
       title = 'Code Quality'
       elements = individual_quality
       Board.new(title, nil, nil, elements)
     end
 
-    def c_board
-      title = 'Issue Distribution'
-      elements = [debt_chart('complexity')]
-      Board.new(title, nil, nil, elements)
-    end
-
     def d_board
-      title = 'File Churn'
-      elements = [file_churn]
+      title = 'Issue Distribution'
+      elements = [test]
       Board.new(title, nil, nil, elements)
     end
 
@@ -57,23 +60,24 @@ module Views
       [debt_chart(criteria, email_id)]
     end
 
-    def individual_issues
-      total_issues = contributors.each_with_object({}) do |contributor, result|
-        email_id = contributor.email_id
-        result[email_id] = folder_filter.tech_debt(email_id).map(&:count)
-      end
-      issues = folder_filter.tech_debt.map(&:count)
-      TECH_DEBT.values.each_with_index.map do |category, i|
-        lines = [{ name: 'Contributor', number: 'Total' }]
-        lines += total_issues.map do |k, v|
-          {
-            name: k,
-            line: { width: Math.percentage(v[i], issues[i]), max: issues[i] },
-            number: v[i]
-          }
+    def quality_problems
+      total_tech_debts = folder_filter.tech_debt.map(&:count)
+      contributors.map do |c|
+        tech_debts = folder_filter.tech_debt(c.email_id).map(&:count)
+        lines = [[]]
+        TECH_DEBT.each_with_index do |category, i|
+          lines.push(line_hash(category, tech_debts[i], total_tech_debts[i]))
         end
-        Bars.new(lines, category, true)
+        Bars.new(lines, c.email_id)
       end
+    end
+
+    def line_hash(name, number, max)
+      {
+        name: name,
+        line: { width: Math.percentage(number, max), max: max },
+        number: number
+      }
     end
 
     def individual_quality
@@ -86,10 +90,10 @@ module Views
       case criteria
       when 'complexity'
         title = 'Complexity Method Distribution'
-        dataset = create_dataset(folder_filter.files_with_complexity_method(email_id), :complexity_methods)
+        dataset = create_dataset(folder_filter.files(email_id), :complexity_methods)
       when 'offenses'
         title = 'Offense Distribution'
-        dataset = create_dataset(folder_filter.files_with_offenses(email_id), :offenses_count)
+        dataset = create_dataset(folder_filter.files(email_id), :offenses_count)
       when 'documentation'
         title = 'Unannotated File Distribution'
         dataset = create_dataset(folder_filter.files_without_documentation(email_id), :documentation_count)
@@ -100,9 +104,15 @@ module Views
       Chart.new(nil, dataset, { title: criteria }, 'treemap', 'debt_chart', title)
     end
 
+    def test
+      dataset = {}
+      folder_traversal(folder, dataset)
+      Chart.new(nil, [dataset], {}, 'treemap', 'debt_chart', '')
+    end
+
     def file_churn
       dataset = folder_filter.files.map do |file|
-        { x: file.commits_count, y: file.complexity&.average.to_i,
+        { x: file.commits_count, y: file.complexity&.average.to_i, r: 20,
           title: "#{file.file_path.directory}#{file.file_path.filename}" }
       end
       options = { title: 'File Churn', scales: true, legend: false,
@@ -134,9 +144,12 @@ module Views
     end
 
     def complexity_methods(file)
-      file.to_h[:methods].select do |m|
-        m.complexity > 18
-      end.count
+      return 0 unless file.complexity
+
+      file.complexity.average.round
+      # file.to_h[:methods].select do |m|
+      #   m.complexity > 18
+      # end.count
     end
 
     def offenses_count(file)
@@ -148,10 +161,44 @@ module Views
     end
 
     def test_coverage(file)
-      return file.test_coverage.message unless file.test_coverage.coverage
+      1
+      # return file.test_coverage.message unless file.test_coverage.coverage
 
-      coverage = (file.test_coverage.coverage * 100).round
-      coverage.zero? ? 10 : coverage
+      # coverage = (file.test_coverage.coverage * 100).round
+      # coverage.zero? ? 10 : coverage
+    end
+
+    def folder_traversal(folder, hash)
+      hash['text'] = folder.path
+      hash['children'] = []
+      if folder.any_subfolders?
+        hash['children'] = folder.subfolders.map do |subfolder|
+          folder_traversal(subfolder, {})
+        end
+      end
+      if folder.any_base_files?
+        hash['children'] += file_documentation(folder.base_files)
+      end
+      hash
+    end
+
+    def files_value(files)
+      files.map do |file|
+        {
+          text: file.file_path.filename,
+          value: file.complexity&.average.to_i
+        }
+      end
+    end
+
+    def file_documentation(files)
+      files.map do |file|
+        documentation = file.has_documentation ? 100 : 50
+        {
+          text: file.file_path.filename,
+          value: documentation
+        }
+      end
     end
 
     def quality_chart(category)
@@ -217,7 +264,7 @@ module Views
 
     def avg_complexity(methods)
       all_complexity = methods.map(&:complexity).reject(&:nil?)
-      Math.average(all_complexity)
+      Math.average(all_complexity) * -1
     end
 
     def avg_simplicity(methods)

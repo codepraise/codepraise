@@ -9,9 +9,12 @@
             <div class="left ">
                 <div class="a-board board">
                     <div class="titles ">
-                        <span class="title">
+                        <div class="title">
                             <%= @panel_view.a_board.title %>
-                        </span>
+                        </div>
+                        <div class="subtitle">
+                            <%= @panel_view.a_board.subtitle %>
+                        </div>
                     </div>
                     <div class="elements ">
                         <% @panel_view.a_board.elements.each do |element| %>

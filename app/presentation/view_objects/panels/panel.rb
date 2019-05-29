@@ -64,6 +64,18 @@ module Views
       !folder.test_coverage.is_a?(String)
     end
 
+        def days_count
+      commits_filter.all_dates.count
+    end
+
+    def first_date
+      commits_filter.all_dates.first
+    end
+
+    def last_date
+      commits_filter.all_dates.last
+    end
+
     private
 
     def file_full_name(file)

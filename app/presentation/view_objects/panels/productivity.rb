@@ -3,13 +3,16 @@
 require_relative 'panel'
 
 module Views
+  # View Object for rendering chart html element for Productivity
   class Productivity < Panel
-    attr_reader :commits_filter, :productivity_credit, :contributors
+    attr_reader :commits_filter, :folder_filter, :method_count, :line_count
 
     def initialize(appraisal)
       super(appraisal)
       @commits_filter = CodePraise::Decorator::CommitsFilter.new(appraisal.commits)
-      @productivity_credit = appraisal.folder.credit_share.productivity_credit
+      @folder_filter = CodePraise::Decorator::FolderFilter.new(appraisal.folder, contributors)
+      @method_count = productivity_credit['method_credits']
+      @line_count = productivity_credit['line_credits']
     end
 
     def a_board
@@ -21,13 +24,13 @@ module Views
     end
 
     def b_board
-      title = 'Summative Assessment'
-      elements = [summative_asessment]
+      title = 'Summative Assessment from Blame'
+      elements = summative_asessment
       Board.new(title, nil, nil, elements)
     end
 
     def c_board
-      title = 'Individual Code Churn'
+      title = 'Individual Code Churn on Commits'
       elements = [code_churn]
       Board.new(title, nil, nil, elements)
     end
@@ -43,7 +46,7 @@ module Views
 
     def productivity_progress(unit, between, email_id)
       commtis = commits_filter.by(unit, between, email_id)
-      labels = commtis.map(&:date).map { |date| date }
+      labels = commtis.map(&:date)
       dataset = {
         addition: commtis.map(&:total_addition_credits),
         deletion: commtis.map(&:total_deletion_credits)
@@ -60,11 +63,26 @@ module Views
     end
 
     def summative_asessment
-      thead = ['Contributor', 'MethodCount', 'LineCount', 'CommitCount']
-      body = contributors.map do |contributor|
-        tbody(contributor.email_id)
+      contributors.map do |c|
+        lines = [[]]
+        lines.push(line_hash('MethodToched', method_count[c.email_id].to_i.round,
+                             method_count.values.sum.round))
+        lines.push(line_hash('LineCount', line_count[c.email_id].to_i.round,
+                             line_count.values.sum.round))
+        lines.push(line_hash('CommitCount',
+                             commits_filter.by_email_id(c.email_id).count,
+                             commits.count))
+        Bars.new(lines, c.email_id)
       end
-      Table.new(thead, body, 'summative_assessment')
+    end
+
+    def line_hash(name, number, max)
+      percentage = Math.percentage(number, max)
+      {
+        name: name,
+        line: { width: percentage, max: max},
+        number: "#{number} (#{percentage}%)"
+      }
     end
 
     def code_churn
@@ -75,20 +93,8 @@ module Views
         dataset[:addition] << credits[0]
         dataset[:deletion] << credits[1]
       end
-      options = { title: 'Individual Code Churn', scales: true, legend: true }
+      options = { title: 'Code Churn on Commits', scales: true, legend: true }
       Chart.new(labels, dataset, options, 'bar', 'individual_code_churn')
-    end
-
-    def tbody(email_id)
-      method_count = @productivity_credit['method_credits'][email_id].to_i.round
-      total_method = @productivity_credit['method_credits'].values.sum
-      line_count = @productivity_credit['line_credits'][email_id].to_i.round
-      total_line = @productivity_credit['line_credits'].values.sum
-      user_commits = commits_filter.by_email_id(email_id)
-      total_commits = commits.count
-      [email_id, "#{method_count} (#{Math.percentage(method_count, total_method)}%)",
-       "#{line_count} (#{Math.percentage(line_count, total_line)}%)",
-       "#{user_commits.count} (#{Math.percentage(user_commits.count, total_commits)}%)",]
     end
 
     def total_credits(commits)
@@ -101,20 +107,20 @@ module Views
       [additions, deletions]
     end
 
-    def page
-      'productivity'
-    end
-
     def days_count
-      commits_filter.all_days.count
+      commits_filter.all_dates.count
     end
 
     def first_date
-      commits_filter.all_days.first
+      commits_filter.all_dates.first
     end
 
     def last_date
-      commits_filter.all_days.last
+      commits_filter.all_dates.last
+    end
+
+    def page
+      'productivity'
     end
   end
 end

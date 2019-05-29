@@ -4,6 +4,7 @@ require_relative 'file_selector'
 
 module CodePraise
   module Decorator
+    # Filter Folders or Files with some condition
     class FolderFilter < SimpleDelegator
       attr_reader :threshold
 
@@ -17,17 +18,26 @@ module CodePraise
         root_folder ||= self
 
         folders = folders_traversal(root_folder)
+          .reject { |f| f.path == '' }
 
-        folders.reject { |f| f.path == '' }
+        return folders unless email_id
+
+        folders.select do |folder|
+          folder.line_percentage[email_id].to_i >= threshold
+        end
       end
 
       def owned_folders(percentage, email_id, root_folder = nil)
         folders(nil, root_folder).select do |folder|
-          folder.line_percentage[email_id].to_i >= percentage
+          folder.line_percentage[email_id].to_i >= percentage && !empty_folder?(folder)
         end
       end
 
-      # Select files with some conditions
+      def empty_folder?(folder)
+        folder.any_subfolders? && !folder.any_base_files?
+      end
+
+      # Get All files
       def files(email_id = nil, root_folder = nil)
         root_folder ||= self
 

@@ -113,7 +113,7 @@ Date.prototype.removeDays = function(days) {
 }
 
 Date.prototype.getDateString = function(){
-  date = this.getUTCDate();
+  date = this.getDate();
   month = this.getMonth() + 1;
   year = this.getUTCFullYear();
   return `${year}/${month}/${date}`

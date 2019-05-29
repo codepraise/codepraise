@@ -13,7 +13,7 @@ module Views
     def a_board
       title = 'Test Cases with Different KeyWords'
       subtitle = 'click the bar to change other charts.'
-      elements = [key_word_chart]
+      elements = [keywords_chart]
       Board.new(title, subtitle, nil, elements)
     end
 
@@ -37,12 +37,12 @@ module Views
        test_cases_detail_table(keyword)]
     end
 
-    def key_word_chart
+    def keywords_chart
       labels = key_words
       dataset = labels.map do |label|
         test_cases_with(label).count
       end
-      options = { title: 'KeyWord Test Cases', scales: true, update: 'label'}
+      options = { title: 'KeyWord Test Cases', scales: true }
       Chart.new(labels, dataset,
                 options, 'bar', 'keywords')
     end

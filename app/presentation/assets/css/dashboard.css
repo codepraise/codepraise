@@ -58,6 +58,12 @@
     color: var(--light-text);
 }
 
+.dashboard .body .side-bar .separate{
+    width: 70%;
+    margin: 15% 10% -10% 10%;
+    border: solid 1px rgb(207, 203, 203);
+}
+
 .dashboard .body .side-bar .selected{
     color: var(--main-dark-color);
     font-size: bold;
@@ -72,5 +78,6 @@
     flex: 14;
     display: flex;
 }
+
 
 

@@ -12,7 +12,15 @@
     align-items: center;
     padding: 0% 1% 0% 1%;
     border-bottom: solid 1pt var(--light-text);
+}
 
+.quality .title-bar .tools{
+    flex: 1;
+}
+
+.quality .title-bar .tools button{
+    float: right;
+    margin-right: 1%;
 }
 
 .quality .title-bar .title{
@@ -26,36 +34,6 @@
     flex-direction: column;
 }
 
-.quality .panel .top{
-    flex: 1.35;
-    display: flex;
-}
-
-.quality .panel .top .left{
-    flex: 2;
-    display: flex;
-}
-
-.quality .panel .top .right{
-    flex: 5;
-    display: flex;
-}
-
-.quality .panel .bottom{
-    flex: 1;
-    display: flex;
-}
-
-.quality .panel .bottom .left{
-    flex: 1.2;
-    display: flex;
-}
-
-.quality .panel .bottom .right{
-    flex: 1;
-    display: flex;
-}
-
 .quality .panel .board{
     flex: 1;
     display: flex;
@@ -63,111 +41,139 @@
     border: solid 2pt var(--board-border);
 }
 
+.quality .panel .board .elements .element{
+    flex: 1;
+}
+
+.quality .panel .top{
+    display: flex;
+    flex: 1;
+}
+
 .quality .panel .top .board{
-    margin-bottom: 2.5vh;
+    margin-bottom: 1.5vw;
+    margin-right: 1vw;
 }
 
-.quality .panel .left .board{
-    margin-right: 2.5vh;
-}
-
-.quality .panel .right .board{
-    margin-right: 2vh;
-}
-
-.quality .panel .a-board .titles{
+.quality .panel .top .right{
     flex: 1;
-    padding: 3% 0 0 3%;
+    display: flex;
+}
+
+.quality .panel .top .right .a-board .titles{
+    flex: 1;
     text-align: center;
-    display: flex;
-}
-
-.quality .panel .a-board .tools{
-    flex: 0.8;
-    display: flex;
-}
-
-.quality .panel .a-board .elements{
-    flex: 9;
-    display: flex;
-    padding: 5%;
-    flex-direction: column;
-}
-
-.quality .panel .a-board .elements .element .issue{
-    font-size: 14pt;
-    font-weight: bold;
-}
-
-.quality .panel .a-board .elements .element .critcial{
-    margin-left: 5%;
-}
-
-.quality .panel .b-board .titles{
-    flex: 1;
-    display: flex;
-    padding: 1% 0 0 2%;
-}
-
-.quality .panel .b-board .elements{
-    flex: 9.5;
-    display: flex;
-    flex-wrap: nowrap;
-    padding: 1%;
-}
-
-.quality .panel .b-board .elements .element{
-    flex: 1;
-    /* max-height: 40%;
-    min-width: 50%; */
-    padding: 0% 3% 0% 3%;
-}
-
-.quality .panel .c-board{
-    padding: 0 2% 0 2%;
-}
-
-
-.quality .panel .c-board .titles{
-    flex: 1;
-    display: flex;
     padding: 1% 0 0 0;
 }
 
-.quality .panel .c-board .tools{
-    flex: 1;
+.quality .panel .top .right .a-board .elements{
+    margin-top: 3%;
+    flex: 10;
     display: flex;
-    padding: 0 2% 0 60%;
+    flex-wrap: wrap;
+    padding: 0 2% 0 2%;
 }
 
-.quality .panel .c-board .tools .selector{
+.quality .panel .top .right .a-board .element{
+    min-width: 50%;
+}
+
+.quality .panel .top .right .a-board .element .bar .name{
+    flex: 6;
+}
+
+.quality .panel .top .right .a-board .element .bar .line{
+    flex: 3;
+}
+
+.quality .panel .top .left{
+    flex: 1;
+    display: flex;
+}
+
+.quality .panel .top .left .b-board .titles{
+    flex: 1;
+    text-align: center;
+    padding: 1% 0 0 0;
+}
+
+.quality .panel .top .left .b-board .elements{
+    flex: 10;
+    display: flex;
+    padding: 0 2% 0 2%;
+}
+
+.quality .panel .bottom{
+    display: flex;
+    flex: 1;
+}
+
+.quality .panel .bottom .board{
+    margin-right: 1vw;
+}
+
+.quality .panel .bottom .c-board .titles{
+    flex: 1;
+    text-align: center;
+    padding: 1% 0 0 0;
+}
+
+.quality .panel .bottom .c-board .elements{
+    flex: 11;
+    display: flex;
+    padding: 0 1% 1% 1%;
+}
+
+.quality .panel .bottom .c-board .element{
+    margin-right: 5%;
+}
+
+.quality .panel_2{
+    margin-top: 1%;
+    flex: 20;
+    display: none;
+    flex-direction: column;
+}
+
+.quality .panel_2 .d-board{
     flex: 1;
     display: flex;
     flex-direction: column;
-    max-width: fit-content;
-    margin-right: 3%;
+    border: solid 2pt var(--board-border);
+    margin: 0 1% 0 1%;
 }
 
-.quality .panel .c-board .tools .selector select{
-    max-height: 30pt;
-    font-size: 10pt;
-    max-width: 190pt;
-    margin-top: 2%;
+.quality .panel_2 .d-board .titles{
+    flex: 0.5;
+    padding: 1% 0 0 0;
+    text-align: center;
 }
 
-.quality .panel .c-board .elements{
-    flex: 9;
-    display: flex;
-}
-
-.quality .panel .d-board .titles{
+.quality .panel_2 .d-board .tools{
     flex: 1;
-    display: flex;
-    padding: 2% 0 0 2%;
 }
 
-.quality .panel .d-board .elements{
-    flex: 9;
+.quality .panel_2 .d-board .tools .selector{
+    flex: 1;
+    float: right;
+    margin-left: auto;
+    height: fit-content;
     display: flex;
-    padding: 2%;
+    max-width: fit-content;
+    flex-direction: column;
+    margin-right: 2%;
+}
+
+.quality .panel_2 .d-board .tools .selector select{
+
+}
+
+.quality .panel_2 .d-board .elements{
+    flex: 13;
+    padding: 0 1% 0 1%;
+    display: flex;
+}
+
+.quality .panel_2 .d-board .element{
+    flex: 1;
 }

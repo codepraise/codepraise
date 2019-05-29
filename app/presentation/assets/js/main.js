@@ -29,9 +29,9 @@ window.onload = function(){
       $( function() {
         $( "#slider-range" ).slider({
           range: true,
-          min: 1,
+          min: 0,
           max: data.days,
-          values: [ 1, data.days ],
+          values: [ 0, data.days ],
           slide: function( event, ui ) {
             first_date = new Date(data.first)
             last_date = new Date(data.last)
@@ -61,7 +61,21 @@ window.onload = function(){
           console.log(`issue=${issue}&email_id=${email_id}`)
           update(charts, `issue=${issue}&email_id=${email_id}`)
         })
-      })
+      });
+
+      panelSwitch = document.querySelector('#switch');
+      panelSwitch.addEventListener('click', function(e){
+        console.log('clicked')
+        const panel_1 = document.querySelector('.panel')
+        const panel_2 = document.querySelector('.panel_2')
+        if (getComputedStyle(panel_1)['display'] == 'flex'){
+          panel_1.setAttribute('style', 'display: none;')
+          panel_2.setAttribute('style', 'display: flex;')
+        }else if(getComputedStyle(panel_2)['display'] == 'flex'){
+          panel_1.setAttribute('style', 'display: flex;')
+          panel_2.setAttribute('style', 'display: none;')
+        }
+      });
     }
 
     if (in_path('ownership')){

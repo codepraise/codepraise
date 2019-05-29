@@ -199,31 +199,4 @@ body{
     margin-bottom: 1%;
 }
 
-.double-slider .label .title{
 
-}
-/* .double-slider input{
-    pointer-events: none;
-    position: absolute;
-    left: 0;
-    top: 15px;
-    width: 100%;
-    outline: none;
-    height: 18px;
-    margin: 0;
-    padding: 0;
-    border-radius: 8px;
-}
-
-.double-slider input::-webkit-slider-thumb{
-    pointer-events: all;
-    position: relative;
-    z-index: 1;
-    outline: 0;
-    -webkit-appearance: none;
-    height: 24px;
-    width: 24px;
-    border-radius: 12px;
-    background-color: white;
-    border: 2px solid black;
-} */
