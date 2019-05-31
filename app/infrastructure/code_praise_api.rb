@@ -23,6 +23,10 @@ module CodePraise
         @request.add_project(owner_name, project_name)
       end
 
+      def update_appraisal(owner_name, project_name)
+        @request.put_appraisal(owner_name, project_name)
+      end
+
       # Gets appraisal of a project folder rom API
       # - req: ProjectRequestPath
       #        with #owner_name, #project_name, #folder_name, #project_fullname
@@ -53,6 +57,11 @@ module CodePraise
         def get_appraisal(req)
           call_api('get', ['projects',
                            req.owner_name, req.project_name, req.folder_name])
+        end
+
+        def put_appraisal(owner_name, project_name)
+          call_api('put', ['projects',
+                           owner_name, project_name])
         end
 
         private

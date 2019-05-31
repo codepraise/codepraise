@@ -8,29 +8,27 @@
         </div>
         <div class="project_name">
             <span>
-                <%= "#{@panel_view.owner_name} / #{@panel_view.project_name}" %>
+                <%= "#{@panel_view.project_owner} / #{@panel_view.project_name}" %>
             </span>
         </div>
         <div class="tools">
             <div class="message">
-                <span class="date">
-                    <%# Created at %>
-                </span>
+                <div class="date">
+                    Updated at <%= @panel_view.updated_at %>
+                </div>
             </div>
             <div class="dropdown">
-                <%# <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown button
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Update</a>
-                    <a class="dropdown-item" href="#">Delete</a>
-                </div> %>
+                    <a class="dropdown-item" id="update">Update</a>
+                </div>
             </div>
         </div>
     </div>
     <div class="body">
         <div class="side-bar ">
-            <a class="category" id='overview_page' href="<%="#{@panel_view.base_url}overview"%>">
+            <a class="category" id='overview_page' href="<%="#{@panel_view.project_url}?category=overview"%>">
                 <div class="icon">
                     <i class="fas fa-tachometer-alt"></i>
                 </div>
@@ -38,7 +36,7 @@
                     Overview
                 </div>
             </a>
-            <a class="category" id='files_page' href="<%="#{@panel_view.base_url}files"%>">
+            <a class="category" id='files_page' href="<%="#{@panel_view.project_url}?category=files"%>">
                 <div class="icon">
                     <i class="fas fa-file-code"></i>
                 </div>
@@ -48,7 +46,7 @@
             </a>
             <div class="separate">
             </div>
-            <a class="category" id='productivity_page' href="<%="#{@panel_view.base_url}productivity"%>">
+            <a class="category" id='productivity_page' href="<%="#{@panel_view.project_url}?category=productivity"%>">
                 <div class="icon">
                     <i class="fas fa-dumbbell"></i>
                 </div>
@@ -56,7 +54,7 @@
                     Productivity
                 </div>
             </a>
-            <a class="category" id='quality_page'  href="<%="#{@panel_view.base_url}quality"%>">
+            <a class="category" id='quality_page'  href="<%="#{@panel_view.project_url}?category=quality"%>">
                 <div class="icon">
                     <i class="fas fa-drafting-compass"></i>
                 </div>
@@ -64,7 +62,7 @@
                     Quality
                 </div>
             </a>
-            <a class="category" id='ownership_page' href="<%="#{@panel_view.base_url}ownership"%>">
+            <a class="category" id='ownership_page' href="<%="#{@panel_view.project_url}?category=ownership"%>">
                 <div class="icon">
                     <i class="fas fa-chart-bar"></i>
                 </div>
@@ -72,7 +70,7 @@
                     Ownership
                 </div>
             </a>
-            <a class="category" id='functionality_page' href="<%="#{@panel_view.base_url}functionality"%>">
+            <a class="category" id='functionality_page' href="<%="#{@panel_view.project_url}?category=functionality"%>">
                 <div class="icon">
                     <i class="fas fa-laptop-code"></i>
                 </div>
@@ -81,7 +79,13 @@
                 </div>
             </a>
         </div>
-        <div class="content main" data-owner="<%= @panel_view.owner_name %>" data-project="<%= @panel_view.project_name %>" data-category="<%=@panel_view.page%>" >
+        <div class="content main" data-owner="<%= @panel_view.project_owner %>" data-project="<%= @panel_view.project_name %>" data-category="<%=@panel_view.page%>" >
+            <div class="alert alert-warning alert-dismissible hidden" role="alert">
+                <span></span>
+                <button type="button" class="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
             <%= partial("shares/#{@panel_view.page}") %>
         </div>
     </div>

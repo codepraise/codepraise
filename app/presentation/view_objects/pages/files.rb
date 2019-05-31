@@ -1,39 +1,40 @@
 # frozen_string_literal: true
 
-require_relative 'panel'
+require_relative 'page'
 
 module Views
-  class Files < Panel
-    attr_reader :folder_filter, :root, :state, :credit_share, :commits_filter
+  class Files < Page
+    attr_reader :root, :state, :credit_share
 
-    def initialize(appraisal, root)
-      super(appraisal)
-      @commits_filter = Decorator::CommitsFilter.new(appraisal.commits)
-      @folder_filter = Decorator::FolderFilter.new(appraisal.folder, contributors)
-      @root = root.nil? ? @folder_filter.folders[0] : @folder_filter.find_folder(folder, root)
+    def initialize(appraisal, updated_at, root = nil)
+      super(appraisal, updated_at)
+      @root = root.nil? ? folder_filter.folders[0] : folder_filter.find_folder(folder, root)
       @state = 'folder'
       if @root.nil?
-        @root = @folder_filter.find_file(root)
+        @root = folder_filter.find_file(root)
         @state = 'file'
       end
-      @credit_share = @root.credit_share
     end
 
     def a_board
       elements = [size_infos, structure_infos, quality_infos, ownership_infos]
-      Board.new(nil, nil, nil, elements)
+      Element::Board.new(nil, nil, elements)
     end
 
     def b_board
       title = 'Folder/File Ownership Breakdown'
       elements = [break_down]
-      Board.new(title, nil, nil, elements)
+      Element::Board.new(title, nil, elements)
     end
 
     def c_board
       title = 'Folder/File Daily Progress'
       elements = [progress]
-      Board.new(title, nil, nil, elements)
+      Element::Board.new(title, nil, elements)
+    end
+
+    def folder_tree
+      Element::FolderTree.new(folder, project_owner, project_name)
     end
 
     def break_down
@@ -54,7 +55,7 @@ module Views
         end
       end
       options = { stacked: true, legend: true, title: 'code ownership' }
-      Chart.new(labels, dataset, options, 'bar', 'break_down')
+      Element::Chart.new(labels, dataset, options, 'bar', 'break_down')
     end
 
     def progress
@@ -66,7 +67,7 @@ module Views
       }
       options = { legend: true, color: 'colorful', title: 'folder/file progress',
                   x_type: 'time', time_unit: 'day' }
-      Chart.new(labels, dataset, options, 'line', 'progress')
+      Element::Chart.new(labels, dataset, options, 'line', 'progress')
     end
 
     def size_infos
@@ -74,7 +75,7 @@ module Views
       infos << { name: 'Line of Code', number: root.total_line_credits }
       infos << { name: 'Number of SubFolders', number: subfolders.count }
       infos << { name: 'Number of Files', number: files.count }
-      SmallTable.new('Size', infos)
+      Element::SmallTable.new('Size', infos)
     end
 
     def structure_infos
@@ -87,7 +88,7 @@ module Views
       end.count
       infos << { name: 'Number of Method', number: methods_count }
       infos << { name: 'Number of Block', number: block_count }
-      SmallTable.new('Structure', infos)
+      Element::SmallTable.new('Structure', infos)
     end
 
     def quality_infos
@@ -96,7 +97,7 @@ module Views
       infos << { name: 'Number of Code Style Offense', number: offense_count }
       infos << { name: 'Number of Documnetation', number: documentation_count }
       infos << { name: 'Test Coverage', number: test_coverage }
-      SmallTable.new('Quality', infos)
+      Element::SmallTable.new('Quality', infos)
     end
 
     def ownership_infos
@@ -106,7 +107,7 @@ module Views
           number: "#{root.line_percentage[c.email_id].to_i}%"
         }
       end
-      SmallTable.new('Ownership', infos)
+      Element::SmallTable.new('Ownership', infos)
     end
 
     def avg_complexity
@@ -130,11 +131,11 @@ module Views
     end
 
     def documentation_count
-      credit_share.quality_credit['documentation_credits'].values.sum.round
+      quality_credit['documentation_credits'].values.sum.round
     end
 
     def test_coverage
-      return '-' unless has_test_coverage
+      return '-' unless test_coverage?
 
       if folder?
         (root.test_coverage * 100).round

@@ -24,8 +24,9 @@ module CodePraise
             App.config, appraisal.response
           )
 
-          @panel_view = PanelHelper.new(appraisal, request)
-            .view_obj
+
+          @panel_view = PageHelper.new(appraisal, request)
+            .create_page
 
           if request.params['type']
             Value::Elements.new(request, @panel_view).to_json
@@ -33,6 +34,11 @@ module CodePraise
             view 'dashboard', locals: { path: @path, processing: @processing,
                                         panel_view: @panel_view }
           end
+        end
+
+        routing.put do
+          result = Service::UpdateAppraisal.call(owner_name, project_name)
+          result.to_json
         end
       end
     end

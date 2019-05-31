@@ -118,3 +118,9 @@ Date.prototype.getDateString = function(){
   year = this.getUTCFullYear();
   return `${year}/${month}/${date}`
 }
+
+window.customFncs = {};
+window.customFncs.formatTooltip = function(p){
+  console.log('test')
+  console.log(p);
+}

@@ -29,3 +29,25 @@ function change_page(){
   });
 }
 
+function update_message(data){
+  message = document.querySelector('.content .alert')
+  message.querySelector('span').textContent = JSON.parse(data)['message']
+  message.classList.remove('hidden');
+
+  button = message.querySelector('button')
+  button.addEventListener('click', function(){
+    message.classList.add('hidden');
+  });
+}
+
+function update_buttob(){
+  updateBtn = document.querySelector('.dropdown #update')
+  updateBtn.addEventListener('click', function(){
+    main = document.querySelector('.main')
+    project_name = main.dataset.project
+    owner_name = main.dataset.owner
+    console.log(`p: ${project_name}, o: ${owner_name}`)
+    ajax_call(`/appraisal/${owner_name}/${project_name}`, 'PUT', null, update_message)
+  })
+}
+

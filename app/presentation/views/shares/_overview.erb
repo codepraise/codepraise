@@ -17,14 +17,14 @@
                         </span>
                     </div>
                     <div class="informations">
-                        <% @panel_view.a_board.informations.each do |info| %>
+                        <% @panel_view.a_board.elements[:critical_info].each do |info| %>
                         <div class="info">
                             <span class='critical'> <%= info[:number] %> </span> <%= info[:unit] %>
                         </div>
                         <% end %>
                     </div>
                     <div class="elements">
-                        <% @panel_view.a_board.elements.each do |element| %>
+                        <% @panel_view.a_board.elements[:elements].each do |element| %>
                             <%= element.to_element %>
                         <% end %>
                     </div>
@@ -52,14 +52,14 @@
                         </span>
                     </div>
                     <div class="informations ">
-                        <% @panel_view.c_board.informations.each do |info| %>
+                        <% @panel_view.c_board.elements[:critical_info].each do |info| %>
                         <div class="info">
                             <span class='critical'> <%= info[:number] %> </span> <%= info[:unit] %>
                         </div>
                         <% end %>
                     </div>
                     <div class="elements ">
-                        <% @panel_view.c_board.elements.each do |element| %>
+                        <% @panel_view.c_board.elements[:elements].each do |element| %>
                             <div class="element">
                             <%= element.to_element %>
                             </div>

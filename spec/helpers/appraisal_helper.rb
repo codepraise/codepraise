@@ -11,8 +11,6 @@ class AppraisalHelper
     result = gateway.appraise(request)
     appraisal = CodePraise::Representer::Appraisal
       .new(OpenStruct.new).from_json(result.payload)
-    appraisal = CodePraise::Representer::ProjectFolderContributions
-      .new(OpenStruct.new).from_json(appraisal.content.to_json)
     new(appraisal)
   end
 

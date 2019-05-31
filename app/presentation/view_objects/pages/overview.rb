@@ -1,50 +1,46 @@
 # frozen_string_literal: true
 
-require_relative 'panel'
-
+require_relative 'page'
 
 module Views
-  class Overview < Panel
-    attr_reader :folder_filter, :commits_filter
-
-    def initialize(appraisal)
-      super(appraisal)
-      @folder_filter = Decorator::FolderFilter.new(folder, contributors)
-      @commits_filter = Decorator::CommitsFilter.new(appraisal.commits)
-    end
-
+  class Overview < Page
     def a_board
       title = 'Quality Summary'
-      elements = [quality_issues]
       tech_debt = folder_filter.tech_debt.map(&:count)
-      informations = [{ number: tech_debt.sum, unit: 'Issues' }]
-      Board.new(title, nil, informations, elements)
+      elements = {
+        elements: [quality_issues],
+        critical_info: [{ number: tech_debt.sum, unit: 'Issues' }]
+      }
+      Element::Board.new(title, nil, elements)
     end
 
     def b_board
       title = 'Functionality Test Cases'
       elements = [keyword_test_cases]
-      Board.new(title, nil, nil, elements)
+      Element::Board.new(title, nil, elements)
     end
 
     def c_board
       title = 'Project Breakdown'
-      elements = [ownership_chart]
       informations = [
         { number: folder_filter.files.count, unit: 'Files'},
         { number: folder_filter.all_methods.count, unit: 'Methods' },
         { number: folder.total_line_credits, unit: 'LoC' }
       ]
-      Board.new(title, nil, informations, elements)
+      elements = {
+        elements: [ownership_chart],
+        critical_info: informations
+      }
+      Element::Board.new(title, nil, elements)
     end
 
     def d_board
       title = 'Project Progress'
       elements = [commits_chart('day')]
-      Board.new(title, nil, nil, elements)
+      Element::Board.new(title, nil, elements)
     end
 
-    def sub_charts(params)
+    def charts_update(params)
       between = params['between'].split('_')
       unit = params['unit'] || 'day'
       [commits_chart(unit, between)]
@@ -53,12 +49,11 @@ module Views
     def quality_issues
       lines = [{ name: 'Category', number: 'Total' }]
       tech_debt = folder_filter.tech_debt.map(&:count)
-      # max = tech_debt.sum
-      lines.push(line_hash('Complexity Methods', tech_debt[0], nil))
-      lines.push(line_hash('Code Style Offenses', tech_debt[1], nil))
-      lines.push(line_hash('Unannotated Files', tech_debt[2], nil))
-      lines.push(line_hash('Low Test Coverage Files', tech_debt[3], nil))
-      Bars.new(lines)
+      lines.push(name: 'Complexity Methods', number: tech_debt[0])
+      lines.push(name: 'Code Style Offenses', number: tech_debt[1])
+      lines.push(name: 'Unannotated Files', number: tech_debt[2])
+      lines.push(name: 'Low TestCoverage Files', number: tech_debt[3])
+      Element::Bar.new(nil, lines)
     end
 
     def keyword_test_cases
@@ -66,9 +61,9 @@ module Views
       max = folder_filter.test_cases.count
       key_words.each do |key_word|
         test_cases = test_cases_with(key_word)
-        lines.push(line_hash(key_word, test_cases.count, max))
+        lines.push(name: key_word, number: test_cases.count, max: max)
       end
-      Bars.new(lines)
+      Element::Bar.new(nil, lines)
     end
 
     def test_cases_with(keyword)
@@ -81,16 +76,11 @@ module Views
       folder_filter.test_cases.map(&:key_words).flatten.uniq
     end
 
-    def line_hash(name, number, max)
-      line = { width: Math.percentage(number, max), max: max } if max
-      { name: name, line: line, number: number }
-    end
-
     def ownership_chart
       labels = folder.line_percentage.keys
       dataset = folder.line_percentage.values
       options = { title: 'Project Ownership', scales: true }
-      Chart.new(labels, dataset, options, 'bar', 'ownership_chart')
+      Element::Chart.new(labels, dataset, options, 'bar', 'ownership_chart')
     end
 
     def commits_chart(unit, between = nil)
@@ -102,19 +92,7 @@ module Views
       }
       options = { title: 'productivity progress', scales: true, legend: true,
                   x_type: 'time', time_unit: unit.to_s, color: 'colorful' }
-      Chart.new(labels, dataset, options, 'line', 'all_commits')
-    end
-
-    def days_count
-      commits_filter.all_dates.count
-    end
-
-    def first_date
-      commits_filter.all_dates.first
-    end
-
-    def last_date
-      commits_filter.all_dates.last
+      Element::Chart.new(labels, dataset, options, 'line', 'all_commits')
     end
 
     def page

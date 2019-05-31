@@ -11,7 +11,7 @@ module CodePraise
       end
 
       def elements
-        panel.sub_charts(request_params)
+        panel.charts_update(request_params)
       end
 
       def to_json
@@ -19,15 +19,13 @@ module CodePraise
           elements: elements.each_with_object({}) do |element, hash|
             next unless element
 
-            if element.is_a?(Views::Panel::Chart)
+            if element.is_a?(Views::Element::Chart)
               hash[element.id] = {
                 labels: element.labels,
                 dataset: element.dataset,
-                options: element.options,
-                title: element.title,
-                subtitle: element.subtitle
+                options: element.options
               }
-            elsif element.is_a?(Views::Panel::Table)
+            elsif element.is_a?(Views::Element::Table)
               hash[element.id] = {
                 tbody: element.tbody,
                 title: element.title

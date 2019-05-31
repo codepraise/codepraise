@@ -1,37 +1,29 @@
 # frozen_string_literal: true
 
-require_relative 'panel'
+require_relative 'page'
 
 module Views
-  class Ownership < Panel
-    attr_reader :root_folder, :folder_filter
-
-    def initialize(appraisal)
-      super(appraisal)
-      @root_folder = appraisal.folder
-      @folder_filter = Decorator::FolderFilter.new(root_folder, contributors)
-    end
-
+  class Ownership < Page
     def a_board
       title = 'Collective Ownership'
       subtitle = 'Collective Score is the dispersion level of contribution.'
       elements = collective_ownership
-      Board.new(title, subtitle, nil, elements)
+      Element::Board.new(title, subtitle, elements)
     end
 
     def b_board
       title = 'Code Ownership'
       elements = [project_ownership_chart]
-      Board.new(title, nil, nil, elements)
+      Element::Board.new(title, nil, elements)
     end
 
     def c_board
       title = "Ownership Distribution"
       elements = [ownership_distribution]
-      Board.new(title, nil, nil, elements)
+      Element::Board.new(title, nil, elements)
     end
 
-    def sub_charts(params)
+    def charts_update(params)
       if params.keys.include?('path')
         path = params['path'] || ''
         [project_ownership_chart(path)]
@@ -43,57 +35,33 @@ module Views
     end
 
     def collective_ownership
-      titles = ['Collective Score', 'Owned Folders', 'Owned Files']
-      lines = [collective_lines, owned_lines('folders'), owned_lines('files')]
-      titles.each_with_index.map do |title, i|
-        Bars.new(lines[i], title, true)
+      contributors.map do |c|
+        lines = [[]]
+        lines.push(name: 'Collective Score', number: ownership_credit[c.email_id],
+                   max: ownership_credit.values.sum)
+        lines.push(name: 'Owned Folders', number: folder_filter.folders(c.email_id).count,
+                   max: folder_filter.folders.count)
+        lines.push(name: 'Owned Files', number: folder_filter.files(c.email_id).count,
+                   max: folder_filter.files.count)
+        Element::Bar.new(c.email_id, lines)
       end
-    end
-
-    def collective_lines
-      total = ownership_credit.values.sum
-      lines = [{ name: 'Contributor', number: 'Total' }]
-      lines += contributors.map do |c|
-        number = ownership_credit[c.email_id]
-        line_hash(c.email_id, number, total)
-      end
-      lines
-    end
-
-    def owned_lines(method)
-      total = folder_filter.send(method).count
-      threshold = 100 / contributors.count
-      lines = [{ name: 'Contributor', number: 'Total' }]
-      lines += contributors.map do |c|
-        number = folder_filter.send("owned_#{method}", threshold, c.email_id).count
-        line_hash(c.email_id, number, total)
-      end
-      lines
-    end
-
-    def line_hash(name, number, max)
-      {
-        name: name,
-        line: { width: Math.percentage(number, max), max: max },
-        number: number
-      }
     end
 
     def project_ownership_chart(foldername=nil)
       if foldername&.include?('basefiles')
         foldername = foldername.sub(/\/basefiles/, '')
-        folder = folder_filter.find_folder(root_folder, foldername)
-        return files_chart(folder)
+        selected_folder = folder_filter.find_folder(folder, foldername)
+        return files_chart(selected_folder)
       end
 
-      folder ||= folder_filter.find_folder(root_folder, foldername)
+      selected_folder ||= folder_filter.find_folder(folder, foldername)
 
-      return nil unless folder
+      return nil unless selected_folder
 
-      if folder.any_subfolders?
-        folders_chart(folder)
+      if selected_folder.any_subfolders?
+        folders_chart(selected_folder)
       else
-        files_chart(folder)
+        files_chart(selected_folder)
       end
     end
 
@@ -105,7 +73,7 @@ module Views
         dataset[email_id] = folder_ownership(folder.subfolders, email_id)
         dataset[email_id] << basefile_ownership(folder.base_files, email_id) if folder.any_base_files?
       end
-      Chart.new(labels, dataset, { title: 'Code Ownership in different folders', stacked: true, scales: true, update: 'label', legend: true }, 'bar', 'project_ownership')
+      Element::Chart.new(labels, dataset, { title: 'Code Ownership in different folders', stacked: true, scales: true, update: 'label', legend: true }, 'bar', 'project_ownership')
     end
 
     def files_chart(folder)
@@ -114,7 +82,7 @@ module Views
       contributors.map(&:email_id).each do |email_id|
         dataset[email_id] = folder_ownership(folder.base_files, email_id)
       end
-      Chart.new(labels, dataset, { title: 'Code Ownership in different folders', stacked: true, scales: true, update: 'label', legend: true  }, 'bar', 'project_ownership')
+      Element::Chart.new(labels, dataset, { title: 'Code Ownership in different folders', stacked: true, scales: true, update: 'label', legend: true  }, 'bar', 'project_ownership')
     end
 
     def individual_ownership(email_id = nil)
@@ -122,12 +90,12 @@ module Views
       dataset = individual_stucture(root_folder, {}, email_id)
       dataset = nil if root_folder.line_percentage[email_id].zero?
       options = { title: "#{email_id} Code Onwership" }
-      Chart.new(nil, [dataset], options, 'treemap', 'treemap')
+      Element::Chart.new(nil, [dataset], options, 'treemap', 'treemap')
     end
 
     def ownership_distribution
       dataset = ownership_structure(folder, {})
-      Chart.new(nil, [dataset], {}, 'treemap', 'treemap')
+      Element::Chart.new(nil, [dataset], {}, 'treemap', 'treemap')
     end
 
     def individual_stucture(folder, hash, email_id)

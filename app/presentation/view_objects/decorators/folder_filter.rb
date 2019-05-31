@@ -27,7 +27,7 @@ module Views
         end
       end
 
-      def owned_folders(percentage, email_id, root_folder = nil)
+      def owned_folders(email_id, percentage, root_folder = nil)
         folders(nil, root_folder).select do |folder|
           folder.line_percentage[email_id].to_i >= percentage && !empty_folder?(folder)
         end
@@ -198,7 +198,7 @@ module Views
 
       def select_by_email_id(array, email_id)
         array.select do |entity|
-          entity.line_percentage.key?(email_id)
+          entity.line_percentage[email_id].to_i >= threshold
         end
       end
 

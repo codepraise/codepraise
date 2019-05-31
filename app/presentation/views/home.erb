@@ -17,7 +17,7 @@
     <% @viewable_projects.each do |project| %>
         <div class="card bg-dark" id="<%= project.fullname %>">
             <div class="card-body">
-                <a href="<%=project.praise_link%>">
+                <a href="<%=project.url%>">
                     <p class="card-title"><%= project.name %></p>
                     <p class="card-subtitle"><%= project.owner_name %></p>
                 </a>

@@ -63,22 +63,42 @@
     <div class="panel_2">
         <div class="d-board board">
             <div class="titles ">
-                <span class="title">
+                <div class="title">
                     <%= @panel_view.d_board.title %>
-                </span>
+                </div>
+                <div class="subtitle">
+                    <%= @panel_view.d_board.subtitle %>
+                </div>
             </div>
             <div class="tools">
                 <div class="selector">
                     <div class="title">
-                        Type
+                        Problem Type
                     </div>
-                    <select id="type"></select>
+                    <select class="custom-select" id="type">
+                        <option value="complexity_method">
+                            has complexity method
+                        </option>
+                        <option value="offenses">
+                            has code style offense
+                        </option>
+                        <option value="documentation">
+                            without documentation
+                        </option>
+                        <option value="low_coverage">
+                            low test coverage
+                        </option>
+                    </select>
                 </div>
                 <div class="selector">
                     <div class="title">
                         Contributors
                     </div>
-                    <select id="contributor">
+                    <select class="custom-select" id="contributor">
+                    <option value="total">Total</option>
+                    <% @panel_view.contributors.each do |c| %>
+                    <option value="<%=c.email_id%>"><%= c.email_id %></option>
+                    <% end %>
                     </select>
                 </div>
             </div>

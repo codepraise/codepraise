@@ -90,6 +90,8 @@ var CustomChart = function(canvas_id){
           return message
         }
       }
+    }else{
+      options.callback = {};
     }
     return options.render()
   }
@@ -118,6 +120,10 @@ CustomChart.prototype.update = function(){
   this.render();
 }
 
+
+function test(p){
+}
+
 var TreeMap = function(canvas_id){
   this.id = canvas_id
   this.canvas = document.getElementById(canvas_id)
@@ -131,15 +137,14 @@ var TreeMap = function(canvas_id){
           title: {
             text: "Please include coverage/.result.set.json in your repo"
           },
-          plotarea: {
-            margin: "0 0 30 0"
-          },
-          tooltip: {},
           options: {
             "aspect-type": "transition",
             "color-start": "#B5B8BD",
             "color-end": '#3F4958',
-            "max-children": [30, 30, 30]
+            "max-children": [30, 30, 30],
+          },
+          globals:{
+            fontSize: 16
           },
           series: series
         }
@@ -147,6 +152,7 @@ var TreeMap = function(canvas_id){
     }
   }
 };
+
 
 TreeMap.prototype.render = function(){
   this.chart = zingchart.render({

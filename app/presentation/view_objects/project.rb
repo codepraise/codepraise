@@ -8,20 +8,8 @@ module Views
       @index = index
     end
 
-    def entity
-      @project
-    end
-
-    def praise_link
+    def url
       "/appraisal/#{fullname}"
-    end
-
-    def index_str
-      "project[#{@index}]"
-    end
-
-    def contributor_names
-      @project.contributors.map(&:username).join(', ')
     end
 
     def owner_name
@@ -32,12 +20,13 @@ module Views
       "#{owner_name}/#{name}"
     end
 
-    def http_url
-      @project.http_url
-    end
-
     def name
       @project.name
     end
+
+    def praise_link
+      "/project/#{fullname}"
+    end
+
   end
 end

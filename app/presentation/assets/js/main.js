@@ -16,6 +16,7 @@ window.onload = function(){
     console.log('In the appraisal path.')
     charts = create_all_chart()
     change_page();
+    update_buttob();
 
     if (in_path('overview') || in_path('productivity')){
       console.log('overview/productivity')
@@ -53,15 +54,19 @@ window.onload = function(){
 
     if (in_path('quality')){
       console.log('quality')
-      issue_selectors = document.querySelectorAll('.c-board .selector select')
-      issue_selectors.forEach(function(select){
-        select.addEventListener('change', function(){
-          issue = issue_selectors[0].value
-          email_id = issue_selectors[1].value
-          console.log(`issue=${issue}&email_id=${email_id}`)
-          update(charts, `issue=${issue}&email_id=${email_id}`)
-        })
-      });
+
+      function selectorListner(){
+        issue_selectors = document.querySelectorAll('.d-board .selector select')
+        issue_selectors.forEach(function(select){
+          select.addEventListener('change', function(){
+            console.log('selected')
+            issue = issue_selectors[0].value
+            email_id = issue_selectors[1].value
+            console.log(`issue=${issue}&email_id=${email_id}`)
+            update(charts, `type=${issue}&email_id=${email_id}`)
+          })
+        });
+      }
 
       panelSwitch = document.querySelector('#switch');
       panelSwitch.addEventListener('click', function(e){
@@ -69,11 +74,12 @@ window.onload = function(){
         const panel_1 = document.querySelector('.panel')
         const panel_2 = document.querySelector('.panel_2')
         if (getComputedStyle(panel_1)['display'] == 'flex'){
-          panel_1.setAttribute('style', 'display: none;')
-          panel_2.setAttribute('style', 'display: flex;')
+          panel_1.setAttribute('style', 'display: none;');
+          panel_2.setAttribute('style', 'display: flex;');
+          selectorListner();
         }else if(getComputedStyle(panel_2)['display'] == 'flex'){
-          panel_1.setAttribute('style', 'display: flex;')
-          panel_2.setAttribute('style', 'display: none;')
+          panel_1.setAttribute('style', 'display: flex;');
+          panel_2.setAttribute('style', 'display: none;');
         }
       });
     }
