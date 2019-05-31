@@ -41,9 +41,9 @@ module Views
     def summative_assessment
       contributors.map do |c|
         lines = [[]]
-        lines.push(number: method_credits(c.email_id),
+        lines.push(number: folder_filter.all_methods(c.email_id).count,
                    name: 'MethodTouched',
-                   max: method_credits.values.sum.round)
+                   max: folder_filter.all_methods.count)
         lines.push(number: line_credits(c.email_id),
                    name: 'LineCount', max: line_credits.values.sum.round)
         lines.push(number: commits_filter.by_email_id(c.email_id).count,

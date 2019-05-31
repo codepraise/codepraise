@@ -142,6 +142,7 @@ var TreeMap = function(canvas_id){
             "color-start": "#B5B8BD",
             "color-end": '#3F4958',
             "max-children": [30, 30, 30],
+            "max-depth": 10
           },
           globals:{
             fontSize: 16

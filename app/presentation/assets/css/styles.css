@@ -199,4 +199,9 @@ body{
     margin-bottom: 1%;
 }
 
-
+.my-custom-scrollbar {
+    position: relative;
+    height: 40vh;
+    overflow: auto;
+    display: block;
+}

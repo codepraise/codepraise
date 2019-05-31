@@ -1,7 +1,7 @@
 #root .bg{
   display: flex;
   width: 100vw;
-  height: 100vh;
+  height: 150vh;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
@@ -58,9 +58,9 @@
 }
 
 #root .bg .projects{
-  flex: 2;
+  flex: 5;
   min-width: 37vw;
-  max-width: 37vw;
+  max-width: 60vw;
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start

@@ -27,8 +27,7 @@ module CodePraise
               }
             elsif element.is_a?(Views::Element::Table)
               hash[element.id] = {
-                tbody: element.tbody,
-                title: element.title
+                tbody: element.tbody
               }
             end
           end

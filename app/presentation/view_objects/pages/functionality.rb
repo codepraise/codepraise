@@ -36,7 +36,8 @@ module Views
       dataset = labels.map do |label|
         test_cases_with(label).count
       end
-      options = { title: 'KeyWord Test Cases', scales: true }
+      options = { title: 'KeyWord Test Cases', scales: true,
+                  y_ticked: true, y_min: 0, y_max: test_cases.count }
       Element::Chart.new(labels, dataset,
                          options, 'bar', 'keywords')
     end
@@ -83,8 +84,9 @@ module Views
 
     def contributors_string(contributors)
       contributors.map do |k, v|
+        next if v.zero?
         "#{k}: #{v}"
-      end.join('')
+      end.reject(&:nil?).join('<br>')
     end
 
     def page

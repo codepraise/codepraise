@@ -19,14 +19,15 @@ module Views
 
     def c_board
       title = "Ownership Distribution"
-      elements = [ownership_distribution]
+      # elements = [ownership_distribution]
+      elements = [ownership_breakdown]
       Element::Board.new(title, nil, elements)
     end
 
     def charts_update(params)
       if params.keys.include?('path')
         path = params['path'] || ''
-        [project_ownership_chart(path)]
+        [project_ownership_chart(path), ownership_breakdown(path)]
       elsif params.keys.include?('email_id')
         return [ownership_distribution] if params['email_id'] == 'total'
 
@@ -85,10 +86,53 @@ module Views
       Element::Chart.new(labels, dataset, { title: 'Code Ownership in different folders', stacked: true, scales: true, update: 'label', legend: true  }, 'bar', 'project_ownership')
     end
 
+    def ownership_breakdown(path = nil)
+      selected_folder = find_folder(path)
+      thead = %w[Folder] + contributors.map(&:email_id)
+      tbody = []
+      if selected_folder.any_subfolders? && !path&.include?('basefiles')
+        selected_folder.subfolders.each do |subfolder|
+          tbody << [subfolder.path] + contributors.map {|c| contributor_breakdown(c.email_id, subfolder)}
+        end
+      else
+        selected_folder.base_files.each do |subfolder|
+          tbody << [filename(subfolder)] + contributors.map {|c| contributor_breakdown(c.email_id, subfolder)}
+        end
+      end
+      Element::Table.new(thead, tbody, 'ownership_breadown')
+    end
+
+    def find_folder(path)
+      if path&.include?('basefiles')
+        foldername = path.sub(/\/basefiles/, '')
+        folder_filter.find_folder(folder, foldername)
+      else
+        folder_filter.find_folder(folder, path)
+      end
+    end
+
+    def contributor_breakdown(email_id, folder)
+      method_touched = folder.credit_share.productivity_credit['method_credits'][email_id].to_i
+      line_count = folder.credit_share.productivity_credit['line_credits'][email_id].to_i
+      "MethoudToched: #{method_touched}<br>LineCount: #{line_count}"
+    end
+
+    def method_touched(folder)
+      folder.credit_share.productivity_credit['method_credits'].map do |k, v|
+        "#{k}: #{v.round}"
+      end.join('<br>')
+    end
+
+    def line_count(folder)
+      folder.credit_share.productivity_credit['line_credits'].map do |k, v|
+        "#{k}: #{v.round}"
+      end.join('<br>')
+    end
+
     def individual_ownership(email_id = nil)
       email_id ||= contributors.first.email_id
-      dataset = individual_stucture(root_folder, {}, email_id)
-      dataset = nil if root_folder.line_percentage[email_id].zero?
+      dataset = individual_stucture(folder, {}, email_id)
+      dataset = nil if folder.line_percentage[email_id].zero?
       options = { title: "#{email_id} Code Onwership" }
       Element::Chart.new(nil, [dataset], options, 'treemap', 'treemap')
     end
@@ -157,14 +201,6 @@ module Views
 
     def page
       'ownership'
-    end
-
-    def find_folder(foldername = nil)
-      folder = root_folder
-
-      if foldername
-      end
-      folder
     end
 
     def folder_ownership(subfolders, email_id)

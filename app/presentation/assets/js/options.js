@@ -8,7 +8,7 @@ Axex = function(){
   this.position = ''
   this.ticked = false
   this.min = 0
-  this.max = 1000
+  this.max = 100
 }
 
 Axex.prototype.render = function(){

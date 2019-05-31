@@ -71,11 +71,12 @@
     flex: 10;
     display: flex;
     flex-wrap: wrap;
-    padding: 0 2% 0 2%;
+    padding: 0 2% 0 5%;
 }
 
 .quality .panel .top .right .a-board .element{
-    min-width: 50%;
+    min-width: 20vw;
+    max-width: 20vw;
 }
 
 .quality .panel .top .right .a-board .element .bar .name{

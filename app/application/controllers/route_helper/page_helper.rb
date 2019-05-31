@@ -2,7 +2,7 @@ module CodePraise
   module RouteHelper
     class PageHelper
       def initialize(appraisal, request)
-        @appraisal = appraisal.appraised
+        @appraisal = appraisal
         @request = request
       end
 
@@ -14,8 +14,14 @@ module CodePraise
         @request.params['folder']
       end
 
+      def appraised?
+        !@appraisal.response.processing?
+      end
+
       def create_page
-        Views::PageFactory.create_page(@appraisal, page, root)
+        return nil unless appraised?
+
+        Views::PageFactory.create_page(@appraisal.appraised, page, root)
       end
     end
   end

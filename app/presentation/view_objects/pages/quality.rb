@@ -60,14 +60,15 @@ module Views
 
     def problem_distribution(type, email_id = nil)
       dataset = {}
-      folder_traversal(folder, dataset, type, email_id)
+
+      folder_traversal(folder, dataset, type, email_id) unless type == 'low_coverage' && !test_coverage?
       Element::Chart.new(nil, [dataset], {}, 'treemap', 'problem_distribution')
     end
 
     def file_churn
       dataset = folder_filter.files.map do |file|
         { x: file.commits_count, y: file.complexity&.average.to_i,
-          r: 5 + file.commits_count * file.complexity&.average.to_i / 10,
+          r: 10 + (file.commits_count * file.complexity&.average.to_i) / size('commit'),
           title: "#{file.file_path.directory}#{file.file_path.filename}" }
       end
       options = { title: 'File Churn', scales: true, legend: false,
@@ -126,17 +127,23 @@ module Views
     end
 
     def complexity_chart
-      dataset = contributors.each_with_object({}) do |contributor, result|
+      dataset = contributors.each.each_with_object({}) do |contributor, result|
         methods = folder_filter.all_methods(contributor.email_id)
         credit = avg_complexity(methods)
         result[contributor.email_id] = [{
           y: credit * -1, x: methods.count,
-          r: 10 + Math.percentage(1, credit) * methods.count / 10
+          r: 10 + (credit * methods.count) / size('method')
         }]
       end
       options = { title: 'simplicity', scales: true, x_type: 'linear', legend: true,
                   axes_label: true, x_label: 'method_count', y_label: 'complexity' }
       Element::Chart.new(nil, dataset, options, 'bubble', 'quality_chart')
+    end
+
+    def radius_array
+      contributors.each_with_index do |_, i|
+        (i + 1) * 10
+      end
     end
 
     def offenses_chart
@@ -145,12 +152,12 @@ module Views
         line_count = productivity_credit['line_credits'][contributor.email_id]
         result[contributor.email_id] = [{
           y: offenses * -1, x: line_count,
-          r: 10 + Math.percentage(1, offenses) * line_count / 200
+          r: 10 + (offenses / 10 * line_count.to_f / size('line'))
         }]
       end
       options = { title: 'clean code style', scales: true, x_type: 'linear',
                   legend: true, axes_label: true, x_label: 'line_count',
-                  y_label: 'offense_count' }
+                  y_label: 'offense_count'}
       Element::Chart.new(nil, dataset, options, 'bubble', 'offenses_chart')
     end
 
@@ -160,7 +167,7 @@ module Views
         methods = folder_filter.all_methods(contributor.email_id)
         result[contributor.email_id] = [{
           y: documentation, x: methods.count,
-          r: 10 + documentation * methods.count / 10
+          r: 10 + (documentation / 5 * methods.count / size('method'))
         }]
       end
       options = { title: 'documentation', scales: true, x_type: 'linear', legend: true,
@@ -174,7 +181,7 @@ module Views
         line_count = productivity_credit['line_credits'][contributor.email_id]
         result[contributor.email_id] = [{
           y: test, x: line_count,
-          r: 10 + test / 5 * line_count / 100
+          r: 10 + (test / 5 * line_count / size('line'))
         }]
       end
       options = { title: 'test code', scales: true, x_type: 'linear', legend: true,

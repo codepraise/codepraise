@@ -24,7 +24,6 @@ module CodePraise
             App.config, appraisal.response
           )
 
-
           @panel_view = PageHelper.new(appraisal, request)
             .create_page
 

@@ -100,5 +100,27 @@ module Views
     def last_date
       commits_filter.all_dates.last
     end
+
+    def filename(file)
+      path = file.file_path
+      "#{path.directory}/#{path.filename}"
+    end
+
+    def size(type)
+      case type
+      when 'line'
+        line_credits.values.sum
+      when 'method'
+        folder_filter.methods.count
+      when 'file'
+        folder_filter.files.count
+      when 'folder'
+        folder_filter.folders.count
+      when 'commit'
+        commits.count
+      when 'offense'
+        folder_filter.total_offenses.count
+      end
+    end
   end
 end
