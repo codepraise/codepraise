@@ -38,13 +38,17 @@ body{
 }
 
 .title{
-    font-size: 15pt;
+    font-size: 13pt;
     color: var(--main-dark-color);
 }
 
 .subtitle{
     font-size: 11pt;
     margin-left: 1%;
+    color: var(--main-dark-color-op);
+}
+
+.subtitle a{
     color: var(--main-dark-color-op);
 }
 
@@ -107,7 +111,7 @@ body{
 .folders .folder-tree{
     margin-top: 5%;
     margin-left: 5%;
-    font-size: 18pt;
+    font-size: 16pt;
 }
 
 .folders .folder-tree li{
@@ -153,7 +157,7 @@ body{
 .small_table .title{
     flex: 2;
     font-weight: bold;
-    font-size: 16pt;
+    font-size: 14pt;
     display: flex;
     align-items: center;
     border-bottom: solid 1pt var(--sub-dark-color);
@@ -176,7 +180,7 @@ body{
     display: flex;
     max-height: fit-content;
     margin-bottom: 3%;
-    font-size: 13pt;
+    font-size: 11pt;
     color: #374249;
 }
 

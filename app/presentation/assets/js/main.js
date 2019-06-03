@@ -1,6 +1,7 @@
 var pre_path = ''
 
 window.onload = function(){
+
   if (in_path('root')) {
     console.log('In the root path.')
     search_btn = document.getElementById('search-btn')
@@ -12,6 +13,7 @@ window.onload = function(){
   }
 
   if (in_path('appraisal')) {
+    $("[data-toggle=popover]").popover();
 
     console.log('In the appraisal path.')
     charts = create_all_chart()
@@ -24,8 +26,8 @@ window.onload = function(){
       unit_selector = document.querySelector("#unit_selector")
       start_date = document.querySelector(".double-slider .label #start")
       end_date =  document.querySelector(".double-slider .label #end")
-      start_date.textContent = new Date(data.first).getDateString()
-      end_date.textContent = new Date(data.last).getDateString()
+      start_date.textContent = new Date(data.first.split(' ')[0].split('-')).getDateString()
+      end_date.textContent = new Date(data.last.split(' ')[0].split('-')).getDateString()
 
       $( function() {
         $( "#slider-range" ).slider({
@@ -34,8 +36,8 @@ window.onload = function(){
           max: data.days,
           values: [ 0, data.days ],
           slide: function( event, ui ) {
-            first_date = new Date(data.first)
-            last_date = new Date(data.last)
+            first_date = new Date(data.first.split(' ')[0].split('-'))
+            last_date = new Date(data.last.split(' ')[0].split('-'))
             start_date.textContent = first_date.addDays(ui.values[0]).getDateString()
             end_date.textContent = last_date.removeDays(data.days - ui.values[1]).getDateString()
           },

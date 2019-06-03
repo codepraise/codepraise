@@ -4,11 +4,15 @@ module Views
   module Value
     # Wrap multiple commits together
     class Commits
-      attr_reader :commits, :date
+      attr_reader :commits
 
       def initialize(commits, date)
         @commits = commits
         @date = date
+      end
+
+      def date
+        Time.parse(@date.to_s).strftime('%Y-%m-%d')
       end
 
       def total_addition_credits

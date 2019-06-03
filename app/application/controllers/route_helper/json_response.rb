@@ -26,7 +26,7 @@ module CodePraise
         HTTP_CODE[@result.status]
       end
 
-      def send(response, representer)
+      def send(response, representer = nil)
         response.status = http_status_code
 
         return representer.new(@result.message).to_json if representer

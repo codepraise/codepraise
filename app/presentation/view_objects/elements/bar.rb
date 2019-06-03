@@ -59,7 +59,7 @@ module Views
       end
 
       def progress_bar(line)
-        return '' if line.empty?
+        return '' if line.nil? || line.empty?
 
         "<div class='progress'>" \
           "<div class='progress-bar' role='progressbar' aria-valuenow='0' \

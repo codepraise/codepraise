@@ -28,7 +28,7 @@ module CodePraise
         result = Gateway::Api.new(CodePraise::App.config)
           .add_project(input[:owner_name], input[:project_name].gsub('.git', ''))
 
-        result.success? ? Success(result.payload) : Failure(result.message)
+        result.success? ? Success(result.payload) : Failure(result)
       rescue StandardError => e
         puts e.inspect + '\n' + e.backtrace
         Failure(Value::Result.new(:internal_error, 'Cannot add projects right now; please try again later'))

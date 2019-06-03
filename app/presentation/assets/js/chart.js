@@ -73,7 +73,7 @@ var CustomChart = function(canvas_id){
     options.yAxex.position = custom_options['y_position'] || 'left'
     options.yAxex.ticked = custom_options['y_ticked'] || false
     options.yAxex.min = custom_options['y_min'] || 0
-    options.yAxex.max = custom_options['y_max'] || 1000
+    options.yAxex.max = custom_options['y_max'] || 0
     if (custom_options['tooltips'] == 'file_churn'){
       options.callback = {
         label: function(tooltipItem, data){

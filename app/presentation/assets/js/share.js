@@ -3,7 +3,22 @@ function ajax_call(url, method, data, sucecss_callback){
     url: url,
     method: method,
     data: data,
-    success: sucecss_callback
+    // success: sucecss_callback,
+    statusCode: {
+      404: function() {
+        alert = document.querySelector('.flash .alert')
+        alert.classList.remove('alert-warning')
+        alert.classList.add('alert-danger')
+        alert.querySelector('span').textContent = 'Bad Github Url'
+      },
+      400: function(){
+        alert = document.querySelector('.flash .alert')
+        alert.classList.remove('alert-warning')
+        alert.classList.add('alert-danger')
+        alert.querySelector('span').textContent = 'Bad Github Url'
+      },
+      200: sucecss_callback
+    }
   });
 }
 

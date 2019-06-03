@@ -30,6 +30,9 @@
                         <div class="title">
                             <%= @panel_view.b_board.title %>
                         </div>
+                        <div class="subtitle">
+                            <%= @panel_view.b_board.subtitle %>
+                        </div>
                     </div>
                     <div class="tools ">
                         <button class="btn btn-dark" id="pre"><</button>
@@ -47,18 +50,11 @@
         <div class="bottom ">
             <div class="c-board board">
                 <div class="titles ">
-                    <span class="title">
+                    <div class="title">
                         <%= @panel_view.c_board.title %>
-                    </span>
-                </div>
-                <div class="tools ">
-                    <div class="selector">
-                        <select class="custom-select custom-select-lg mb-3" id="ownership_selector">
-                            <option value="total">Total</option>
-                            <% @panel_view.contributors.each do |c| %>
-                            <option value="<%=c.email_id%>"> <%= c.email_id %> </option>
-                            <% end %>
-                        </select>
+                    </div>
+                    <div class="subtitle">
+                        <%= @panel_view.c_board.subtitle %>
                     </div>
                 </div>
                 <div class="elements ">

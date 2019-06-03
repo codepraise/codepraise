@@ -8,7 +8,7 @@ module Views
 
     def initialize(appraisal, updated_at, root = nil)
       super(appraisal, updated_at)
-      @root = root.nil? ? folder_filter.folders[0] : folder_filter.find_folder(folder, root)
+      @root = root.nil? ? folder : folder_filter.find_folder(folder, root)
       @state = 'folder'
       if @root.nil?
         @root = folder_filter.find_file(root)
@@ -17,8 +17,10 @@ module Views
     end
 
     def a_board
+      title = 'Breakdown Information'
+      subtitle = ''
       elements = [size_infos, structure_infos, quality_infos, ownership_infos]
-      Element::Board.new(nil, nil, elements)
+      Element::Board.new(title, subtitle, elements)
     end
 
     def b_board
@@ -34,7 +36,7 @@ module Views
     end
 
     def folder_tree
-      Element::FolderTree.new(folder, project_owner, project_name)
+      Element::FolderTree.new(folder, project_owner, project_name, name)
     end
 
     def break_down
@@ -59,7 +61,8 @@ module Views
     end
 
     def progress
-      commits = commits_filter.by_path(name)
+      commits = commits_filter.by('day')
+      commits = commits_filter.by_path(name) if name != 'root'
       labels = commits.map(&:date)
       dataset = {
         addition: commits.map(&:total_addition_credits),
@@ -95,7 +98,7 @@ module Views
       infos = []
       infos << { name: 'Avg. Complexity', number: avg_complexity }
       infos << { name: 'Number of Code Style Offense', number: offense_count }
-      infos << { name: 'Number of Documnetation', number: documentation_count }
+      infos << { name: 'Number of Documentation', number: documentation_count }
       infos << { name: 'Test Coverage', number: test_coverage }
       Element::SmallTable.new('Quality', infos)
     end
@@ -131,7 +134,7 @@ module Views
     end
 
     def documentation_count
-      quality_credit['documentation_credits'].values.sum.round
+      root.credit_share.quality_credit['documentation_credits'].values.sum.round
     end
 
     def test_coverage
@@ -164,7 +167,7 @@ module Views
 
     def files
       if folder?
-        root.base_files
+        folder_filter.files(nil, root)
       else
         [root]
       end
@@ -172,7 +175,7 @@ module Views
 
     def name
       if state == 'folder'
-        @root.path
+        @root.path.empty? ? 'root' : @root.path
       else
         path = @root.file_path
         "#{path.directory}#{path.filename}"

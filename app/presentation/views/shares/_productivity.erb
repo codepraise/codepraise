@@ -8,9 +8,12 @@
         <div class="left">
             <div class="a-board board">
                 <div class="titles ">
-                    <span class="title">
+                    <div class="title">
                         <%= @panel_view.a_board.title %>
-                    </span>
+                    </div>
+                    <div class="subtitle">
+                        <%= @panel_view.a_board.subtitle %>
+                    </div>
                 </div>
                 <div class="tools">
                     <div class="double-slider" data-days="<%=@panel_view.days_count%>" data-first="<%=@panel_view.first_date%>" data-last="<%=@panel_view.last_date%>">
@@ -42,9 +45,12 @@
             <div class="top">
                 <div class="b-board board">
                     <div class="titles ">
-                        <span class="title">
+                        <div class="title">
                             <%= @panel_view.b_board.title %>
-                        </span>
+                        </div>
+                        <div class="subtitle">
+                            <%= @panel_view.b_board.subtitle %>
+                        </div>
                     </div>
                     <div class="elements ">
                     <% @panel_view.b_board.elements.each do |element| %>
@@ -59,9 +65,12 @@
             <div class="bottom">
                 <div class="c-board board">
                     <div class="titles ">
-                        <span class="title">
+                        <div class="title">
                             <%= @panel_view.c_board.title %>
-                        </span>
+                        </div>
+                        <div class="subtitle">
+                            <%= @panel_view.c_board.subtitle %>
+                        </div>
                     </div>
                     <div class="elements ">
                     <% @panel_view.c_board.elements.each do |element| %>

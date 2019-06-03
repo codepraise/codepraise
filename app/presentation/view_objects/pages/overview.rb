@@ -6,12 +6,13 @@ module Views
   class Overview < Page
     def a_board
       title = 'Quality Summary'
+      subtitle = 'Here is example message.'
       tech_debt = folder_filter.tech_debt.map(&:count)
       elements = {
         elements: [quality_issues],
-        critical_info: [{ number: tech_debt.sum, unit: 'Issues' }]
+        critical_info: [{ number: tech_debt.sum, unit: 'Quality Problems' }]
       }
-      Element::Board.new(title, nil, elements)
+      Element::Board.new(title, subtitle, elements)
     end
 
     def b_board
@@ -25,7 +26,7 @@ module Views
       informations = [
         { number: folder_filter.files.count, unit: 'Files'},
         { number: folder_filter.all_methods.count, unit: 'Methods' },
-        { number: folder.total_line_credits, unit: 'LoC' }
+        { number: folder.total_line_credits, unit: 'Line of Code' }
       ]
       elements = {
         elements: [ownership_chart],
@@ -49,7 +50,7 @@ module Views
     def quality_issues
       lines = [{ name: 'Category', number: 'Total' }]
       tech_debt = folder_filter.tech_debt.map(&:count)
-      lines.push(name: 'Complexity Methods', number: tech_debt[0])
+      lines.push(name: 'Complex Methods', number: tech_debt[0])
       lines.push(name: 'Code Style Offenses', number: tech_debt[1])
       lines.push(name: 'Unannotated Files', number: tech_debt[2])
       lines.push(name: 'Low TestCoverage Files', number: tech_debt[3])
@@ -77,10 +78,15 @@ module Views
     end
 
     def ownership_chart
-      labels = folder.line_percentage.keys
-      dataset = folder.line_percentage.values
-      options = { title: 'Project Ownership', scales: true }
-      Element::Chart.new(labels, dataset, options, 'bar', 'ownership_chart')
+      dataset = [{name: 'Contributor', number: 'Percentage'}]
+      contributors.each do |c|
+        dataset.push({
+          name: c.email_id,
+          number: folder.line_percentage[c.email_id].to_i,
+          max: 100
+        })
+      end
+      Element::Bar.new('Project Onwership', dataset)
     end
 
     def commits_chart(unit, between = nil)

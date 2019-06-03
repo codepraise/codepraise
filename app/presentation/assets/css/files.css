@@ -15,12 +15,12 @@
 }
 
 .files .title-bar .title{
-    font-size: 16pt;
+    font-size: 14pt;
 }
 
 .files .title-bar .file_path{
     margin-left: 3%;
-    font-size: 16pt;
+    font-size: 14pt;
 }
 
 .files .panel{
@@ -51,7 +51,7 @@
 }
 
 .files .panel .left .top{
-    flex: 1.5;
+    flex: 2;
     display: flex;
 }
 
@@ -63,8 +63,14 @@
     margin-bottom: 1%;
 }
 
-.files .panel .left .top .a-board .elements{
+.files .panel .left .top .a-board .titles{
     flex: 1;
+    text-align: center;
+    padding: 0.5% 0 1% 0;
+}
+
+.files .panel .left .top .a-board .elements{
+    flex: 10;
     display: flex;
 }
 

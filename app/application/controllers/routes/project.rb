@@ -10,13 +10,15 @@ module CodePraise
         routing.post do
           url_request = Forms::UrlRequest.call(routing.params)
           project_made = Service::AddProject.new.call(url_request)
-          result = project_made.value!
 
-          return JsonResponse.new(result).send(response) if project_made.failure?
-
-          project = result.message
-          session[:watching].insert(0, project.fullname).uniq!
-          JsonResponse.new(result).send(response, Representer::Project)
+          if project_made.failure?
+            JsonResponse.new(project_made.failure).send(response)
+          else
+            result = project_made.value!
+            project = result.message
+            session[:watching].insert(0, project.fullname).uniq!
+            JsonResponse.new(result).send(response, Representer::Project)
+          end
         end
       end
 

@@ -61,7 +61,7 @@ module Views
         by_day = by_day(selected_commits, between)
         th = 0
         by_week = by_day.each_with_object({}) do |commit, result|
-          th += 1 if commit.date.wday == 6
+          th += 1 if Time.parse(commit.date.to_s).wday == 6
           result[th] ||= []
           result[th] << commit
         end

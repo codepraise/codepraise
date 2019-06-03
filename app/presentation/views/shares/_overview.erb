@@ -12,9 +12,12 @@
             <div class="left ">
                 <div class="a-board board">
                     <div class="titles">
-                        <span class="title">
+                        <div class="title">
                             <%= @panel_view.a_board.title %>
-                        </span>
+                        </div>
+                        <div class="subtitle">
+                            <%= @panel_view.a_board.subtitle %>
+                        </div>
                     </div>
                     <div class="informations">
                         <% @panel_view.a_board.elements[:critical_info].each do |info| %>
@@ -33,9 +36,12 @@
             <div class="mid ">
                 <div class="b-board board">
                     <div class="titles">
-                        <span class="title">
+                        <div class="title">
                             <%= @panel_view.b_board.title %>
-                        </span>
+                        </div>
+                        <div class="subtitle">
+                            <%= @panel_view.b_board.subtitle %>
+                        </div>
                     </div>
                     <div class="elements">
                         <% @panel_view.b_board.elements.each do |element| %>
@@ -47,9 +53,12 @@
             <div class="right ">
                 <div class="c-board board">
                     <div class="titles ">
-                        <span class="title">
+                        <div class="title">
                             <%= @panel_view.c_board.title %>
-                        </span>
+                        </div>
+                        <div class="subtitle">
+                            <%= @panel_view.c_board.subtitle %>
+                        </div>
                     </div>
                     <div class="informations ">
                         <% @panel_view.c_board.elements[:critical_info].each do |info| %>
@@ -61,6 +70,7 @@
                     <div class="elements ">
                         <% @panel_view.c_board.elements[:elements].each do |element| %>
                             <div class="element">
+                                <div class="bar-title"> <%= element.title %> </div>
                             <%= element.to_element %>
                             </div>
                         <% end %>
@@ -71,9 +81,12 @@
         <div class="bottom">
             <div class="d-board board">
                 <div class="titles ">
-                    <span class="title">
-                        <%= @panel_view.d_board.title %>
-                    </span>
+                        <div class="title">
+                            <%= @panel_view.d_board.title %>
+                        </div>
+                        <div class="subtitle">
+                            <%= @panel_view.d_board.subtitle %>
+                        </div>
                 </div>
                 <div class="tools">
                     <div class="double-slider" data-days="<%=@panel_view.days_count%>" data-first="<%=@panel_view.first_date%>" data-last="<%=@panel_view.last_date%>">

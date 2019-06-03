@@ -86,6 +86,22 @@
     flex-direction: column;
 }
 
+.overview .panel .up .c-board .elements{
+    margin-top: 5%;
+}
+
+.overview .panel .up .c-board .bar-title{
+    text-align: center;
+}
+
+.overview .panel .up .c-board .bar .name{
+    flex: 4;
+}
+
+.overview .panel .up .c-board .bar .number{
+    flex: 2;
+}
+
 .elements .element{
     flex: 6;
 }

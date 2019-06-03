@@ -4,13 +4,21 @@
             Files
         </div>
         <div class="file_path">
-            <%= "#{@panel_view.name.capitalize} #{@panel_view.state.capitalize}" %>
+            <%= "#{@panel_view.name} #{@panel_view.state}" %>
         </div>
     </div>
     <div class="panel">
         <div class="left ">
             <div class="top ">
                 <div class="a-board board">
+                    <div class="titles">
+                        <div class="title">
+                            <%= @panel_view.a_board.title %>
+                        </div>
+                        <div class="subtitle">
+                            <%= @panel_view.a_board.subtitle %>
+                        </div>
+                    </div>
                     <div class="elements">
                         <% @panel_view.a_board.elements.each do |element| %>
                         <%= element.to_element %>
@@ -23,7 +31,10 @@
                     <div class="b-board board">
                         <div class="titles ">
                             <div class="title">
-                            <%= @panel_view.b_board.title %>
+                                <%= @panel_view.b_board.title %>
+                            </div>
+                            <div class="subtitle">
+                                <%= @panel_view.b_board.subtitle %>
                             </div>
                         </div>
                         <div class="elements ">
@@ -39,7 +50,10 @@
                     <div class="c-board board">
                         <div class="titles ">
                             <div class="title">
-                            <%= @panel_view.c_board.title %>
+                                <%= @panel_view.c_board.title %>
+                            </div>
+                            <div class="subtitle">
+                                <%= @panel_view.c_board.subtitle %>
                             </div>
                         </div>
                         <div class="elements ">
