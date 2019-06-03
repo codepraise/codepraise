@@ -81,6 +81,10 @@
     flex: 1;
 }
 
+.quality .panel .top .right .a-board .element .bar{
+    margin-bottom: 1%;
+}
+
 .quality .panel .top .right .a-board .element .bar .name{
     flex: 6;
 }
