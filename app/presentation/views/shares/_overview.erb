@@ -43,7 +43,7 @@
                             <%= @panel_view.b_board.subtitle %>
                         </div>
                     </div>
-                    <div class="elements">
+                    <div class="elements my-custom-scrollbar">
                         <% @panel_view.b_board.elements.each do |element| %>
                             <%= element.to_element %>
                         <% end %>
@@ -69,7 +69,7 @@
                     </div>
                     <div class="elements ">
                         <% @panel_view.c_board.elements[:elements].each do |element| %>
-                            <div class="element">
+                            <div class="element my-custom-scrollbar">
                                 <div class="bar-title"> <%= element.title %> </div>
                             <%= element.to_element %>
                             </div>

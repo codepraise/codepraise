@@ -66,6 +66,10 @@
     flex-wrap: nowrap;
 }
 
+.ownership .panel .top .left .elements .element{
+    flex: 1;
+}
+
 .ownership .panel .top .left .elements{
     display: flex;
     padding: 0 5% 0 5%;

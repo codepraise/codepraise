@@ -74,6 +74,12 @@
     display: flex;
 }
 
+.files .panel .left .top .a-board .element{
+    flex: 1;
+    padding: 0 2% 0 2%;
+    max-height: 20vh;
+}
+
 .files .panel .left .bottom{
     flex: 5;
     display: flex;

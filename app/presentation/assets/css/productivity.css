@@ -109,7 +109,7 @@
 }
 
 .productivity .panel .top .b-board .titles{
-    flex: 2;
+    flex: 1;
     padding: 2% 0 0 0;
     text-align: center;
 }
@@ -122,6 +122,10 @@
     padding: 0 2% 0 2%;
     margin-left: 10%;
     font-size: 16pt;
+}
+
+.productivity .panel .top .b-board .elements .element{
+    flex: 1;
 }
 
 .productivity .panel .top .b-board .elements .bars .bar .name{

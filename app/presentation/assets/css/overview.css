@@ -77,7 +77,8 @@
     flex: 1;
     border-left: solid 2pt #0EA0CC;
     padding: 0% 2% 0% 3%;
-    color: var(--main-dark-color)
+    color: var(--main-dark-color);
+    align-self: center;
 }
 
 .overview .panel .up .board .elements{

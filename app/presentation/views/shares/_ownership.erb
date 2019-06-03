@@ -16,10 +16,12 @@
                             <%= @panel_view.a_board.subtitle %>
                         </div>
                     </div>
-                    <div class="elements ">
+                    <div class="elements my-custom-scrollbar">
                         <% @panel_view.a_board.elements.each do |element| %>
                             <div class="bar-title"> <%= element.title %> </div>
-                            <%= element.to_element %>
+                            <div class="element">
+                                <%= element.to_element %>
+                            </div>
                         <% end %>
                     </div>
                 </div>

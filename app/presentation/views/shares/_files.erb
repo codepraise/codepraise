@@ -21,7 +21,9 @@
                     </div>
                     <div class="elements">
                         <% @panel_view.a_board.elements.each do |element| %>
+                        <div class="element my-custom-scrollbar">
                         <%= element.to_element %>
+                        </div>
                         <% end %>
                     </div>
                 </div>

@@ -77,6 +77,8 @@
 .quality .panel .top .right .a-board .element{
     min-width: 20vw;
     max-width: 20vw;
+    max-height: 20vh;
+    flex: 1;
 }
 
 .quality .panel .top .right .a-board .element .bar .name{

@@ -54,7 +54,7 @@ body{
 
 .critical{
     font-weight: bold 1pt;
-    font-size: 34pt;
+    font-size: 28pt;
 }
 
 .bar-title{
@@ -65,13 +65,14 @@ body{
     flex: 1;
     display: flex;
     max-height: 3vh;
+    min-height: 3vh;
     align-items: center;
-    font-size: 11pt;
+    font-size: 10pt;
 }
 
 .bars .first{
     font-weight: bold;
-    margin-bottom: 1%;
+    margin-bottom: 0.7vw;
 }
 
 .bars .bar .name{
@@ -90,6 +91,10 @@ body{
 }
 .bars .bar .number{
     flex: 1;
+}
+
+.bar-title{
+    flex: 0.2;
 }
 
 
