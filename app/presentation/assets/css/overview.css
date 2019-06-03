@@ -79,6 +79,7 @@
     padding: 0% 2% 0% 3%;
     color: var(--main-dark-color);
     align-self: center;
+    white-space: nowrap;
 }
 
 .overview .panel .up .board .elements{
@@ -142,7 +143,7 @@
 }
 
 .overview .panel .bottom .board .tools .selector{
-    flex: 1;
+    flex: 2;
     margin-left: 5%;
     display: flex;
     align-items: baseline;

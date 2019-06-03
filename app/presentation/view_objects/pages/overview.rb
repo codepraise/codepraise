@@ -86,7 +86,7 @@ module Views
           max: 100
         })
       end
-      Element::Bar.new('Project Onwership', dataset)
+      Element::Bar.new('Project Ownership', dataset)
     end
 
     def commits_chart(unit, between = nil)
