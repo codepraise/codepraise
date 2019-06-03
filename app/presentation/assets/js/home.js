@@ -61,8 +61,10 @@ function search_project(){
 function check_project_exist(project_url){
   project_fullname = project_url.replace('.git', '').split('/').slice(-2).join('/')
   project_element = document.getElementById(project_fullname)
-  project_element.classList.remove('bg-dark')
-  project_element.classList.add('bg-info')
+  if (project_element != null){
+    project_element.classList.remove('bg-dark')
+    project_element.classList.add('bg-info')
+  }
   return (project_element != null)
 }
 
