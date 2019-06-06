@@ -73,7 +73,8 @@ module Views
       end
       options = { title: 'File Churn', scales: true, legend: false,
                   x_type: 'linear', tooltips: 'file_churn', axes_label: true,
-                  x_label: 'CommitCount', y_label: 'Complexity' }
+                  x_label: 'CommitCount', y_label: 'Complexity', y_ticked: true,
+                  y_max: 0, y_min: -30 }
       Element::Chart.new(nil, dataset, options,
                          'bubble', 'folder_churn')
     end

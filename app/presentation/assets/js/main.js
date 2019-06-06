@@ -36,8 +36,8 @@ window.onload = function(){
           max: data.days,
           values: [ 0, data.days ],
           slide: function( event, ui ) {
-            first_date = new Date(data.first.split(' ')[0].split('-'))
-            last_date = new Date(data.last.split(' ')[0].split('-'))
+            first_date = new Date(data.first)
+            last_date = new Date(data.last)
             start_date.textContent = first_date.addDays(ui.values[0]).getDateString()
             end_date.textContent = last_date.removeDays(data.days - ui.values[1]).getDateString()
           },

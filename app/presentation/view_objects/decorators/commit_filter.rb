@@ -109,7 +109,7 @@ module Views
       end
 
       def last_date
-        Time.parse(date(@commits.last.date)) + DAY
+        (Time.parse(date(@commits.last.date)) + DAY)
       end
 
       # remove hour,min and second

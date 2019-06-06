@@ -6,7 +6,7 @@ module Views
   class Overview < Page
     def a_board
       title = 'Quality Summary'
-      subtitle = 'Here is example message.'
+      subtitle = 'Here is example message. <br> <div class="title">est</div>'
       tech_debt = folder_filter.tech_debt.map(&:count)
       elements = {
         elements: [quality_issues],

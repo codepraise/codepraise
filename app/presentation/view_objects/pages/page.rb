@@ -94,11 +94,11 @@ module Views
     end
 
     def first_date
-      commits_filter.all_dates.first
+      commits_filter.all_dates.first.strftime('%Y-%m-%d')
     end
 
     def last_date
-      commits_filter.all_dates.last
+      commits_filter.all_dates.last.strftime('%Y-%m-%d')
     end
 
     def filename(file)

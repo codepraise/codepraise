@@ -61,6 +61,7 @@ Options = {
     tooltips = { callbacks: this.callback }
     scales = this.scale()
     return {
+      responsive: true,
       maintainAspectRatio: false,
       title: {
         display: true,

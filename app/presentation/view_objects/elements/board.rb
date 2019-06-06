@@ -13,7 +13,7 @@ module Views
 
       def subtitle
         "<a href='#' data-toggle='popover' data-placement='right'" \
-        "data-content='#{@subtitle}' data-container='body'> Click here to see the chart description." \
+        "data-content='#{@subtitle}' data-html='true' data-container='body'> Click here to see the description." \
         '</a>'
       end
     end

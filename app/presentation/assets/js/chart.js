@@ -38,7 +38,6 @@ var CustomChart = function(canvas_id){
         index += 1
       })
     }
-
     return result
   }
 
