@@ -1,22 +1,11 @@
 var CustomChart = function(canvas_id){
 
-  const main_color = '63,73,88'
-  // const main_color = '14, 160, 204'
-  const gradient_color = [`rgba(${main_color})`, `rgba(${main_color},0.7)`, `rgba(${main_color},0.4)`, `rgba(${main_color},0.2)`]
-  const colorful = [`rgba(42,50,57,0.8)`, `rgba(42,50,57,0.2)`]
-  const same_color = []
-  for(var i = 0; i<10; i++){
-    same_color.push(`rgba(${same_color})`)
-  }
-
   this.render_dataset = function dataset(dataset){
     let result = []
     let index = 0
     let values = JSON.parse(dataset.values)
     custom_options = (dataset.options == '' ? {} : JSON.parse(dataset.options));
-    color = gradient_color
-    if (custom_options['color'] == 'colorful'){ color = colorful }
-    if (custom_options['color'] == 'main'){color = same_color}
+    color = getColor(custom_options['color'])
     if (values instanceof(Array)){
       result = [{
         data: values,
@@ -30,12 +19,23 @@ var CustomChart = function(canvas_id){
             label: key,
             fill: false,
             backgroundColor: color[index],
-            borderColor: color[index],
+            borderColor: getColor(`${custom_options['color']}_border`)[index],
             borderWidth: 2,
             data: values[key]
           }
         )
         index += 1
+      })
+    }
+    if (custom_options['line']){
+      result.push({
+        data: custom_options['line']['data'],
+        type: 'line',
+        backgroundColor: 'rgb(247, 77, 78, 0.1)',
+        borderWidth: 2,
+        borderColor: 'rgb(247, 77, 78)',
+        fill: 'start',
+        label: 'dangerous zone'
       })
     }
     return result
@@ -61,18 +61,24 @@ var CustomChart = function(canvas_id){
     options.legend = custom_options['legend'] || false;
     options.xAxex.position = custom_options['x_position'] || 'bottom'
     options.xAxex.type = custom_options['x_type'] || 'category'
+    options.xAxex.ticked = custom_options['x_ticked'] || true
+    options.xAxex.min = custom_options['x_min'] || 0
+    options.xAxex.max = custom_options['x_max'] || 0
+    options.xAxex.stepSize = custom_options['x_step'] || 10
     if(custom_options['x_type'] == 'time'){
       options.xAxex.time = {unit: custom_options['time_unit']}
     }
     options.xAxex.label = custom_options['axes_label'] || false
     options.xAxex.label_string = custom_options['x_label'] || ''
+    options.yAxex.reverse = custom_options['y_reverse'] || false
     options.yAxex.type = custom_options['y_type'] || 'linear'
-    options.yAxex.label = custom_options['axes_label'] || false
+    options.yAxex.label = (custom_options['y_label'] ? true : false)
     options.yAxex.label_string = custom_options['y_label'] || ''
     options.yAxex.position = custom_options['y_position'] || 'left'
-    options.yAxex.ticked = custom_options['y_ticked'] || false
+    options.yAxex.ticked = custom_options['y_ticked'] || true
     options.yAxex.min = custom_options['y_min'] || 0
     options.yAxex.max = custom_options['y_max'] || 0
+    options.yAxex.stepSize = custom_options['y_step'] || 10
     if (custom_options['tooltips'] == 'file_churn'){
       options.callback = {
         label: function(tooltipItem, data){
@@ -119,34 +125,40 @@ CustomChart.prototype.update = function(){
   this.render();
 }
 
-
-function test(p){
-}
-
 var TreeMap = function(canvas_id){
   this.id = canvas_id
   this.canvas = document.getElementById(canvas_id)
   this.series = JSON.parse(this.canvas.dataset.values)
-  this.title =
-  this.config = function(series){
+  this.options = JSON.parse(this.canvas.dataset.options)
+  this.config = function(series, options){
+    color_start = '#28B77A'
+    color_end = '#ff7a7b'
+    if (options['reverse']){
+      temp = color_start
+      color_start = color_end
+      color_end = temp
+      console.log('test')
+    }
+    console.log(color_start)
     return {
       graphset: [
         {
           type: "treemap",
-          title: {
-            text: "Please include coverage/.result.set.json in your repo"
-          },
           options: {
             "aspect-type": "transition",
-            "color-start": "#B5B8BD",
-            "color-end": '#3F4958',
+            "color-start": color_start,
+            "color-end": color_end,
             "max-children": [30, 30, 30],
             "max-depth": 10
+            // "tooltip-box":{
+            //   "text":`%text`
+            // }
           },
           globals:{
             fontSize: 16
           },
           series: series
+
         }
       ]
     }
@@ -157,7 +169,7 @@ var TreeMap = function(canvas_id){
 TreeMap.prototype.render = function(){
   this.chart = zingchart.render({
     id: this.id,
-    data: this.config(this.series),
+    data: this.config(this.series, this.options),
     height: "100%",
     width: "100%"
   })
@@ -167,6 +179,7 @@ TreeMap.prototype.update = function(){
   if (this.canvas == undefined) return;
 
   this.series = JSON.parse(this.canvas.dataset.values);
+  this.options = JSON.parse(this.canvas.dataset.options);
   this.chart.clear()
   this.render()
 }

@@ -6,7 +6,7 @@ class AppraisalHelper
   attr_reader :appraisal
 
   def self.build_appraisal
-    request = Request.new('SOA-Upstart8', 'ShowMeSecurity-api', '')
+    request = Request.new('XuVic', 'YPBT-app', '')
     gateway = CodePraise::Gateway::Api.new(CodePraise::App.config)
     result = gateway.appraise(request)
     CodePraise::Representer::Appraisal

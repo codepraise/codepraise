@@ -12,6 +12,8 @@
     --light-text: #A8B2B8;
     --sub-dark-color: #0EA0CC;
     --sub-light-color: #EDF5FC;
+    --chart-dark: #4F79B6;
+    --chart-light: #D5DEEE;
 }
 
 body{
@@ -84,10 +86,10 @@ body{
     margin-right: 5%;
 }
 .bars .bar .line .progress{
-    background-color: var(--main-light-color);
+    background-color: var(--chart-light);
 }
 .bars .bar .line .progress-bar{
-    background-color: var(--main-dark-color);
+    background-color: var(--chart-dark);
 }
 .bars .bar .number{
     flex: 1;
@@ -192,6 +194,7 @@ body{
 .small_table .infos .info .name{
     flex: 10;
     display: flex;
+    margin-right: 1%;
 }
 
 .small_table .infos .info .number{
@@ -213,4 +216,11 @@ body{
     height: 40vh;
     overflow: auto;
     display: block;
+}
+
+.popover{
+    margin-top: 5%;
+    height: fit-content;
+    max-width: 50vw;
+    white-space:nowrap;
 }

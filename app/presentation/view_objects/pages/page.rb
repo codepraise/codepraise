@@ -53,7 +53,7 @@ module Views
     end
 
     def contributors
-      folder.credit_share.contributors
+      folder.credit_share.contributors.sort_by(&:email_id)
     end
 
     def folder_filter(target_folder = nil)
@@ -106,6 +106,34 @@ module Views
       "#{path.directory}/#{path.filename}"
     end
 
+    def contributor_ids
+      contributors.map(&:email_id)
+    end
+
+    def ruby_files(email_id = nil)
+      folder_filter.files(email_id).select do |file|
+        ruby_file?(file)
+      end
+    end
+
+    def file_selector
+      folder_filter.file_selector
+    end
+
+    def ruby_file?(file)
+      File.extname(file.file_path.filename) == '.rb'
+    end
+
+    def total_ruby_code(email_id = nil)
+      ruby_files.reduce(0) do |pre, file|
+        if email_id
+          pre + file.credit_share.productivity_credit['line_credits'][email_id].to_i
+        else
+          pre + file.total_line_credits
+        end
+      end
+    end
+
     def size(type)
       case type
       when 'line'
@@ -121,6 +149,18 @@ module Views
       when 'offense'
         folder_filter.total_offenses.count
       end
+    end
+
+    def max_addition(unit, between)
+      commits_filter.by(unit, between).map(&:total_addition_credits).max
+    end
+
+    def max_deletion(unit, between)
+      commits_filter.by(unit, between).map(&:total_deletion_credits).max
+    end
+
+    def owned(file, email_id)
+      file.line_percentage[email_id].to_i >= threshold('ownership')
     end
   end
 end

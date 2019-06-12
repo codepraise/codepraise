@@ -46,6 +46,10 @@ module Views
         email_id ? select_by_email_id(files, email_id) : files
       end
 
+      def ruby_files(email_id = nil, root_folder = nil)
+        file_selector.ruby_files.unwrap
+      end
+
       def file_selector(root_folder = nil)
         FileSelector.new(files(nil, root_folder)).selector
       end
@@ -122,9 +126,15 @@ module Views
         email_id ? select_by_email_id(all_methods, email_id) : all_methods
       end
 
+      def owned_methods(email_id, folder = nil)
+        all_methods(nil, folder).select do |method|
+          method.line_percentage[email_id].to_i >= threshold
+        end
+      end
+
       def complexity_methods(email_id = nil)
         all_methods.select do |method|
-          method.complexity > 18 &&
+          method.complexity >= 15 &&
             (email_id ? method.line_percentage[email_id].to_i >= threshold : true)
         end
       end
@@ -157,14 +167,14 @@ module Views
         !folder.test_cases.is_a?(String)
       end
 
-      def find_folder(folder = self, folder_path = nil)
+      def find_folder(folder_path = nil, folder = self)
         return folder unless folder_path
 
         return folder if folder.path == folder_path
 
         if folder.any_subfolders?
           folder.subfolders.map do |subfolder|
-            find_folder(subfolder, folder_path)
+            find_folder(folder_path, subfolder)
           end.reject(&:nil?).first
         end
       end
@@ -198,7 +208,8 @@ module Views
 
       def select_by_email_id(array, email_id)
         array.select do |entity|
-          entity.line_percentage[email_id].to_i >= threshold
+          max = entity.line_percentage.values.max
+          entity.line_percentage[email_id] == max
         end
       end
 

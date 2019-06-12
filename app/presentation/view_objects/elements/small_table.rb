@@ -9,7 +9,7 @@ module Views
       end
 
       def to_element
-        "<div class='small_table element'>" \
+        "<div class='small_table '>" \
           "<div class='title'>#{@title}</div>" \
           "#{infos_element}" \
         '</div>'

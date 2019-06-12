@@ -26,6 +26,23 @@
   max-height: 10vh;
 }
 
+.dashboard .top-bar .logo{
+  align-items: baseline;
+  display: flex;
+  justify-content: baseline;
+}
+
+#logo1{
+  width: 12vw;
+  height: 5vh;
+}
+
+#logo2{
+  width: 50pt;
+  height: 2%;
+  margin-bottom: 3%;
+}
+
 #root .bg .search-bar{
   flex: 0;
   position: relative;
@@ -81,3 +98,5 @@
 .projects .card a{
   color: white;
 }
+
+

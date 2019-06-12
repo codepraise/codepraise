@@ -6,56 +6,81 @@ module Views
   class Ownership < Page
     def a_board
       title = 'Collective Ownership'
-      subtitle = 'Collective Score is the dispersion level of contribution.'
-      elements = collective_ownership
-      Element::Board.new(title, subtitle, elements)
+      elements = [collective_chart] + collective_ownership
+      Element::Board.new(title, elements)
     end
 
     def b_board
       title = 'Code Ownership'
       elements = [project_ownership_chart]
-      Element::Board.new(title, nil, elements)
+      Element::Board.new(title, elements)
     end
 
     def c_board
       title = "Ownership Distribution"
       # elements = [ownership_distribution]
       elements = [ownership_breakdown]
-      Element::Board.new(title, nil, elements)
+      Element::Board.new(title, elements)
     end
 
     def charts_update(params)
-      if params.keys.include?('path')
-        path = params['path'] || ''
-        [project_ownership_chart(path), ownership_breakdown(path)]
-      elsif params.keys.include?('email_id')
-        return [ownership_distribution] if params['email_id'] == 'total'
+      path = params['path'] || ''
+      [project_ownership_chart(path), ownership_breakdown(path)]
+    end
 
-        [individual_ownership(params['email_id'])]
+    def collective_chart
+      labels = ['Collective Score', 'Owned Folders', 'Owned Files']
+      dataset = contributor_ids.each_with_object({}) do |email_id, result|
+        result[email_id] = [
+          Math.percentage(ownership_credit[email_id], ownership_credit.values.sum),
+          Math.percentage( folder_filter.folders(email_id).count, all_folders_count),
+          Math.percentage(folder_filter.files(email_id).count, all_files_count)
+        ]
+      end
+      options = { title: 'Onwership Overview', scales: true, legend: true, stacked: true,
+                  color: 'contributors', x_type: 'linear', y_type: 'category' }
+      Element::Chart.new(labels, dataset, options, 'horizontalBar', "collective_ownership")
+    end
+
+    def all_folders_count
+      contributor_ids.reduce(0) do |pre, email_id|
+        pre + folder_filter.folders(email_id).count
+      end
+    end
+
+    def all_files_count
+      contributor_ids.reduce(0) do |pre, email_id|
+        pre + folder_filter.files(email_id).count
       end
     end
 
     def collective_ownership
-      contributors.map do |c|
-        lines = [[]]
-        lines.push(name: 'Collective Score', number: ownership_credit[c.email_id],
-                   max: ownership_credit.values.sum)
-        lines.push(name: 'Owned Folders', number: folder_filter.folders(c.email_id).count,
-                   max: folder_filter.folders.count)
-        lines.push(name: 'Owned Files', number: folder_filter.files(c.email_id).count,
-                   max: folder_filter.files.count)
-        Element::Bar.new(c.email_id, lines)
+      # contributors.map do |c|
+      #   lines = [[]]
+      #   lines.push(name: 'Collective Score', number: ownership_credit[c.email_id],
+      #              max: ownership_credit.values.sum)
+      #   lines.push(name: 'Owned Folders', number: folder_filter.folders(c.email_id).count,
+      #              max: folder_filter.folders.count)
+      #   lines.push(name: 'Owned Files', number: folder_filter.files(c.email_id).count,
+      #              max: folder_filter.files.count)
+      #   Element::Bar.new(c.email_id, lines)
+      # end
+      contributor_ids.map do |email_id|
+        dataset = [{ name: 'CollectiveScore', number: ownership_credit[email_id] },
+                   { name: 'OwnedFolders', number: folder_filter.folders(email_id).count },
+                   { name: 'OwnedFiles', number: folder_filter.files(email_id).count }]
+        Element::SmallTable.new(email_id, dataset)
       end
     end
 
     def project_ownership_chart(foldername=nil)
       if foldername&.include?('basefiles')
         foldername = foldername.sub(/\/basefiles/, '')
-        selected_folder = folder_filter.find_folder(folder, foldername)
+        selected_folder = folder_filter.find_folder(foldername, folder)
         return files_chart(selected_folder)
       end
 
-      selected_folder ||= folder_filter.find_folder(folder, foldername)
+      selected_folder ||= folder_filter.find_folder(foldername, folder)
 
       return nil unless selected_folder
 
@@ -74,7 +99,9 @@ module Views
         dataset[email_id] = folder_ownership(folder.subfolders, email_id)
         dataset[email_id] << basefile_ownership(folder.base_files, email_id) if folder.any_base_files?
       end
-      Element::Chart.new(labels, dataset, { title: 'Code Ownership in different folders', stacked: true, scales: true, update: 'label', legend: true }, 'bar', 'project_ownership')
+      options =  { title: 'Code Ownership in different folders', stacked: true, scales: true,
+                   color: 'contributors', legend: true }
+      Element::Chart.new(labels, dataset, options, 'bar', 'project_ownership')
     end
 
     def files_chart(folder)
@@ -83,7 +110,9 @@ module Views
       contributors.map(&:email_id).each do |email_id|
         dataset[email_id] = folder_ownership(folder.base_files, email_id)
       end
-      Element::Chart.new(labels, dataset, { title: 'Code Ownership in different folders', stacked: true, scales: true, update: 'label', legend: true  }, 'bar', 'project_ownership')
+      options =  { title: 'Code Ownership in different folders', stacked: true, scales: true,
+                   color: 'contributors', legend: true }
+      Element::Chart.new(labels, dataset, options, 'bar', 'project_ownership')
     end
 
     def ownership_breakdown(path = nil)
@@ -105,9 +134,9 @@ module Views
     def find_folder(path)
       if path&.include?('basefiles')
         foldername = path.sub(/\/basefiles/, '')
-        folder_filter.find_folder(folder, foldername)
+        folder_filter.find_folder(foldername, folder)
       else
-        folder_filter.find_folder(folder, path)
+        folder_filter.find_folder(path, folder)
       end
     end
 
@@ -127,76 +156,6 @@ module Views
       folder.credit_share.productivity_credit['line_credits'].map do |k, v|
         "#{k}: #{v.round}"
       end.join('<br>')
-    end
-
-    def individual_ownership(email_id = nil)
-      email_id ||= contributors.first.email_id
-      dataset = individual_stucture(folder, {}, email_id)
-      dataset = nil if folder.line_percentage[email_id].zero?
-      options = { title: "#{email_id} Code Onwership" }
-      Element::Chart.new(nil, [dataset], options, 'treemap', 'treemap')
-    end
-
-    def ownership_distribution
-      dataset = ownership_structure(folder, {})
-      Element::Chart.new(nil, [dataset], {}, 'treemap', 'treemap')
-    end
-
-    def individual_stucture(folder, hash, email_id)
-      if folder.any_subfolders?
-        hash['children'] = folder.subfolders.map do |subfolder|
-          individual_stucture(subfolder, {}, email_id)
-        end
-      else
-        hash['value'] = folder.line_percentage[email_id].to_i
-      end
-      hash['text'] = folder.path
-      hash
-    end
-
-    def ownership_structure(folder, hash)
-      hash['text'] = folder.path
-      if folder.any_subfolders?
-        hash['children'] = folder.subfolders.map do |subfolder|
-          ownership_structure(subfolder, {})
-        end
-        hash['children'] << base_files_children(folder) if folder.any_base_files?
-      else
-        hash['children'] = contributors_children(folder)
-      end
-      hash
-    end
-
-    def contributors_children(folder)
-      contributors.map do |c|
-        {
-          text: c.email_id,
-          value: folder.line_percentage[c.email_id].to_i
-        }
-      end
-    end
-
-    def base_files_children(folder)
-      line_credits = folder.base_files.map do |file|
-        file.credit_share.productivity_credit['line_credits']
-      end
-      line_credits = line_credits.reduce(Hash.new(0)) do |pre, hash|
-        hash.each do |k, v|
-          pre[k] += v
-        end
-        pre
-      end
-
-      children = contributors.map do |c|
-        {
-          text: c.email_id,
-          value: Math.percentage(line_credits[c.email_id].to_i, line_credits.values.sum)
-        }
-      end
-      {
-        text: 'basefiles',
-        children: children
-      }
     end
 
     def page

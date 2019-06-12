@@ -5,15 +5,15 @@ module Views
     class Board
       attr_reader :title, :elements
 
-      def initialize(title, subtitle, elements)
+      def initialize(title, elements)
         @title = title
-        @subtitle = subtitle
         @elements = elements
       end
 
-      def subtitle
+      def subtitle(title, content)
         "<a href='#' data-toggle='popover' data-placement='right'" \
-        "data-content='#{@subtitle}' data-html='true' data-container='body'> Click here to see the description." \
+        "data-content='#{content}' title='#{title}' data-html='true' data-container='body'>" \
+        "<i class='fas fa-info-circle'></i> Description." \
         '</a>'
       end
     end

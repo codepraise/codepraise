@@ -16,16 +16,18 @@
                             <%= @panel_view.a_board.title %>
                         </div>
                         <div class="subtitle">
-                            <%= @panel_view.a_board.subtitle %>
+                            <%= @panel_view.a_board.subtitle('test', 'test') %>
                         </div>
                     </div>
                     <div class="elements ">
-                    <% @panel_view.a_board.elements.each do |element| %>
-                        <div class="element my-custom-scrollbar">
-                            <div class="bar-title"> <%= element.title %> </div>
+                    <div class="element">
+                        <%= @panel_view.a_board.elements[0].to_element %>
+                    </div>
+                    <div class="element my-custom-scrollbar tables">
+                        <% @panel_view.a_board.elements[1..-1].each do |element| %>
                             <%= element.to_element %>
-                        </div>
-                    <% end %>
+                        <% end %>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -36,7 +38,7 @@
                             <%= @panel_view.b_board.title %>
                         </div>
                         <div class="subtitle">
-                            <%= @panel_view.b_board.subtitle %>
+                            <%= @panel_view.b_board.subtitle('test', 'test') %>
                         </div>
                     </div>
                     <div class="elements ">
@@ -56,7 +58,7 @@
                             <%= @panel_view.c_board.title %>
                         </div>
                         <div class="subtitle">
-                            <%= @panel_view.c_board.subtitle %>
+                            <%= @panel_view.c_board.subtitle('test', 'test') %>
                         </div>
                 </div>
                 <div class="elements ">
@@ -76,7 +78,7 @@
                     <%= @panel_view.d_board.title %>
                 </div>
                 <div class="subtitle">
-                    <%= @panel_view.d_board.subtitle %>
+                    <%= @panel_view.d_board.subtitle('test', 'test') %>
                 </div>
             </div>
             <div class="tools">
@@ -86,16 +88,16 @@
                     </div>
                     <select class="custom-select" id="type">
                         <option value="complexity_method">
-                            has complexity method
+                            the highest complex method
                         </option>
                         <option value="offenses">
-                            has code style offense
+                            code style offenses count
                         </option>
                         <option value="documentation">
-                            without documentation
+                            with/without documentation
                         </option>
                         <option value="low_coverage">
-                            low test coverage
+                            test coverage
                         </option>
                     </select>
                 </div>

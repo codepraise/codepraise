@@ -14,6 +14,7 @@ module CodePraise
     plugin :all_verbs
     plugin :multi_route
     plugin :caching
+    plugin :static, ['/images']
     plugin :partials, views: 'app/presentation/views'
     plugin :render, engine: 'erb', views: 'app/presentation/views'
     plugin :assets, path: 'app/presentation/assets',
@@ -22,6 +23,7 @@ module CodePraise
                           'functionality.css', 'files.css', 'progress_bar.css'],
                     js: ['share.js', 'options.js', 'chart.js', 'dashboard.js',
                          'home.js', 'main.js']
+
 
     use Rack::MethodOverride
 

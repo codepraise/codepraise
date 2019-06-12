@@ -13,13 +13,15 @@
                             <%= @panel_view.a_board.title %>
                         </div>
                         <div class="subtitle">
-                            <%= @panel_view.a_board.subtitle %>
+                            <%= @panel_view.a_board.subtitle('test', 'test') %>
                         </div>
                     </div>
                     <div class="elements my-custom-scrollbar">
-                        <% @panel_view.a_board.elements.each do |element| %>
-                            <div class="bar-title"> <%= element.title %> </div>
-                            <div class="element">
+                        <div class="element">
+                            <%= @panel_view.a_board.elements[0].to_element %>
+                        </div>
+                        <% @panel_view.a_board.elements[1..-1].each do |element| %>
+                            <div class="element table">
                                 <%= element.to_element %>
                             </div>
                         <% end %>
@@ -33,7 +35,7 @@
                             <%= @panel_view.b_board.title %>
                         </div>
                         <div class="subtitle">
-                            <%= @panel_view.b_board.subtitle %>
+                            <%= @panel_view.b_board.subtitle('test', 'test') %>
                         </div>
                     </div>
                     <div class="tools ">
@@ -56,7 +58,7 @@
                         <%= @panel_view.c_board.title %>
                     </div>
                     <div class="subtitle">
-                        <%= @panel_view.c_board.subtitle %>
+                        <%= @panel_view.c_board.subtitle('test', 'test') %>
                     </div>
                 </div>
                 <div class="elements ">

@@ -72,13 +72,25 @@
     display: flex;
     flex-wrap: wrap;
     padding: 0 2% 0 5%;
+    flex-direction: column;
 }
 
 .quality .panel .top .right .a-board .element{
-    min-width: 20vw;
-    max-width: 20vw;
     max-height: 20vh;
     flex: 1;
+
+}
+
+.quality .panel .top .right .a-board .tables{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 3%;
+}
+
+.quality .panel .top .right .a-board .tables .small_table{
+    min-width: 12vw;
+    max-width: 12vw;
+    max-height: 20vh;
 }
 
 .quality .panel .top .right .a-board .element .bar{

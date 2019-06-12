@@ -8,7 +8,7 @@ module Views
 
     def initialize(appraisal, updated_at, root = nil)
       super(appraisal, updated_at)
-      @root = root.nil? ? folder : folder_filter.find_folder(folder, root)
+      @root = root.nil? ? folder : folder_filter.find_folder(root)
       @state = 'folder'
       if @root.nil?
         @root = folder_filter.find_file(root)
@@ -18,21 +18,20 @@ module Views
 
     def a_board
       title = 'Breakdown Information'
-      subtitle = ''
       elements = [size_infos, structure_infos, quality_infos, ownership_infos]
-      Element::Board.new(title, subtitle, elements)
+      Element::Board.new(title, elements)
     end
 
     def b_board
       title = 'Folder/File Ownership Breakdown'
       elements = [break_down]
-      Element::Board.new(title, nil, elements)
+      Element::Board.new(title, elements)
     end
 
     def c_board
       title = 'Folder/File Daily Progress'
       elements = [progress]
-      Element::Board.new(title, nil, elements)
+      Element::Board.new(title, elements)
     end
 
     def folder_tree
@@ -56,7 +55,7 @@ module Views
           dataset[k] << root.line_percentage[k].to_i
         end
       end
-      options = { stacked: true, legend: true, title: 'code ownership' }
+      options = { stacked: true, legend: true, title: 'code ownership', color: 'contributors' }
       Element::Chart.new(labels, dataset, options, 'bar', 'break_down')
     end
 
@@ -66,11 +65,12 @@ module Views
       labels = commits.map(&:date)
       dataset = {
         addition: commits.map(&:total_addition_credits),
-        deletion: commits.map(&:total_deletion_credits)
+        deletion: commits.map { |c| c.total_deletion_credits * -1 }
       }
-      options = { legend: true, color: 'colorful', title: 'folder/file progress',
-                  x_type: 'time', time_unit: 'day' }
-      Element::Chart.new(labels, dataset, options, 'line', 'progress')
+      max = commits.map(&:total_addition_credits).max
+      options = { legend: true, color: 'category', title: 'folder/file progress',
+                  x_type: 'time', time_unit: 'day', y_min: max * -1 }
+      Element::Chart.new(labels, dataset, options, 'bar', 'progress')
     end
 
     def size_infos
@@ -99,7 +99,7 @@ module Views
       infos << { name: 'Avg. Complexity', number: avg_complexity }
       infos << { name: 'Number of Code Style Offense', number: offense_count }
       infos << { name: 'Number of Documentation', number: documentation_count }
-      infos << { name: 'Test Coverage', number: test_coverage }
+      infos << { name: 'Test Coverage', number: "#{test_coverage}%" }
       Element::SmallTable.new('Quality', infos)
     end
 

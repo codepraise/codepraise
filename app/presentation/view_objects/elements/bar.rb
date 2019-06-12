@@ -32,7 +32,7 @@ module Views
       end
 
       def to_element
-        "<div class='bars element'>" \
+        "<div class='bars '>" \
           "#{first_line(lines[0])}" \
           "#{lines[1..-1].map { |line| line_element(line) }.join('')}" \
         '</div>'

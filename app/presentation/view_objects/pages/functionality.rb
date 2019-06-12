@@ -6,23 +6,20 @@ module Views
   class Functionality < Page
     def a_board
       title = 'Test Cases with Different KeyWords'
-      subtitle = 'click the bar to change other charts.'
       elements = [keywords_chart]
-      Element::Board.new(title, subtitle, elements)
+      Element::Board.new(title, elements)
     end
 
     def b_board
       title = 'Individual Contribution'
-      subtitle = '(test case count)'
       elements = [key_word_contributor_chart]
-      Element::Board.new(title, subtitle, elements)
+      Element::Board.new(title, elements)
     end
 
     def c_board
       title = 'Test Case Detail'
-      subtitle = ''
       elements = [test_cases_detail_table]
-      Element::Board.new(title, subtitle, elements)
+      Element::Board.new(title, elements)
     end
 
     def charts_update(params)
@@ -37,7 +34,8 @@ module Views
         test_cases_with(label).count
       end
       options = { title: 'KeyWord Test Cases', scales: true,
-                  y_ticked: true, y_min: 0, y_max: test_cases.count }
+                  y_ticked: true, y_min: 0, y_max: test_cases.count,
+                  color: 'same' }
       Element::Chart.new(labels, dataset,
                          options, 'bar', 'keywords')
     end
@@ -52,7 +50,7 @@ module Views
           test_case.contributors[contributor.email_id] == max
         end.count
       end
-      options = { title: "#{key_word} Contribution", scales: true}
+      options = { title: "#{key_word} Contribution", scales: true, color: 'contributors'}
       Element::Chart.new(labels, dataset,
                          options, 'bar', 'key_word_contributor')
     end

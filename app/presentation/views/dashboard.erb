@@ -4,7 +4,10 @@
 <div class="dashboard">
     <div class="top-bar ">
         <div class="logo">
-            <a href="/"> <span>CodePraise</span> </a>
+            <a href="/">
+                <img id="logo2" src="https://i.imgur.com/9GxDAQv.png" alt="">
+                <span>CodePraise</span>
+            </a>
         </div>
         <div class="project_name">
             <span>
@@ -46,28 +49,12 @@
             </a>
             <div class="separate">
             </div>
-            <a class="category" id='productivity_page' href="<%="#{@panel_view.project_url}?category=productivity"%>">
-                <div class="icon">
-                    <i class="fas fa-dumbbell"></i>
-                </div>
-                <div class="text">
-                    Productivity
-                </div>
-            </a>
             <a class="category" id='quality_page'  href="<%="#{@panel_view.project_url}?category=quality"%>">
                 <div class="icon">
                     <i class="fas fa-drafting-compass"></i>
                 </div>
                 <div class="text">
                     Quality
-                </div>
-            </a>
-            <a class="category" id='ownership_page' href="<%="#{@panel_view.project_url}?category=ownership"%>">
-                <div class="icon">
-                    <i class="fas fa-chart-bar"></i>
-                </div>
-                <div class="text">
-                    Ownership
                 </div>
             </a>
             <a class="category" id='functionality_page' href="<%="#{@panel_view.project_url}?category=functionality"%>">
@@ -78,8 +65,24 @@
                     Functionality
                 </div>
             </a>
+            <a class="category" id='ownership_page' href="<%="#{@panel_view.project_url}?category=ownership"%>">
+                <div class="icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="text">
+                    Ownership
+                </div>
+            </a>
+            <a class="category" id='productivity_page' href="<%="#{@panel_view.project_url}?category=productivity"%>">
+                <div class="icon">
+                    <i class="fas fa-dumbbell"></i>
+                </div>
+                <div class="text">
+                    Productivity
+                </div>
+            </a>
         </div>
-        <div class="content main" data-owner="<%= @panel_view.project_owner %>" data-project="<%= @panel_view.project_name %>" data-category="<%=@panel_view.page%>" >
+        <div class="content main" data-owner="<%= @panel_view.project_owner %>" data-project="<%= @panel_view.project_name %>" data-category="<%=@panel_view.page%>" data-contributors='<%=@panel_view.contributor_ids%>'>
             <div class="alert alert-warning alert-dismissible hidden" role="alert">
                 <span></span>
                 <button type="button" class="close">

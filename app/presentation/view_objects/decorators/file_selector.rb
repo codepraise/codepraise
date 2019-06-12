@@ -86,6 +86,19 @@ module Views
           true
         end
 
+        def has_method(files)
+          files.select do |file|
+            file.to_h[:methods].count >= 1
+          end
+        end
+
+        def belong(files, email_id)
+          files.select do |file|
+            max = file.line_percentage.values.max
+            file.line_percentage[email_id] == max
+          end
+        end
+
         def ruby_file?(file)
           File.extname(file.file_path.filename) == '.rb'
         end
