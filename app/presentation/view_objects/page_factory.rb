@@ -11,7 +11,7 @@ module Views
       'ownership' => Ownership,
       'functionality' => Functionality,
       'files' => Files
-    }
+    }.freeze
 
     def self.create_page(appraisal, page, root = nil)
       content = CodePraise::Representer::ProjectFolderContributions.new(OpenStruct.new)

@@ -6,7 +6,7 @@ module Views
   class Ownership < Page
     def a_board
       title = 'Collective Ownership'
-      elements = [collective_chart] + collective_ownership
+      elements = [collective_chart, collective_ownership]
       Element::Board.new(title, elements)
     end
 
@@ -20,7 +20,7 @@ module Views
       title = "Ownership Distribution"
       # elements = [ownership_distribution]
       elements = [ownership_breakdown]
-      Element::Board.new(title, elements)
+      Board.new(title, elements)
     end
 
     def charts_update(params)
@@ -38,8 +38,8 @@ module Views
         ]
       end
       options = { title: 'Onwership Overview', scales: true, legend: true, stacked: true,
-                  color: 'contributors', x_type: 'linear', y_type: 'category' }
-      Element::Chart.new(labels, dataset, options, 'horizontalBar', "collective_ownership")
+                  color: 'contributors', x_type: 'linear', y_type: 'category', x_display: 0 }
+      Chart.new(labels, dataset, options, 'horizontalBar', "collective_ownership")
     end
 
     def all_folders_count
@@ -55,22 +55,13 @@ module Views
     end
 
     def collective_ownership
-      # contributors.map do |c|
-      #   lines = [[]]
-      #   lines.push(name: 'Collective Score', number: ownership_credit[c.email_id],
-      #              max: ownership_credit.values.sum)
-      #   lines.push(name: 'Owned Folders', number: folder_filter.folders(c.email_id).count,
-      #              max: folder_filter.folders.count)
-      #   lines.push(name: 'Owned Files', number: folder_filter.files(c.email_id).count,
-      #              max: folder_filter.files.count)
-      #   Element::Bar.new(c.email_id, lines)
-      # end
-      contributor_ids.map do |email_id|
-        dataset = [{ name: 'CollectiveScore', number: ownership_credit[email_id] },
-                   { name: 'OwnedFolders', number: folder_filter.folders(email_id).count },
-                   { name: 'OwnedFiles', number: folder_filter.files(email_id).count }]
-        Element::SmallTable.new(email_id, dataset)
+      thead = ['Contributor ID', 'CollectciveScore', 'OwnedFolders', 'OwnedFiles']
+      tbody = contributor_ids.each_with_object([]) do |email_id, result|
+        result << [email_id, ownership_credit[email_id],
+                   folder_filter.folders(email_id).count,
+                   folder_filter.files(email_id).count]
       end
+      Table.new(thead, tbody, 'collective_ownership_table')
     end
 
     def project_ownership_chart(foldername=nil)

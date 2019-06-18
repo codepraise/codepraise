@@ -14,6 +14,27 @@
     border-bottom: solid 1pt var(--light-text);
 }
 
+.quality .title-bar .tabs{
+    margin-left: 1%;
+    display: flex;
+    flex: 1;
+    align-self: flex-end;
+}
+
+.quality .title-bar .tab{
+    max-width: fit-content;
+    margin-left: 0.2%;
+    padding: 0.3%;
+    border: solid 1pt var(--light-text);
+    border-bottom: none;
+    white-space: nowrap;
+}
+
+.quality .title-bar .tabs .selected{
+    background-color: var(--light-text);
+}
+
+
 .quality .title-bar .tools{
     flex: 1;
 }
@@ -55,18 +76,18 @@
     margin-right: 1vw;
 }
 
-.quality .panel .top .right{
+.quality .panel .top .left{
     flex: 1;
     display: flex;
 }
 
-.quality .panel .top .right .a-board .titles{
+.quality .panel .top .left .a-board .titles{
     flex: 1;
     text-align: center;
     padding: 1% 0 0 0;
 }
 
-.quality .panel .top .right .a-board .elements{
+.quality .panel .top .left .a-board .elements{
     margin-top: 3%;
     flex: 10;
     display: flex;
@@ -75,48 +96,30 @@
     flex-direction: column;
 }
 
-.quality .panel .top .right .a-board .element{
+.quality .panel .top .left .a-board .element{
     max-height: 20vh;
     flex: 1;
 
 }
 
-.quality .panel .top .right .a-board .tables{
+.quality .panel .top .left .a-board .tables{
     display: flex;
     flex-wrap: wrap;
     margin-top: 3%;
 }
 
-.quality .panel .top .right .a-board .tables .small_table{
-    min-width: 12vw;
-    max-width: 12vw;
-    max-height: 20vh;
-}
-
-.quality .panel .top .right .a-board .element .bar{
-    margin-bottom: 1%;
-}
-
-.quality .panel .top .right .a-board .element .bar .name{
-    flex: 6;
-}
-
-.quality .panel .top .right .a-board .element .bar .line{
-    flex: 3;
-}
-
-.quality .panel .top .left{
+.quality .panel .top .right{
     flex: 1;
     display: flex;
 }
 
-.quality .panel .top .left .b-board .titles{
+.quality .panel .top .right .b-board .titles{
     flex: 1;
     text-align: center;
     padding: 1% 0 0 0;
 }
 
-.quality .panel .top .left .b-board .elements{
+.quality .panel .top .right .b-board .elements{
     flex: 10;
     display: flex;
     padding: 0 2% 0 2%;

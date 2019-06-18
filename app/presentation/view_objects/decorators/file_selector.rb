@@ -43,7 +43,11 @@ module Views
 
         def too_complexity(files, threshold)
           files.select do |file|
-            file.complexity&.average.to_i > threshold
+            if file.complexity.is_a?(Float)
+              file.complexity.to_i > threshold
+            else
+              file.complexity&.average.to_i > threshold
+            end
           end
         end
 
@@ -89,6 +93,28 @@ module Views
         def has_method(files)
           files.select do |file|
             file.to_h[:methods].count >= 1
+          end
+        end
+
+        def complexities(files)
+          files.map do |file|
+            if file.complexity.is_a?(Float)
+              file.complexity
+            else
+              file.complexity&.average
+            end
+          end.reject(&:nil?)
+        end
+
+        def to_methods(files)
+          files.map do |file|
+            file.to_h[:methods]
+          end.flatten
+        end
+
+        def lines(files)
+          files.map do |file|
+            file.total_line_credits
           end
         end
 

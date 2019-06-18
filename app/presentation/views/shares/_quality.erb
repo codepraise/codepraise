@@ -3,19 +3,22 @@
         <div class="title">
             Quality
         </div>
-        <div class="tools">
-            <button class="btn btn-dark" id="switch">Quality Problem Distribution</button>
+        <div class="tabs ">
+            <div class="tab selected clickable switch" id='page1'>
+                Page One
+            </div>
+            <div class="tab clickable switch" id='page2'>
+                Page Two
+            </div>
         </div>
     </div>
     <div class="panel">
         <div class="top ">
-            <div class="right">
+            <div class="left">
                 <div class="a-board board ">
                     <div class="titles ">
                         <div class="title">
                             <%= @panel_view.a_board.title %>
-                        </div>
-                        <div class="subtitle">
                             <%= @panel_view.a_board.subtitle('test', 'test') %>
                         </div>
                     </div>
@@ -24,20 +27,16 @@
                         <%= @panel_view.a_board.elements[0].to_element %>
                     </div>
                     <div class="element my-custom-scrollbar tables">
-                        <% @panel_view.a_board.elements[1..-1].each do |element| %>
-                            <%= element.to_element %>
-                        <% end %>
+                        <%= @panel_view.a_board.elements[1].to_element %>
                     </div>
                     </div>
                 </div>
             </div>
-            <div class="left">
+            <div class="right">
                 <div class="b-board board ">
                     <div class="titles ">
                         <div class="title">
                             <%= @panel_view.b_board.title %>
-                        </div>
-                        <div class="subtitle">
                             <%= @panel_view.b_board.subtitle('test', 'test') %>
                         </div>
                     </div>
@@ -56,8 +55,6 @@
                 <div class="titles ">
                         <div class="title">
                             <%= @panel_view.c_board.title %>
-                        </div>
-                        <div class="subtitle">
                             <%= @panel_view.c_board.subtitle('test', 'test') %>
                         </div>
                 </div>
@@ -76,8 +73,6 @@
             <div class="titles ">
                 <div class="title">
                     <%= @panel_view.d_board.title %>
-                </div>
-                <div class="subtitle">
                     <%= @panel_view.d_board.subtitle('test', 'test') %>
                 </div>
             </div>
@@ -113,12 +108,12 @@
                     </select>
                 </div>
             </div>
-            <div class="elements ">
-                <% @panel_view.d_board.elements.each do |element| %>
-                <div class="element">
-                <%= element.to_element %>
+            <div class="elements">
+                <div class="elements">
+                    <% @panel_view.d_board.elements.each do |element| %>
+                        <%= element.to_element %>
+                    <% end %>
                 </div>
-                <% end %>
             </div>
         </div>
     </div>

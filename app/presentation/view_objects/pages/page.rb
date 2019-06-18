@@ -6,6 +6,8 @@ require_relative '../elements/init'
 
 module Views
   class Page
+    include Element
+
     attr_reader :updated_at
 
     def initialize(appraisal, updated_at)
@@ -111,13 +113,13 @@ module Views
     end
 
     def ruby_files(email_id = nil)
-      folder_filter.files(email_id).select do |file|
-        ruby_file?(file)
-      end
+      file_selector.ruby_files.owned(email_id, threshold('ownership'))
+        .unwrap
     end
 
-    def file_selector
-      folder_filter.file_selector
+    def file_selector(files = nil)
+      files ||= folder_filter.files
+      Decorator::FileSelector.new(files).selector
     end
 
     def ruby_file?(file)
@@ -159,8 +161,37 @@ module Views
       commits_filter.by(unit, between).map(&:total_deletion_credits).max
     end
 
-    def owned(file, email_id)
-      file.line_percentage[email_id].to_i >= threshold('ownership')
+    def code_churn_hash(commits)
+      {
+        addition: commits.map(&:total_addition_credits),
+        deletion: commits.map { |c| c.total_deletion_credits * -1 }
+      }
+    end
+
+    def complexity(file)
+      file.complexity&.average.to_i
+    end
+
+    def file_path(file)
+      "#{file.file_path.directory}#{file.file_path.filename}"
+    end
+
+    def method_touched
+      @method_touched ||= contributor_ids.each_with_object({}) do |email_id, result|
+        result[email_id] =
+          productivity_credit['method_credits'][email_id].to_i
+      end
+    end
+
+    def line_count
+      productivity_credit['line_credits']
+    end
+
+    def commits_count
+      @commits_count ||=
+        contributor_ids.each_with_object({}) do |email_id, result|
+          result[email_id] = commits_filter.by_email_id(email_id).count
+        end
     end
   end
 end

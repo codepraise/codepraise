@@ -10,8 +10,6 @@
                 <div class="titles ">
                     <div class="title">
                         <%= @panel_view.a_board.title %>
-                    </div>
-                    <div class="subtitle">
                         <%= @panel_view.a_board.subtitle('test', 'test') %>
                     </div>
                 </div>
@@ -47,8 +45,6 @@
                     <div class="titles ">
                         <div class="title">
                             <%= @panel_view.b_board.title %>
-                        </div>
-                        <div class="subtitle">
                             <%= @panel_view.b_board.subtitle('test', 'test') %>
                         </div>
                     </div>
@@ -57,9 +53,7 @@
                         <%= @panel_view.b_board.elements[0].to_element %>
                     </div>
                     <div class="element tables">
-                        <% @panel_view.b_board.elements[1..-1].each do |element| %>
-                            <%= element.to_element %>
-                        <% end %>
+                        <%= @panel_view.b_board.elements[1].to_element %>
                     </div>
                     </div>
                 </div>
@@ -69,8 +63,6 @@
                     <div class="titles ">
                         <div class="title">
                             <%= @panel_view.c_board.title %>
-                        </div>
-                        <div class="subtitle">
                             <%= @panel_view.c_board.subtitle('test', 'test') %>
                         </div>
                     </div>

@@ -14,8 +14,6 @@
                     <div class="titles">
                         <div class="title">
                             <%= @panel_view.a_board.title %>
-                        </div>
-                        <div class="subtitle">
                             <%= @panel_view.a_board.subtitle('test', 'test') %>
                         </div>
                     </div>
@@ -34,8 +32,6 @@
                         <div class="titles ">
                             <div class="title">
                                 <%= @panel_view.b_board.title %>
-                            </div>
-                            <div class="subtitle">
                                 <%= @panel_view.b_board.subtitle('test', 'test') %>
                             </div>
                         </div>
@@ -53,10 +49,25 @@
                         <div class="titles ">
                             <div class="title">
                                 <%= @panel_view.c_board.title %>
-                            </div>
-                            <div class="subtitle">
                                 <%= @panel_view.c_board.subtitle('test', 'test') %>
                             </div>
+                        </div>
+                        <div class="tools">
+                                                <div class="double-slider" data-days="<%=@panel_view.days_count%>" data-first="<%=@panel_view.first_date%>" data-last="<%=@panel_view.last_date%>">
+                        <div class="label">
+                           <span class="title"> Date: </span> <span id="start"></span> ~ <span id="end"></span>
+                        </div>
+                        <div id="slider-range">
+                        </div>
+                    </div>
+                    <div class="selector">
+                        <div class="label title">Time Unit: </div>
+                        <select class="custom-select custom-select-lg mb-3" id="unit_selector">
+                        <option value="day">Day</option>
+                        <option value="week">Week</option>
+                        <option value="month">Month</option>
+                        </select>
+                    </div>
                         </div>
                         <div class="elements ">
                             <% @panel_view.c_board.elements.each do |element| %>

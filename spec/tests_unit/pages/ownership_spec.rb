@@ -4,7 +4,7 @@ require_relative '../../helpers/appraisal_helper.rb'
 
 describe Views::Ownership do
   before do
-    appraisal = AppraisalHelper.build_appraisal.appraisal
+    appraisal = AppraisalHelper.build_appraisal
     @page = Views::PageFactory.create_page(appraisal, 'ownership')
   end
 

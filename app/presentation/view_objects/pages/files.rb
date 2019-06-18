@@ -29,13 +29,19 @@ module Views
     end
 
     def c_board
-      title = 'Folder/File Daily Progress'
+      title = 'Folder/File Progress'
       elements = [progress]
       Element::Board.new(title, elements)
     end
 
     def folder_tree
       Element::FolderTree.new(folder, project_owner, project_name, name)
+    end
+
+    def charts_update(params)
+      between = params['between']&.split('_')
+      unit = params['unit'] || 'day'
+      [progress(unit, between)]
     end
 
     def break_down
@@ -56,21 +62,31 @@ module Views
         end
       end
       options = { stacked: true, legend: true, title: 'code ownership', color: 'contributors' }
-      Element::Chart.new(labels, dataset, options, 'bar', 'break_down')
+      Chart.new(labels, dataset, options, 'bar', 'break_down')
     end
 
-    def progress
-      commits = commits_filter.by('day')
-      commits = commits_filter.by_path(name) if name != 'root'
-      labels = commits.map(&:date)
-      dataset = {
-        addition: commits.map(&:total_addition_credits),
-        deletion: commits.map { |c| c.total_deletion_credits * -1 }
-      }
-      max = commits.map(&:total_addition_credits).max
-      options = { legend: true, color: 'category', title: 'folder/file progress',
-                  x_type: 'time', time_unit: 'day', y_min: max * -1 }
-      Element::Chart.new(labels, dataset, options, 'bar', 'progress')
+    def progress(unit = 'day', between = nil)
+      selected_commits = commits_filter.by(unit, between)
+      selected_commits = commits_filter.by_path(name, nil, unit, between) if name != 'root'
+      labels = selected_commits.map(&:date)
+      max = selected_commits.map(&:total_addition_credits).max
+      dataset = contributor_ids.each_with_object([]) do |email_id, result|
+        selected_commits = commits_filter.by(unit, between, email_id)
+        selected_commits = commits_filter.by_path(name, email_id, unit, between) if name != 'root'
+        result << {
+          "#{email_id} addition" => selected_commits.map(&:total_addition_credits),
+          "#{email_id} deletion" => selected_commits.map { |c| c.total_deletion_credits * -1 }
+        }
+      end
+      # dataset = {
+      #   addition: commits.map(&:total_addition_credits),
+      #   deletion: commits.map { |c| c.total_deletion_credits * -1 }
+      # }
+
+      options = { legend: true, color: 'multiple', title: 'folder/file progress',
+                  x_type: 'time', time_unit: 'day', y_min: max * -1, stacked: true,
+                  multiple: true }
+      Chart.new(labels, dataset, options, 'bar', 'progress')
     end
 
     def size_infos
@@ -78,7 +94,7 @@ module Views
       infos << { name: 'Line of Code', number: root.total_line_credits }
       infos << { name: 'Number of SubFolders', number: subfolders.count }
       infos << { name: 'Number of Files', number: files.count }
-      Element::SmallTable.new('Size', infos)
+      SmallTable.new('Size', infos)
     end
 
     def structure_infos
@@ -188,6 +204,24 @@ module Views
 
     def page
       'files'
+    end
+
+    def days_count
+      new_commits = commits_filter.by('day')
+      new_commits = commits_filter.by_path(name, nil) if name != 'root'
+      commits_filter(new_commits).all_dates.count
+    end
+
+    def first_date
+      new_commits = commits_filter.by('day')
+      new_commits = commits_filter.by_path(name, nil) if name != 'root'
+      commits_filter(new_commits).all_dates.first.strftime('%Y/%m/%d')
+    end
+
+    def last_date
+      new_commits = commits_filter.by('day')
+      new_commits = commits_filter.by_path(name, nil) if name != 'root'
+      commits_filter(new_commits).all_dates.last.strftime('%Y/%m/%d')
     end
   end
 end

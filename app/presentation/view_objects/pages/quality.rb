@@ -10,25 +10,26 @@ module Views
 
     def a_board
       title = 'Quality Problems'
-      elements = [quality_problem_percentage] + quality_problems
+      elements = [quality_problem_percentage, quality_problems]
       Element::Board.new(title, elements)
     end
 
     def b_board
-      title = 'File Churn'
+      title = 'Risky Files'
       elements = [file_churn]
       Element::Board.new(title, elements)
     end
 
     def c_board
-      title = 'Code Quality'
-      elements = code_quality
+      title = 'Individual Quality Contribution'
+      elements = [complexity_chart, documentation_chart,
+                  offenses_chart, test_chart]
       Element::Board.new(title, elements)
     end
 
     def d_board
       title = 'Quality Problem Distribution'
-      elements = [problem_distribution('complexity_method')]
+      elements = [problem_location('complexity_method')]
       Element::Board.new(title, elements)
     end
 
@@ -36,113 +37,60 @@ module Views
       type = params['type'] || 'complexity_method'
       email_id = nil
       email_id = params['email_id'] if params['email_id'] != 'total'
-      [problem_distribution(type, email_id)]
+      [problem_location(type, email_id)]
     end
 
     def quality_problems
-      # total_tech_debts = folder_filter.tech_debt.map(&:count)
-      # contributors.map do |c|
-      #   tech_debts = folder_filter.tech_debt(c.email_id).map(&:count)
-      #   lines = [[]]
-      #   TECH_DEBT.each_with_index do |category, i|
-      #     lines.push(name: category, number: tech_debts[i],
-      #                max: total_tech_debts[i])
-      #   end
-      #   Element::Bar.new(c.email_id, lines)
-      # end
-      contributor_ids.map do |email_id|
-        dataset = [{ name: 'Complex Methods', number: individual_tech_debts[email_id][0] },
-                   { name: 'CodeStyle Offenses', number: individual_tech_debts[email_id][1] },
-                   { name: 'Unannotated Class', number: individual_tech_debts[email_id][2] },
-                   { name: 'Low TestCoverage File', number: individual_tech_debts[email_id][3]},
-                   { name: 'Line of Ruby Code', number: total_ruby_code(email_id) }]
-        Element::SmallTable.new(email_id, dataset)
+      thead = ['Contributor ID', 'Complex Methods', 'CodeStyle Offenses', 'Unannotated Class',
+               'Low TestCoverage File', 'Line of Ruby Code']
+      tbody = contributor_ids.each_with_object([]) do |email_id, result|
+        result << [email_id] + quality_problems_hash[email_id] + [total_ruby_code(email_id)]
       end
-    end
-
-    def individual_tech_debts
-      contributor_ids.each_with_object({}) do |email_id, result|
-        result[email_id] = folder_filter.tech_debt(email_id).map(&:count)
-      end
-    end
-
-    def total_tech_debts
-      result = Array.new(4) { |v| v = 0 }
-      result.each_with_index do |_, i|
-        individual_tech_debts.values.each do |value|
-          result[i] += value[i]
-        end
-      end
-      result
+      Table.new(thead, tbody, 'quality_problems_table')
     end
 
     def quality_problem_percentage
       labels = ['Complex Methods', 'CodeStyle Offenses', 'Unannotated Class', 'Low TestCoverage File', 'Line of Ruby Code']
       dataset = contributor_ids.each_with_object({}) do |email_id, result|
         result[email_id] = [
-          Math.percentage(individual_tech_debts[email_id][0], total_tech_debts[0]),
-          Math.percentage(individual_tech_debts[email_id][1], total_tech_debts[1]),
-          Math.percentage(individual_tech_debts[email_id][2], total_tech_debts[2]),
-          Math.percentage(individual_tech_debts[email_id][3], total_tech_debts[3]),
+          Math.percentage(quality_problems_hash[email_id][0], total_qualit_problems[0]),
+          Math.percentage(quality_problems_hash[email_id][1], total_qualit_problems[1]),
+          Math.percentage(quality_problems_hash[email_id][2], total_qualit_problems[2]),
+          Math.percentage(quality_problems_hash[email_id][3], total_qualit_problems[3]),
           Math.percentage(total_ruby_code(email_id), total_ruby_code)
         ]
       end
-      options = { title: 'Individual Quality Problems Percentage', scales: true, legend: true, stacked: true,
-                  color: 'contributors', x_type: 'linear', y_type: 'category' }
-      Element::Chart.new(labels, dataset, options, 'horizontalBar', "quality_problem")
+      options = { title: 'Percentage of Individual Quality Problems', scales: true, legend: true, stacked: true,
+                  color: 'contributors', x_type: 'linear', y_type: 'category', x_display: 0 }
+      Chart.new(labels, dataset, options, 'horizontalBar', "quality_problem")
     end
 
-    def code_quality
-      [complexity_chart, documentation_chart,
-       offenses_chart, test_chart]
-    end
-
-    def problem_distribution(type, email_id = nil)
+    def problem_location(type, email_id = nil)
       dataset = {}
 
       folder_traversal(folder, dataset, type, email_id) unless type == 'low_coverage' && !test_coverage?
       options = {reverse: false}
       options[:reverse] = true if %w[low_coverage documentation].include?(type)
-      Element::Chart.new(nil, [dataset], options, 'treemap', 'problem_distribution')
-    end
-
-    def file_churn
-      max = 0
-      dataset = folder_filter.files.map do |file|
-        max = file.commits_count if file.commits_count > max
-        { x: file.commits_count, y: file.complexity&.average.to_i,
-          r: 10,
-          title: "#{file.file_path.directory}#{file.file_path.filename}"}
-      end
-      options = { title: 'File Churn vs Complexity', scales: true, legend: false,
-                  x_type: 'linear', tooltips: 'file_churn', axes_label: true,
-                  x_label: 'CommitCount', y_label: 'Complexity', y_ticked: true,
-                  y_max: 0, y_min: 0, color: 'same', y_reverse: true }
-      options[:line] = {
-        data: [{x: max / 2, y: 15, title: '_'}, {x: max, y: 15, title: '_'}]
-      }
-      Element::Chart.new(nil, dataset, options,
-                         'bubble', 'folder_churn')
+      Chart.new(nil, [dataset], options, 'treemap', 'problem_distribution')
     end
 
     def folder_traversal(folder, hash, type, email_id)
-      hash['text'] = folder.path
-      hash['children'] = []
+      hash[:text] = folder.path
+      hash[:children] = []
+      if folder.any_base_files?
+        hash[:children] += files_value(folder.base_files, type, email_id)
+      end
       if folder.any_subfolders?
-        hash['children'] = folder.subfolders.map do |subfolder|
+        hash[:children] = folder.subfolders.map do |subfolder|
           folder_traversal(subfolder, {}, type, email_id)
         end.reject(&:nil?)
       end
-      if folder.any_base_files?
-        hash['children'] += files_value(folder.base_files, type, email_id)
-      end
-      hash unless hash['children'].empty?
+      hash unless hash[:children].empty?
     end
 
     def files_value(files, method, email_id)
-      ruby_files = files.select do |file|
-        ruby_file?(file) && (email_id ? owned(file, email_id) : true)
-      end
+      ruby_files = file_selector(files).ruby_files
+        .owned(email_id, threshold('ownership')).unwrap
       ruby_files.map do |file|
         {
           text: file.file_path.filename,
@@ -152,9 +100,6 @@ module Views
     end
 
     def documentation(file)
-      # file.comments.select do |c|
-      #   c.is_documentation
-      # end.count + 1
       file.has_documentation ? 100 : 50
     end
 
@@ -174,75 +119,160 @@ module Views
       (file.test_coverage&.coverage.to_f * 100).round
     end
 
-    def complexity_chart
-      max = 0
-      max_method_count = 0
-      dataset = contributors.each.each_with_object({}) do |contributor, result|
-        methods = folder_filter.all_methods(contributor.email_id)
-        credit = avg_complexity(methods)
-        result[contributor.email_id] = [{
-          y: credit, x: methods.count,
-          r: 10
-        }]
-        max_method_count = methods.count if methods.count > max_method_count
-        max = credit if credit > max
+    def file_churn
+      max_commits = 0
+      dataset = ruby_files.map do |file|
+        max_commits = file.commits_count if file.commits_count > max_commits
+        { x: file.commits_count, y: complexity(file),
+          r: 10,
+          title: file_path(file) }
       end
-      options = { title: 'simplicity', scales: true, x_type: 'linear', legend: true,
-                  axes_label: true, x_label: 'method count', y_label: 'average complexity',
-                  y_ticked: true, y_max: (max+15), y_reverse: true, color: 'contributors'}
-      options['line'] = {
-        data: [{x:0, y: 15}, {x: max_method_count, y: 15}]
-      }
-      Element::Chart.new(nil, dataset, options, 'bubble', 'quality_chart')
+      line_data = [{ x: max_commits / 2, y: 15 }, { x: max_commits, y: 15 }]
+      options =
+        bubble_chart_options('File Churn vs Complexity', ['ComitCount', 'File Complexity'],
+                             [0, 0], true, 'same', line_data, 'file_churn', 'rect')
+      Chart.new(nil, {'ruby file' => dataset}, options,
+                'bubble', 'folder_churn')
+    end
+
+    def complexity_chart
+      max_complexity = individual_complexity.values.max
+      max_method_count = method_touched.values.max
+      dataset = complexity_dataset
+      line_data = [{ x:0, y: 15 }, { x: max_method_count, y: 15 }]
+      options = bubble_chart_options('simplicity', ['method count', 'average complexity'],
+                                     [max_complexity + 15, 0], true, 'contributors', line_data)
+      Chart.new(nil, dataset, options, 'bubble', 'quality_chart')
+    end
+
+    def complexity_dataset
+      contributor_ids.each.each_with_object({}) do |email_id, result|
+        result[email_id] = [{
+          y: individual_complexity[email_id],
+          x: method_touched[email_id], r: 10
+        }]
+      end
     end
 
     def offenses_chart
-      max = 0
+      max_offense = offense_dataset[:max_offense]
+      max_code = offense_dataset[:max_code]
+      dataset = offense_dataset[:dataset]
+      line_data = [{ x: 0, y: 0 }, { x: max_code, y: 0 }]
+      options = bubble_chart_options('clean code style', ['line of ruby code', 'offense count'],
+                                     [max_offense + 10, 0], true, 'contributors', line_data)
+      options[:line][:data].sort_by! { |data| data[:x] }
+      Chart.new(nil, dataset, options, 'bubble', 'offenses_chart')
+    end
+
+    def offense_dataset
+      max_offense = 0
+      max_code = 0
       dataset = contributor_ids.each_with_object({}) do |email_id, result|
         offenses = folder_filter.total_offenses(email_id).count
+        ruby_code = total_ruby_code(email_id)
         result[email_id] = [{
-          y: offenses, x: total_ruby_code(email_id),
+          y: offenses, x: ruby_code,
           r: 10
         }]
-        max = offenses if offenses > max
+        max_offense = offenses if offenses > max_offense
+        max_code = ruby_code if ruby_code > max_code
       end
-      options = { title: 'clean code style', scales: true, x_type: 'linear',
-                  legend: true, axes_label: true, x_label: 'line of ruby code',
-                  y_label: 'offense count', y_ticked: true, y_min: (max+10), y_max: 0,
-                  color: 'contributors', y_reverse: true, line: {data: [{x: 0, y:0}]}}
-      contributor_ids.each do |email_id|
-        options[:line][:data] << {
-          x: total_ruby_code(email_id),
-          y: (total_ruby_code(email_id) * 0.05).round
-        }
-      end
-      options[:line][:data].sort_by! { |data| data[:x] }
-      Element::Chart.new(nil, dataset, options, 'bubble', 'offenses_chart')
+      {
+        max_offense: max_offense, max_code: max_code, dataset: dataset
+      }
     end
 
     def documentation_chart
-      max_files_count = 0
-      dataset = contributor_ids.each_with_object({}) do |email_id, result|
-        documentation = quality_credit['documentation_credits'][email_id].to_i
+      dataset = documentation_dataset
+      line_data = [{ x: 0, y:0 }]
+      contributor_ids.each do |email_id|
+        line_data << {
+          x: documentation_files(email_id).count,
+          y: documentation_files(email_id).count
+        }
+      end
+      line_data.sort_by! { |data| data[:x] }
+      options = bubble_chart_options('documentation', ['ruby file count', 'documentation count'],
+                                     [0, 0], false, 'contributors', line_data)
+      Chart.new(nil, dataset, options, 'bubble', 'documentation_chart')
+    end
+
+    def documentation_dataset
+      contributor_ids.each_with_object({}) do |email_id, result|
+        documentation = documentation_credits[email_id].to_i
         files_count = documentation_files(email_id).count
         result[email_id] = [{
           y: documentation, x: files_count,
           r: 10
         }]
-        max_files_count = files_count if files_count > max_files_count
       end
-      options = { title: 'documentation', scales: true, x_type: 'linear', legend: true,
-                  axes_label: true, x_label: 'ruby file count', y_label: 'documentation count',
-                  y_ticked: true, y_min: 0, y_max: max_files_count + 5, color: 'contributors',
-                  line: { data: [{ x: 0, y: 0 }] } }
+    end
+
+    def test_chart
+      dataset = test_dataset
+      line_data = [{ x: 0, y: 0 }]
       contributor_ids.each do |email_id|
-        options[:line][:data] << {
-          x: documentation_files(email_id).count,
-          y: documentation_files(email_id).count
+        line_data << {
+          x: total_ruby_code(email_id),
+          y: total_ruby_code(email_id)
         }
       end
-      options[:line][:data].sort_by! { |data| data[:x] }
-      Element::Chart.new(nil, dataset, options, 'bubble', 'documentation_chart')
+      line_data.sort_by! { |data| data[:x] }
+      options = bubble_chart_options('test contribution', ['line of ruby code', 'line of test code'],
+                                     [0, 0], false, 'contributors', line_data)
+      Chart.new(nil, dataset, options, 'bubble', 'test_chart')
+    end
+
+    def test_dataset
+      contributor_ids.each_with_object({}) do |email_id, result|
+        test = test_credits[email_id].to_i
+        result[email_id] = [{
+          y: test, x: total_ruby_code(email_id),
+          r: 10
+        }]
+      end
+    end
+
+    def page
+      'quality'
+    end
+
+    def quality_problems_hash
+      contributor_ids.each_with_object({}) do |email_id, result|
+        result[email_id] = folder_filter.quality_problems(email_id)
+      end
+    end
+
+    def total_qualit_problems
+      result = Array.new(4) { |v| v = 0 }
+      result.each_with_index do |_, i|
+        quality_problems_hash.values.each do |value|
+          result[i] += value[i]
+        end
+      end
+      result
+    end
+
+    def bubble_chart_options(title, labels, y_scale, y_reverse, color, line_data, tooltips = nil, point = 'circle')
+      { scales: true, x_type: 'linear', legend: true, x_label: labels[0],
+        y_label: labels[1], y_max: y_scale[0], y_min: y_scale[1], y_reverse: y_reverse,
+        color: color, line: { data: line_data }, tooltips: tooltips, title: title, point: point }
+    end
+
+    def documentation_credits
+      quality_credit['documentation_credits']
+    end
+
+    def individual_complexity
+      contributor_ids.each_with_object({}) do |email_id, result|
+        complexity = file_selector.to_methods.owned(email_id, threshold('ownership')).unwrap
+          .reduce(0) do |pre, method|
+            pre + method.complexity * (method.line_percentage[email_id] / 100)
+          end
+        result[email_id] =
+          Math.divide(complexity, method_touched[email_id])
+      end
     end
 
     def documentation_files(email_id = nil)
@@ -251,37 +281,8 @@ module Views
       file_selector.ruby_files.has_method.belong(email_id).unwrap
     end
 
-    def test_chart
-      max = 0
-      dataset = contributor_ids.each_with_object({}) do |email_id, result|
-        test = quality_credit['test_credits'][email_id].to_i
-        result[email_id] = [{
-          y: test, x: total_ruby_code(email_id),
-          r: 10
-        }]
-        max = test if test > max
-      end
-      options = { title: 'test contribution', scales: true, x_type: 'linear', legend: true,
-                  axes_label: true, x_label: 'line of ruby code', y_label: 'line of test code',
-                  y_ticked: true, y_min: 0, y_max: max + 5, color: 'contributors',
-                  line: { data: [{x: 0, y: 0}] } }
-      contributor_ids.each do |email_id|
-        options[:line][:data] << {
-          x: total_ruby_code(email_id),
-          y: total_ruby_code(email_id)
-        }
-      end
-      options[:line][:data].sort_by! { |data| data[:x] }
-      Element::Chart.new(nil, dataset, options, 'bubble', 'test_chart')
-    end
-
-    def page
-      'quality'
-    end
-
-    def avg_complexity(methods)
-      all_complexity = methods.map(&:complexity).reject(&:nil?)
-      Math.average(all_complexity)
+    def test_credits
+      quality_credit['test_credits']
     end
   end
 end

@@ -12,4 +12,10 @@ module Math
 
     (array.sum / array_len).round
   end
+
+  def self.divide(x, y)
+    return 0 if y.zero?
+
+    (x / y).round
+  end
 end

@@ -7,11 +7,31 @@ var CustomChart = function(canvas_id){
     custom_options = (dataset.options == '' ? {} : JSON.parse(dataset.options));
     color = getColor(custom_options['color'])
     if (values instanceof(Array)){
-      result = [{
-        data: values,
-        borderWidth: 1,
-        backgroundColor: color
-      }]
+      if (custom_options['multiple']){
+        values.forEach( dataset => {
+          j = 0
+          Object.keys(dataset).forEach( key => {
+            result.push(
+              {
+                label: key,
+                fill: false,
+                backgroundColor: color[index][j],
+                borderColor: color[index][j],
+                borderWidth: 2,
+                data: dataset[key]
+              }
+            )
+            j += 1;
+          })
+          index += 1;
+        })
+      }else{
+        result = [{
+          data: values,
+          borderWidth: 1,
+          backgroundColor: color
+        }]
+      }
     }else{
       Object.keys(values).forEach( key => {
         result.push(
@@ -28,14 +48,24 @@ var CustomChart = function(canvas_id){
       })
     }
     if (custom_options['line']){
+      background_color = 'rgb(247, 77, 78, 0.1)'
+      border_color = 'rgb(247, 77, 78)'
+      fill = 'start'
+      label = 'dangerous zone'
+      if (custom_options['title'] == 'test contribution'){
+        background_color = 'rgb(77, 247, 78, 0.1)'
+        border_color = 'rgb(77, 247, 78)'
+        fill = 'none'
+        label = 'ideal curve'
+      }
       result.push({
         data: custom_options['line']['data'],
         type: 'line',
-        backgroundColor: 'rgb(247, 77, 78, 0.1)',
+        backgroundColor: background_color,
         borderWidth: 2,
-        borderColor: 'rgb(247, 77, 78)',
-        fill: 'start',
-        label: 'dangerous zone'
+        borderColor: border_color,
+        fill: fill,
+        label: label
       })
     }
     return result
@@ -59,23 +89,25 @@ var CustomChart = function(canvas_id){
     options.stacked = custom_options['stacked'] || false;
     options.title = custom_options['title'] || 'Chart Title';
     options.legend = custom_options['legend'] || false;
+    options.pointStyle = custom_options['point'] || 'circle';
     options.xAxex.position = custom_options['x_position'] || 'bottom'
     options.xAxex.type = custom_options['x_type'] || 'category'
-    options.xAxex.ticked = custom_options['x_ticked'] || true
+    options.xAxex.ticked = true
     options.xAxex.min = custom_options['x_min'] || 0
     options.xAxex.max = custom_options['x_max'] || 0
+    options.xAxex.display = (custom_options['x_display'] == 0 ? false : true)
     options.xAxex.stepSize = custom_options['x_step'] || 10
     if(custom_options['x_type'] == 'time'){
       options.xAxex.time = {unit: custom_options['time_unit']}
     }
-    options.xAxex.label = custom_options['axes_label'] || false
+    options.xAxex.label = (custom_options['x_label'] ? true : false)
     options.xAxex.label_string = custom_options['x_label'] || ''
     options.yAxex.reverse = custom_options['y_reverse'] || false
     options.yAxex.type = custom_options['y_type'] || 'linear'
     options.yAxex.label = (custom_options['y_label'] ? true : false)
     options.yAxex.label_string = custom_options['y_label'] || ''
     options.yAxex.position = custom_options['y_position'] || 'left'
-    options.yAxex.ticked = custom_options['y_ticked'] || true
+    options.yAxex.ticked = true
     options.yAxex.min = custom_options['y_min'] || 0
     options.yAxex.max = custom_options['y_max'] || 0
     options.yAxex.stepSize = custom_options['y_step'] || 10

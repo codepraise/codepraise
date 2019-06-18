@@ -46,10 +46,6 @@ module Views
         email_id ? select_by_email_id(files, email_id) : files
       end
 
-      def ruby_files(email_id = nil, root_folder = nil)
-        file_selector.ruby_files.unwrap
-      end
-
       def file_selector(root_folder = nil)
         FileSelector.new(files(nil, root_folder)).selector
       end
@@ -101,14 +97,9 @@ module Views
         false
       end
 
-      def owned_files(percentage, email_id, root_folder = nil)
-        file_selector(root_folder).owned(email_id, percentage).unwrap
-      end
-
-      def tech_debt(email_id = nil, root_folder = nil)
-        [complexity_methods(email_id), total_offenses(email_id, root_folder),
-         files_without_documentation(email_id, root_folder),
-         files_with_low_coverage(email_id, root_folder)]
+      def quality_problems(email_id = nil, root_folder = nil)
+        [complexity_methods(email_id), total_offenses(email_id, root_folder).count,
+         unannotated_class(email_id), low_test_coverage(email_id)]
       end
 
       # Select Children Entity of File Entity
@@ -126,17 +117,36 @@ module Views
         email_id ? select_by_email_id(all_methods, email_id) : all_methods
       end
 
-      def owned_methods(email_id, folder = nil)
-        all_methods(nil, folder).select do |method|
-          method.line_percentage[email_id].to_i >= threshold
-        end
+      def unannotated_class(email_id)
+        return files_without_documentation.count unless email_id
+
+        files_without_documentation.map do |file|
+          1.0 * (file.line_percentage[email_id].to_f / 100)
+        end.sum.round
       end
 
+      def low_test_coverage(email_id)
+        return files_with_low_coverage.count unless email_id
+
+        files_with_low_coverage.map do |file|
+          1.0 * (file.line_percentage[email_id].to_f / 100)
+        end.sum.round
+      end
+
+      # def owned_methods(email_id, folder = nil)
+      #   all_methods(nil, folder).select do |method|
+      #     method.line_percentage[email_id].to_i >= threshold
+      #   end
+      # end
+
       def complexity_methods(email_id = nil)
-        all_methods.select do |method|
-          method.complexity >= 15 &&
-            (email_id ? method.line_percentage[email_id].to_i >= threshold : true)
-        end
+        file_selector.to_methods.too_complexity(15).unwrap.map do |method|
+          if email_id
+            1.0 * (method.line_percentage[email_id].to_f / 100)
+          else
+            1
+          end
+        end.sum.round
       end
 
       def total_offenses(email_id = nil, folder = nil)

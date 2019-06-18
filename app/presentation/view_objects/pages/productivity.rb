@@ -6,15 +6,13 @@ module Views
   class Productivity < Page
     def a_board
       title = 'Individual Progress'
-      elements = contributors.map do |contributor|
-        productivity_progress('day', nil, contributor.email_id)
-      end
+      elements = productivity_progress_charts('day', nil)
       Element::Board.new(title, elements)
     end
 
     def b_board
       title = 'Final Contribution Assessment from Blame'
-      elements = [summative_assessment] + contributor_tables
+      elements = [summative_assessment, contributor_table]
       Element::Board.new(title, elements)
     end
 
@@ -24,99 +22,81 @@ module Views
       Element::Board.new(title, elements)
     end
 
-    def productivity_progress(unit, between, email_id)
-      commtis = commits_filter.by(unit, between, email_id)
-      labels = commtis.map(&:date)
-      dataset = {
-        addition: commtis.map(&:total_addition_credits),
-        deletion: commtis.map { |c| c.total_deletion_credits * -1 }
-      }
-      max = max_addition(unit, between)
-      options = { title: "#{email_id} Progress", scales: true, legend: true,
-                  x_type: 'time', time_unit: unit.to_s, y_ticked: true,
-                  y_min: max * -1, y_max: max, color: 'category', stacked: true, y_label: 'line of code' }
-      Element::Chart.new(labels, dataset, options, 'bar', "#{email_id}_code_churn")
+    def charts_update(params)
+      between = params['between']&.split('_')
+      unit = params['unit'] || 'day'
+      productivity_progress_charts(unit, between)
     end
 
-    # def summative_assessment
-    #   contributors.map do |c|
-    #     lines = [[]]
-    #     lines.push(number: folder_filter.all_methods(c.email_id).count,
-    #                name: 'MethodTouched',
-    #                max: folder_filter.all_methods.count)
-    #     lines.push(number: line_credits(c.email_id),
-    #                name: 'LineCount', max: line_credits.values.sum.round)
-    #     lines.push(number: commits_filter.by_email_id(c.email_id).count,
-    #                name: 'CommitCount',
-    #                max: commits.count)
-    #     Element::Bar.new(c.email_id, lines)
-    #   end
-    # end
+    def productivity_progress_charts(unit, between)
+      elements = []
+      contributor_ids.each_with_index do |email_id, index|
+        filter_commtis = commits_filter.by(unit, between, email_id)
+        labels = filter_commtis.map(&:date)
+        dataset = code_churn_hash(filter_commtis)
+        y_max = max_addition(unit, between)
+        options = { title: "#{email_id} Progress", legend: true,
+                    x_type: 'time', time_unit: unit.to_s, y_ticked: true,
+                    y_min: y_max * -1, y_max: y_max, color: "multiple_#{index}", stacked: true,
+                    y_label: 'line of code' }
+        elements << Chart.new(labels, dataset, options, 'bar', "#{email_id}_code_churn")
+      end
+      elements
+    end
 
     def summative_assessment
-      labels = ['MethodTouched', 'LineCount', 'CommitCount']
-      all_methods = contributor_ids.reduce(0) {|pre, email_id| folder_filter.owned_methods(email_id).count + pre}
-      dataset = contributor_ids.each_with_object({}) do |email_id, result|
-        result[email_id] = [
-          Math.percentage(folder_filter.owned_methods(email_id).count, all_methods),
-          Math.percentage(line_credits(email_id), line_credits.values.sum),
-          Math.percentage(commits_filter.by_email_id(email_id).count, commits.count)
-        ]
-      end
-      options = { title: 'Productivity Breakdown Percentage', scales: true, legend: true, stacked: true,
-                  color: 'contributors', x_type: 'linear', y_type: 'category' }
-      Element::Chart.new(labels, dataset, options, 'horizontalBar', "summative_assessment")
+      labels = %w[MethodTouched LineCount CommitCount]
+      dataset = breakdown_chart_dataset
+      options = { title: 'Breakdown Percentage', legend: true, stacked: true,
+                  color: 'contributors', x_type: 'linear', y_type: 'category', x_display: 0 }
+      Chart.new(labels, dataset, options, 'horizontalBar', 'summative_assessment')
     end
 
-    def contributor_tables
-      contributor_ids.map do |email_id|
-        dataset = [{ name: 'MethodTouched', number: folder_filter.owned_methods(email_id).count },
-                   { name: 'LineCount', number: line_credits(email_id) },
-                   { name: 'CommitCount', number: commits_filter.by_email_id(email_id).count }]
-        Element::SmallTable.new(email_id, dataset)
+    def breakdown_chart_dataset
+      contributor_ids.each_with_object({}) do |email_id, result|
+        result[email_id] = [
+          Math.percentage(method_touched[email_id], method_touched.values.sum),
+          Math.percentage(line_count[email_id], line_credits.values.sum),
+          Math.percentage(commits_count[email_id], commits_count.values.sum)
+        ]
       end
+    end
+
+    def contributor_table
+      thead = ['Contributor ID', 'MethodTouched', 'LineCount', 'CommitCount']
+      tbody = contributor_ids.each_with_object([]) do |email_id, result|
+        result << [email_id, method_touched[email_id], line_count[email_id],
+                   commits_count[email_id]]
+      end
+      Table.new(thead, tbody, 'productivity_table')
     end
 
     def code_churn
       labels = contributors.map(&:email_id)
       dataset = { addition: [], deletion: [] }
-      labels.each do |email_id|
-        credits = total_credits(commits_filter.by_email_id(email_id))
-        dataset[:addition] << credits[0]
-        dataset[:deletion] << credits[1]
+      dataset = labels.each_with_object([]) do |id, result|
+        dataset = contributor_ids.each_with_object([]) do |email_id, result|
+          result[0] ||= []
+          result[1] ||= []
+          code_churn = [0, 0]
+          code_churn = total_code_churn(commits_filter.by_email_id(email_id)) if email_id == id
+          result[0] << code_churn[0]
+          result[1] << code_churn[1]
+        end
+        result << {
+          addition: dataset[0],
+          deletion: dataset[1]
+        }
+        # code_churn = total_code_churn(commits_filter.by_email_id(email_id))
+        # dataset[:addition] << code_churn[0]
+        # dataset[:deletion] << code_churn[1]
       end
       options = { title: 'Code Churn on Commits', scales: true, legend: true,
-                  color: 'category', y_label: 'line of code' }
+                  color: 'multiple', y_label: 'line of code', multiple: true  }
       Element::Chart.new(labels, dataset, options, 'bar', 'individual_code_churn')
     end
 
-    def charts_update(params)
-      between = params['between']&.split('_')
-      unit = params['unit'] || 'day'
-      elements = contributors.map do |contributor|
-        productivity_progress(unit, between, contributor.email_id)
-      end
-      elements
-    end
-
-    def max_addition(unit, between)
-      commits_filter.by(unit, between).map(&:total_addition_credits).max
-    end
-
-    def line_hash(name, number, max)
-      percentage = Math.percentage(number, max)
-      {
-        name: name,
-        line: { width: percentage, max: max},
-        number: "#{number} (#{percentage}%)"
-      }
-    end
-
-    def page
-      'productivity'
-    end
-
-    def total_credits(commits)
+    def total_code_churn(commits)
       additions = commits.reduce(0) do |pre, commit|
         pre + commit.total_addition_credits
       end
@@ -124,6 +104,10 @@ module Views
         pre + commit.total_deletion_credits
       end
       [additions, deletions]
+    end
+
+    def page
+      'productivity'
     end
   end
 end

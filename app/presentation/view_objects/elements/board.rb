@@ -13,7 +13,7 @@ module Views
       def subtitle(title, content)
         "<a href='#' data-toggle='popover' data-placement='right'" \
         "data-content='#{content}' title='#{title}' data-html='true' data-container='body'>" \
-        "<i class='fas fa-info-circle'></i> Description." \
+        "<i class='fas fa-info-circle'></i>" \
         '</a>'
       end
     end

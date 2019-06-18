@@ -16,12 +16,16 @@ module Views
         @commits = commits.sort_by { |commit| Time.parse(commit.date) }
       end
 
-      def by_path(file_path)
+      def by_path(file_path, email_id = nil, unit = 'day', between = nil)
         selected_commits = commits.select do |commit|
           file_exist?(commit, file_path)
         end
-        between = [selected_commits.first.date, selected_commits.last.date]
-        by_day(selected_commits, between)
+        first_date = date(Time.parse(selected_commits.first.date) - DAY)
+        last_date = date(Time.parse(selected_commits.last.date) + DAY)
+
+        between ||= [first_date, last_date]
+
+        by(unit, between, email_id, selected_commits)
       end
 
       def file_exist?(commit, file_path)
@@ -32,9 +36,9 @@ module Views
         false
       end
 
-      def by(unit, between = nil, email_id = nil)
+      def by(unit, between = nil, email_id = nil, selected_commits = nil)
         selected_commits ||= commits
-        selected_commits = by_email_id(email_id) if email_id
+        selected_commits = by_email_id(email_id, selected_commits) if email_id
 
         case unit
         when 'day'
@@ -80,8 +84,10 @@ module Views
         end
       end
 
-      def by_email_id(email_id)
-        commits.select do |commit|
+      def by_email_id(email_id, selected_commits = nil)
+        selected_commits ||= commits
+
+        selected_commits.select do |commit|
           commit.committer.email_id == email_id
         end
       end

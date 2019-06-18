@@ -33,6 +33,22 @@ body{
 .treemap{
     height: 100%;
     width: 100%;
+    display: flex;
+}
+
+.node{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.node-content{
+    flex: 10;
+    display: flex;
+}
+
+.node-title{
+    flex: 1;
 }
 
 .test{
@@ -50,7 +66,7 @@ body{
     color: var(--main-dark-color-op);
 }
 
-.subtitle a{
+.title a{
     color: var(--main-dark-color-op);
 }
 
@@ -86,10 +102,10 @@ body{
     margin-right: 5%;
 }
 .bars .bar .line .progress{
-    background-color: var(--chart-light);
+    background-color: rgb(73, 73, 73, 0.2);
 }
 .bars .bar .line .progress-bar{
-    background-color: var(--chart-dark);
+    background-color: rgba(73, 73, 73,0.8);
 }
 .bars .bar .number{
     flex: 1;
@@ -219,8 +235,44 @@ body{
 }
 
 .popover{
-    margin-top: 5%;
     height: fit-content;
     max-width: 50vw;
     white-space:nowrap;
+}
+
+.table-header-rotated {
+    border-collapse: collapse;
+}
+.table-header-rotated td {
+    width: 30px;
+}
+.table-header-rotated th {
+    padding: 5px 10px;
+}
+.table-header-rotated td {
+    text-align: center;
+    padding: 10px 5px;
+    border: 1px solid #ccc;
+}
+.table-header-rotated th.rotate {
+    height: 140px;
+    white-space: nowrap;
+}
+.table-header-rotated th.rotate > div {
+    -webkit-transform: translate(25px, 51px) rotate(315deg);
+        -ms-transform: translate(25px, 51px) rotate(315deg);
+            transform: translate(25px, 51px) rotate(315deg);
+    width: 30px;
+}
+.table-header-rotated th.rotate > div > span {
+    border-bottom: 1px solid #ccc;
+    padding: 5px 10px;
+}
+.table-header-rotated th.row-header {
+    padding: 0 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+table{
+    font-size: 12pt;
 }
