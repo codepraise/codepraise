@@ -228,7 +228,7 @@ module Views
       contributor_ids.each_with_object({}) do |email_id, result|
         test = test_credits[email_id].to_i
         result[email_id] = [{
-          y: test, x: total_ruby_code(email_id),
+          y: test, x: total_ruby_code(email_id) - test,
           r: 10
         }]
       end

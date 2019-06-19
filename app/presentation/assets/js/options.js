@@ -16,12 +16,12 @@ Axex = function(){
 }
 
 Axex.prototype.render = function(){
-  ticks = { fontSize: 16 }
+  ticks = { fontSize: 14 }
   if(this.ticked){
     ticks = {
       suggestedMax: this.max,
       suggestedMin: this.min,
-      fontSize: 16,
+      fontSize: 14,
       reverse: this.reverse,
       beginAtZero: this.beginAtZero
     }
@@ -37,7 +37,7 @@ Axex.prototype.render = function(){
     scaleLabel: {
       display: this.label,
       labelString: this.label_string,
-      fontSize: 16
+      fontSize: 14
     },
     position: this.position,
     ticks: ticks
