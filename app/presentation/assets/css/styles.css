@@ -243,3 +243,7 @@ body{
 table{
     font-size: 10pt;
 }
+
+.nav-item a{
+    color: black;
+}

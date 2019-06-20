@@ -76,14 +76,14 @@ window.onload = function(){
           console.log('clicked')
           const panel_1 = document.querySelector('.panel')
           const panel_2 = document.querySelector('.panel_2')
-          this.classList.add('selected')
+          this.classList.add('active')
           if(this.id == 'page2'){
-            document.getElementById('page1').classList.remove('selected')
+            document.getElementById('page1').classList.remove('active')
             panel_1.setAttribute('style', 'display: none;');
             panel_2.setAttribute('style', 'display: flex;');
             selectorListner();
           }else if (this.id == 'page1'){
-            document.getElementById('page2').classList.remove('selected')
+            document.getElementById('page2').classList.remove('active')
             panel_1.setAttribute('style', 'display: flex;');
             panel_2.setAttribute('style', 'display: none;');
           }
