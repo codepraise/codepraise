@@ -96,7 +96,7 @@ module Views
           text: file.file_path.filename,
           value: send(method, file)
         }
-      end.reject(&:nil?)
+      end.reject { |f| f[:value].zero? }
     end
 
     def documentation(file)
@@ -104,7 +104,7 @@ module Views
     end
 
     def complexity_method(file)
-      return file.complexity.average if file.to_h[:methods].empty?
+      return file.complexity.average.round if file.to_h[:methods].empty?
 
       file.to_h[:methods].map(&:complexity).max.round
     end
@@ -114,7 +114,7 @@ module Views
     end
 
     def low_coverage(file)
-      return 0 unless test_coverage?
+      return nil unless test_coverage?
 
       (file.test_coverage&.coverage.to_f * 100).round
     end
@@ -266,9 +266,9 @@ module Views
 
     def individual_complexity
       contributor_ids.each_with_object({}) do |email_id, result|
-        complexity = file_selector.to_methods.owned(email_id, threshold('ownership')).unwrap
+        complexity = file_selector.to_methods.unwrap
           .reduce(0) do |pre, method|
-            pre + method.complexity * (method.line_percentage[email_id] / 100)
+            pre + method.complexity * (method.line_percentage[email_id].to_f / 100)
           end
         result[email_id] =
           Math.divide(complexity, method_touched[email_id])

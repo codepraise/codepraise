@@ -6,7 +6,7 @@ class AppraisalHelper
   attr_reader :appraisal
 
   def self.build_appraisal
-    request = Request.new('XuVic', 'YPBT-app', '')
+    request = Request.new('ccaq-2019', 'CoEditPDF-api', '')
     gateway = CodePraise::Gateway::Api.new(CodePraise::App.config)
     result = gateway.appraise(request)
     CodePraise::Representer::Appraisal
