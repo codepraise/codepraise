@@ -21,7 +21,7 @@ module Views
     end
 
     def c_board
-      title = 'Individual Quality Contribution'
+      title = 'Individual Code Quality'
       elements = [complexity_chart, documentation_chart,
                   offenses_chart, test_chart]
       Element::Board.new(title, elements)
@@ -110,7 +110,7 @@ module Views
     end
 
     def offenses(file)
-      file.idiomaticity&.offense_count.to_i + 1
+      file.idiomaticity&.offense_count.to_i
     end
 
     def low_coverage(file)

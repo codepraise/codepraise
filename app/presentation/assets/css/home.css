@@ -5,6 +5,7 @@
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  justify-items: center;
   background-color: var(--sub-light-color);
 }
 
@@ -51,11 +52,12 @@
   border: 2px solid #e5e5e5;
   border-radius: 20px;
   padding: 2px;
+  margin-bottom: 0%;
 }
 
 #root .bg .search-bar input{
   width: 300pt;
-  height: 4vh;
+  height: 30pt;
   border-radius: 15px;
   outline: none;
   text-indent: 12px;
@@ -63,12 +65,16 @@
   border: none;
 }
 
+#root .bg .example{
+  max-height: 10pt;
+}
+
 .clickable{
   cursor: pointer;
 }
 
 #root .bg .search-bar .fa-search-plus{
-  margin-top: 1pt;
+  margin-top: 1%;
   font-size: 2em;
   color: #edeaea;
   position:absolute;
@@ -76,7 +82,7 @@
 
 #root .bg .projects{
   flex: 5;
-  min-width: 37vw;
+  min-width: 60vw;
   max-width: 60vw;
   display: flex;
   flex-wrap: wrap;
@@ -85,9 +91,9 @@
 
 .projects .card{
   font-size: 10pt;
-  height: 10vh;
-  min-width: 8vw;
-  max-width: 8vw;
+  height: 100pt;
+  min-width: 100pt;
+  max-width: 100pt;
   border-radius: 5px;
   color: white;
   text-align: center;

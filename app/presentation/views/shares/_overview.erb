@@ -16,12 +16,12 @@
                     <div class="titles">
                         <div class="title">
                             <%= @panel_view.a_board.title %>
-                            <%= @panel_view.a_board.subtitle('Quality summary show the all quality problems in your project.',
+                            <%= @panel_view.a_board.subtitle('This board show the all quality problems in your project.<br>'\
                  '1. Complex Method: The method whose flog score higher than 15.<br>'\
                  '2. Code Style Offenses: Not correct coding format found by rubocop.<br>'\
                  '3. Unannotated Class: The class without any comment to describe its function.<br>'\
                  '4. Low TestCoverage File: The file whose test coverage lower than 70.<br>'\
-                 '<b>To see more, please click quality icon in your right hand side.</b>') %>
+                 '<b>To see more, please click quality icon in your left hand side.</b>') %>
                         </div>
                     </div>
                     <div class="informations">
@@ -43,8 +43,8 @@
                     <div class="titles">
                         <div class="title">
                             <%= @panel_view.b_board.title %>
-                            <%= @panel_view.b_board.subtitle('Functionality show all functionality keywords and its amount.',
-                            'The test case can be used to explain your application function,<br>keywords can help you find out special functions in your application. <br><b>To see more, please click functionality icon in your right hand side.</b>') %>
+                            <%= @panel_view.b_board.subtitle('This board show all functionality keywords and its amount.<br>'\
+                            'The test case can be used to explain your application function,<br>keywords can help you find out special functions in your application. <br><b>To see more, please click functionality icon in your right left side.</b>') %>
                         </div>
                     </div>
                     <div class="elements my-custom-scrollbar">
@@ -59,8 +59,8 @@
                     <div class="titles ">
                         <div class="title">
                             <%= @panel_view.c_board.title %>
-                            <%= @panel_view.c_board.subtitle('Project Ownership show the project breakdown information and individual code ownership.',
-                            '<b>To see more, please click ownership icon in your right hand side.</b>') %>
+                            <%= @panel_view.c_board.subtitle('This board show the project breakdown information and the percentage of individual contribution.<br>'\
+                            'You can understand who is the main developer for your project by observing the code ownership. <br> <b>To see more, please click ownership icon in your left hand side.</b>') %>
                         </div>
                     </div>
                     <div class="informations ">
@@ -86,7 +86,9 @@
                 <div class="titles ">
                         <div class="title">
                             <%= @panel_view.d_board.title %>
-                            <%= @panel_view.d_board.subtitle('test','test') %>
+                            <%= @panel_view.d_board.subtitle('This board shows the addition line and deletion line during the development process. It can be useful to identify the efficiency of productivity.<br>
+                            When your deletion lines are always higher than addition lines, it can be an indicator that something is difficult with the development process. <br>
+                             <b>To see more, please click ownership icon in your left hand side.</b>') %>
                         </div>
                 </div>
                 <div class="tools">

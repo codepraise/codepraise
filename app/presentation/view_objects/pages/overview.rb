@@ -37,8 +37,7 @@ module Views
     end
 
     def d_board
-      title = 'Project Progress'
-      subtitle = 'Here is example message. <br> <div class="title">est</div>'
+      title = 'Production Progress'
       elements = [commits_chart('day')]
       Element::Board.new(title, elements)
     end

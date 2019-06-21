@@ -17,7 +17,7 @@ module Views
     end
 
     def c_board
-      title = "Ownership Distribution"
+      title = "Details of Code Ownership"
       # elements = [ownership_distribution]
       elements = [ownership_breakdown]
       Board.new(title, elements)
@@ -37,7 +37,7 @@ module Views
           Math.percentage(folder_filter.files(email_id).count, all_files_count)
         ]
       end
-      options = { title: 'Onwership Overview', scales: true, legend: true, stacked: true,
+      options = { title: 'Percentage of Collective Score', scales: true, legend: true, stacked: true,
                   color: 'contributors', x_type: 'linear', y_type: 'category', x_display: 0 }
       Chart.new(labels, dataset, options, 'horizontalBar', "collective_ownership")
     end

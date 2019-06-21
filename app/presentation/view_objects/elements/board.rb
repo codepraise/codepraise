@@ -10,9 +10,11 @@ module Views
         @elements = elements
       end
 
-      def subtitle(title, content)
+      def subtitle(content)
+        return nil if content == ''
+
         "<a href='#' data-toggle='popover' data-placement='right'" \
-        "data-content='#{content}' title='#{title}' data-html='true' data-container='body'>" \
+        "data-content='#{content}' data-html='true' data-container='body'>" \
         "<i class='fas fa-info-circle'></i>" \
         '</a>'
       end

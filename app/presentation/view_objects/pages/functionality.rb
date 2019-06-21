@@ -11,7 +11,7 @@ module Views
     end
 
     def b_board
-      title = 'Individual Contribution'
+      title = 'Individual Contribution to Test Cases'
       elements = [key_word_contributor_chart]
       Element::Board.new(title, elements)
     end
@@ -50,7 +50,7 @@ module Views
           test_case.contributors[contributor.email_id] == max
         end.count
       end
-      options = { title: "#{key_word} Contribution", scales: true, color: 'contributors'}
+      options = { title: "Individual Contribution to #{key_word} Test Case", scales: true, color: 'contributors'}
       Element::Chart.new(labels, dataset,
                          options, 'bar', 'key_word_contributor')
     end

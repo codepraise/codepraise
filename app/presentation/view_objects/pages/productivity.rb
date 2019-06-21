@@ -17,7 +17,7 @@ module Views
     end
 
     def c_board
-      title = 'Individual Code Churn on Commits'
+      title = 'Individual Total Code Churn in All Commits'
       elements = [code_churn]
       Element::Board.new(title, elements)
     end
@@ -47,7 +47,7 @@ module Views
     def summative_assessment
       labels = %w[MethodTouched LineCount CommitCount]
       dataset = breakdown_chart_dataset
-      options = { title: 'Breakdown Percentage', legend: true, stacked: true,
+      options = { title: 'Percentage of contribution in different measurement', legend: true, stacked: true,
                   color: 'contributors', x_type: 'linear', y_type: 'category', x_display: 0 }
       Chart.new(labels, dataset, options, 'horizontalBar', 'summative_assessment')
     end
@@ -91,7 +91,7 @@ module Views
         # dataset[:addition] << code_churn[0]
         # dataset[:deletion] << code_churn[1]
       end
-      options = { title: 'Code Churn on Commits', scales: true, legend: true,
+      options = { title: 'Total Code Churn', scales: true, legend: true,
                   color: 'multiple', y_label: 'line of code', multiple: true  }
       Element::Chart.new(labels, dataset, options, 'bar', 'individual_code_churn')
     end

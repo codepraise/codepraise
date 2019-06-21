@@ -12,6 +12,8 @@ module CodePraise
           path_request = ProjectRequestPath.new(
             owner_name, project_name, request
           )
+          session[:watching] ||= []
+          session[:watching].insert(0, path_request.project_fullname).uniq!
 
           result = Service::AppraiseProject.new.call(
             watched_list: session[:watching],
