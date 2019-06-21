@@ -45,7 +45,7 @@ module Views
     end
 
     def summative_assessment
-      labels = %w[MethodTouched LineCount CommitCount]
+      labels = %w[MethodTouched LineCredit CommitCount]
       dataset = breakdown_chart_dataset
       options = { title: 'Percentage of contribution in different measurement', legend: true, stacked: true,
                   color: 'contributors', x_type: 'linear', y_type: 'category', x_display: 0 }
@@ -63,9 +63,9 @@ module Views
     end
 
     def contributor_table
-      thead = ['Contributor ID', 'MethodTouched', 'LineCount', 'CommitCount']
+      thead = ['Contributor ID', 'MethodTouched', 'LineCredit', 'CommitCount']
       tbody = contributor_ids.each_with_object([]) do |email_id, result|
-        result << [email_id, method_touched[email_id], line_count[email_id],
+        result << [email_id, method_touched[email_id], line_count[email_id].round,
                    commits_count[email_id]]
       end
       Table.new(thead, tbody, 'productivity_table')
