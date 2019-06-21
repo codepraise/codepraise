@@ -11,29 +11,33 @@ module Views
       WEEK = 7 * DAY
       MONTH = 30 * DAY
       attr_reader :commits
+      Commit = Struct.new(:total_addition_credits, :total_deletion_credits, :date, :committer)
 
       def initialize(commits)
         @commits = commits.sort_by { |commit| Time.parse(commit.date) }
       end
 
       def by_path(file_path, email_id = nil, unit = 'day', between = nil)
-        selected_commits = commits.select do |commit|
-          file_exist?(commit, file_path)
-        end
+        selected_commits = commits.map do |commit|
+          file_changes(commit, file_path)
+        end.reject(&:nil?)
+
         first_date = date(Time.parse(selected_commits.first.date) - DAY)
         last_date = date(Time.parse(selected_commits.last.date) + DAY)
 
         between ||= [first_date, last_date]
-
         by(unit, between, email_id, selected_commits)
       end
 
-      def file_exist?(commit, file_path)
-        commit.file_changes.each do |file|
-          return true if file.path.include?(file_path)
+      def file_changes(commit, file_path)
+        file_changes = commit.file_changes.select do |file|
+          file.path.include?(file_path)
         end
 
-        false
+        return nil if file_changes.empty?
+
+        Commit.new(file_changes.map(&:addition).sum, file_changes.map(&:deletion).sum,
+                   commit.date, commit.committer)
       end
 
       def by(unit, between = nil, email_id = nil, selected_commits = nil)
