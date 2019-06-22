@@ -23,7 +23,7 @@ module Views
     end
 
     def c_board
-      title = 'Project Ownership'
+      title = 'Project Breakdown and Ownership'
       informations = [
         { number: folder_filter.files.count, unit: 'Files'},
         { number: folder_filter.all_methods.count, unit: 'Methods' },
