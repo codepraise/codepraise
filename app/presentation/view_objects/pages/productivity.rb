@@ -63,10 +63,11 @@ module Views
     end
 
     def contributor_table
-      thead = ['Contributor ID', 'MethodTouched', 'LineCredit', 'CommitCount']
+      thead = ['Contributor ID', 'ProuctionRate', 'MethodTouched', 'LineCredit', 'CommitCount', 'TotalAddition']
       tbody = contributor_ids.each_with_object([]) do |email_id, result|
-        result << [email_id, method_touched[email_id], line_count[email_id].round,
-                   commits_count[email_id]]
+        production_rate = (line_count[email_id].to_f / total_addition_credits[email_id]) * 100
+        result << [email_id, "#{production_rate.round}%", method_touched[email_id], line_count[email_id].round,
+                   commits_count[email_id], total_addition_credits[email_id]]
       end
       Table.new(thead, tbody, 'productivity_table')
     end
