@@ -158,6 +158,7 @@
 
 .files .panel .right .d-board .titles{
     flex: 1;
+    padding: 1%;
 }
 
 .files .panel .right .d-board .elements{

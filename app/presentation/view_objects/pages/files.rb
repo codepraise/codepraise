@@ -23,7 +23,7 @@ module Views
     end
 
     def b_board
-      title = 'Folder/File Ownership Breakdown'
+      title = 'Files Ownership'
       elements = [break_down]
       Element::Board.new(title, elements)
     end
