@@ -19,8 +19,12 @@
                     <div class="titles ">
                         <div class="title">
                             <%= @panel_view.a_board.title %>
-                            <%= @panel_view.a_board.subtitle('This board separates the quality problems from each team member. <br>
-                            You can see the location of these problems in <b>files dill down</b> panel.') %>
+                            <%= @panel_view.a_board.subtitle('
+                            The system uses the percentage of contribution of file or method to dispatch quality
+                            <br >problems. For example, if A method is complex and you wrote 50% line of code in
+                            <br> A method, you will get 0.5 complex method from A method.
+                            <br>You can see the location of these problems in <b>files dill down</b> panel.
+                            ') %>
                         </div>
                     </div>
                     <div class="elements ">
@@ -38,10 +42,11 @@
                     <div class="titles ">
                         <div class="title">
                             <%= @panel_view.b_board.title %>
-                            <%= @panel_view.b_board.subtitle('When we review the file churn, we can understand whether the file is refactored or not during the development.
-                            <br>However, the file churn cannot be useful value for comparing across files.'\
-                            '<br>We combine the complexity and file churn together.
-                            When a file has high churn and high complexity, it should be a risky file with many issues.') %>
+                            <%= @panel_view.b_board.subtitle('
+                            When we review the file churn, we can understand whether the file is refactored or not
+                            <br>during the development. However, the file churn cannot be useful value for comparing
+                            <br>across files. We combine the complexity and file churn together. When a file has high
+                            <br>churn and high complexity, it should be a risky file with many issues.') %>
                         </div>
                     </div>
                     <div class="elements ">

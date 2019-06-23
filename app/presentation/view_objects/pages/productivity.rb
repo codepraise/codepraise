@@ -11,13 +11,13 @@ module Views
     end
 
     def b_board
-      title = 'Final Contribution Assessment from Blame'
+      title = 'Final Contribution'
       elements = [summative_assessment, contributor_table]
       Element::Board.new(title, elements)
     end
 
     def c_board
-      title = 'Individual Total Code Churn in All Commits'
+      title = 'Total Code Churn in Development Process'
       elements = [code_churn]
       Element::Board.new(title, elements)
     end
@@ -45,7 +45,7 @@ module Views
     end
 
     def summative_assessment
-      labels = %w[MethodTouched LineCredit CommitCount]
+      labels = %w[MethodTouched LineCredit CommitCount TotalLineAdded TotalLineDeleted]
       dataset = breakdown_chart_dataset
       options = { title: 'Percentage of contribution in different measurement', legend: true, stacked: true,
                   color: 'contributors', x_type: 'linear', y_type: 'category', x_display: 0 }
@@ -57,17 +57,19 @@ module Views
         result[email_id] = [
           Math.percentage(method_touched[email_id], method_touched.values.sum),
           Math.percentage(line_count[email_id], line_credits.values.sum),
-          Math.percentage(commits_count[email_id], commits_count.values.sum)
+          Math.percentage(commits_count[email_id], commits_count.values.sum),
+          Math.percentage(total_addition_credits[email_id], total_addition_credits.values.sum),
+          Math.percentage(total_deletion_credits[email_id], total_deletion_credits.values.sum)
         ]
       end
     end
 
     def contributor_table
-      thead = ['Contributor ID', 'MethodTouched', 'LineCredit', 'CommitCount']
+      thead = ['Contributor ID', 'MethodTouched', 'LineCredit', 'CommitCount', 'TotalLineAdded', 'TotalLineDeleted']
       tbody = contributor_ids.each_with_object([]) do |email_id, result|
-        production_rate = (line_count[email_id].to_f / total_addition_credits[email_id]) * 100
         result << [email_id, method_touched[email_id], line_count[email_id].round,
-                   commits_count[email_id]]
+                   commits_count[email_id], total_addition_credits[email_id],
+                   total_deletion_credits[email_id]]
       end
       Table.new(thead, tbody, 'productivity_table')
     end
@@ -95,6 +97,19 @@ module Views
       options = { title: 'Total Code Churn', scales: true, legend: true,
                   color: 'multiple', y_label: 'line of code', multiple: true  }
       Element::Chart.new(labels, dataset, options, 'bar', 'individual_code_churn')
+    end
+
+    def production_rate
+      dataset = contributor_ids.each_with_object({}) do |email_id, result|
+        result[email_id] = [{
+          x: total_addition_credits[email_id],
+          y: Math.percentage(line_count[email_id], total_addition_credits[email_id]),
+          r: 10
+        }]
+      end
+      options = { scales: true, x_type: 'linear', legend: true, x_label: 'total additions', y_label: 'production rate',
+                  color: 'contributors', y_max: 100, title: 'Production Rate vs Total Additions', point: 'circle' }
+      Chart.new(nil, dataset, options, 'bubble', 'production_rate')
     end
 
     def total_code_churn(commits)

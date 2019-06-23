@@ -202,5 +202,14 @@ module Views
           end
         end
     end
+
+    def total_deletion_credits
+      @total_deletion_credits ||=
+        contributor_ids.each_with_object({}) do |email_id, result|
+          result[email_id] = commits_filter.by_email_id(email_id).reduce(0) do |sum, commit|
+            sum + commit.total_deletion_credits
+          end
+        end
+    end
   end
 end
