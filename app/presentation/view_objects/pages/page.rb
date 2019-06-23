@@ -86,7 +86,7 @@ module Views
     end
 
     def project_coverage
-      return folder.test_coverage unless test_coverage?
+      return 'Please include coverage/.resultset.json in your repo' unless test_coverage?
 
       (folder.test_coverage * 100).round
     end
