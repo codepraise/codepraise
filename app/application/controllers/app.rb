@@ -47,7 +47,7 @@ module CodePraise
             flash.now[:notice] = 'Add a Github project to get started'
           end
         end
-        @example = App.config.APP_HOST + '/appraisal/XuVic/codepraise'
+        @example = App.config.APP_HOST + '/appraisal/XuVic/codepraise-api'
         session[:watching] = projects.map(&:fullname)
         @viewable_projects = Views::ProjectsList.new(projects)
         view 'home', locals: { projects: @viewable_projects, path: @path, example: @example }
