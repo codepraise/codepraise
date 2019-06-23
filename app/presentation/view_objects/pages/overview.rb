@@ -37,7 +37,7 @@ module Views
     end
 
     def d_board
-      title = 'Production Progress'
+      title = 'Production Process'
       elements = [commits_chart('day')]
       Element::Board.new(title, elements)
     end

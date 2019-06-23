@@ -55,7 +55,7 @@ module Views
     end
 
     def collective_ownership
-      thead = ['Contributor ID', 'CollectciveScore', 'OwnedFolders', 'OwnedFiles']
+      thead = ['Contributor', 'CollectciveScore', 'OwnedFolders', 'OwnedFiles']
       tbody = contributor_ids.each_with_object([]) do |email_id, result|
         result << [email_id, ownership_credit[email_id],
                    folder_filter.folders(email_id).count,

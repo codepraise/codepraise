@@ -41,7 +41,7 @@ module Views
     end
 
     def quality_problems
-      thead = ['Contributor ID', 'Complex Methods', 'CodeStyle Offenses', 'Unannotated Class',
+      thead = ['Contributor', 'Complex Methods', 'CodeStyle Offenses', 'Unannotated Class',
                'Low TestCoverage File', 'Line of Ruby Code']
       tbody = contributor_ids.each_with_object([]) do |email_id, result|
         result << [email_id] + quality_problems_hash[email_id] + [total_ruby_code(email_id)]

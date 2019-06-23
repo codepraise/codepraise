@@ -5,19 +5,19 @@ require_relative 'page'
 module Views
   class Productivity < Page
     def a_board
-      title = 'Individual Progress'
+      title = 'Individual Production Process'
       elements = productivity_progress_charts('day', nil)
       Element::Board.new(title, elements)
     end
 
     def b_board
-      title = 'Final Contribution'
+      title = 'Final Production Code'
       elements = [summative_assessment, contributor_table]
       Element::Board.new(title, elements)
     end
 
     def c_board
-      title = 'Total Code Churn in Development Process'
+      title = 'Individual Code Churn in Production Process'
       elements = [code_churn]
       Element::Board.new(title, elements)
     end
@@ -45,7 +45,7 @@ module Views
     end
 
     def summative_assessment
-      labels = %w[MethodTouched LineCredit CommitCount TotalLineAdded TotalLineDeleted]
+      labels = %w[MethodTouched LineCredit CommitCount TotalAdditions TotalDeletions]
       dataset = breakdown_chart_dataset
       options = { title: 'Percentage of contribution in different measurement', legend: true, stacked: true,
                   color: 'contributors', x_type: 'linear', y_type: 'category', x_display: 0 }
@@ -59,13 +59,14 @@ module Views
           Math.percentage(line_count[email_id], line_credits.values.sum),
           Math.percentage(commits_count[email_id], commits_count.values.sum),
           Math.percentage(total_addition_credits[email_id], total_addition_credits.values.sum),
-          Math.percentage(total_deletion_credits[email_id], total_deletion_credits.values.sum)
+          Math.percentage(total_deletion_credits[email_id], total_deletion_credits.values.sum),
+          Math.percentage(production_ratio[email_id], production_ratio.values.sum)
         ]
       end
     end
 
     def contributor_table
-      thead = ['Contributor ID', 'MethodTouched', 'LineCredit', 'CommitCount', 'TotalLineAdded', 'TotalLineDeleted']
+      thead = ['Contributor', 'MethodTouched', 'LineCredit', 'CommitCount', 'TotalAdditions', 'TotalDeletions']
       tbody = contributor_ids.each_with_object([]) do |email_id, result|
         result << [email_id, method_touched[email_id], line_count[email_id].round,
                    commits_count[email_id], total_addition_credits[email_id],
@@ -96,7 +97,7 @@ module Views
       end
       options = { title: 'Total Code Churn', scales: true, legend: true,
                   color: 'multiple', y_label: 'line of code', multiple: true  }
-      Element::Chart.new(labels, dataset, options, 'bar', 'individual_code_churn')
+      Chart.new(labels, dataset, options, 'bar', 'individual_code_churn')
     end
 
     def production_rate
@@ -120,6 +121,12 @@ module Views
         pre + commit.total_deletion_credits
       end
       [additions, deletions]
+    end
+
+    def production_ratio
+      @production_ratio = contributor_ids.each_with_object({}) do |email_id, result|
+        result[email_id] = Math.percentage(line_count[email_id], total_addition_credits[email_id])
+      end
     end
 
     def page
