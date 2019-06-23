@@ -91,12 +91,23 @@ module Views
     def files_value(files, method, email_id)
       ruby_files = file_selector(files).ruby_files
         .owned(email_id, threshold('ownership')).unwrap
+      if method == 'offenses' && email_id
+        ruby_files = file_selector(files).ruby_files.offenses(1).unwrap.select do |file|
+          has_offense(file, email_id)
+        end
+      end
       ruby_files.map do |file|
         {
           text: file.file_path.filename,
           value: send(method, file)
         }
       end.reject { |f| f[:value].zero? }
+    end
+
+    def has_offense(file, email_id)
+      file.idiomaticity.offenses.select do |o|
+        o.contributors[email_id].to_i.positive?
+      end.count.positive?
     end
 
     def documentation(file)
