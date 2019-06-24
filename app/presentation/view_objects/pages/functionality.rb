@@ -57,7 +57,7 @@ module Views
 
     def test_cases_detail_table(key_word = nil)
       key_word ||= key_words[0]
-      thead = %w[KeyWord Describe Message ExpectationCount Contributors]
+      thead = %w[KeyWord Describe Message AssertionCount Contributors]
       tbody = test_cases_with(key_word).map do |test_case|
         [key_word, test_case.top_describe, test_case.message,
          test_case.expectation_count,
