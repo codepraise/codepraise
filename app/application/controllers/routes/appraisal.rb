@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module CodePraise
+  # appraisal routing
   class App < Roda
     plugin :multi_route
 
