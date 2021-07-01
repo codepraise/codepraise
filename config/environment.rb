@@ -2,6 +2,7 @@
 
 require 'roda'
 require 'econfig'
+require 'delegate'
 
 module CodePraise
   # Environment-specific configuration

@@ -26,7 +26,7 @@ module CodePraise
 
       def request_project(input)
         result = Gateway::Api.new(CodePraise::App.config)
-          .add_project(input[:owner_name], input[:project_name].gsub('.git', ''))
+          .add_project(input[:owner_name], input[:project_name])
 
         result.success? ? Success(result.payload) : Failure(result)
       rescue StandardError => e

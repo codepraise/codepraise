@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module CodePraise
+  # project routing
   class App < Roda
     plugin :multi_route
 
@@ -8,7 +9,7 @@ module CodePraise
       routing.is do
         # POST /project/
         routing.post do
-          url_request = Forms::UrlRequest.call(routing.params)
+          url_request = Forms::UrlRequest.new.call(routing.params)
           project_made = Service::AddProject.new.call(url_request)
 
           if project_made.failure?

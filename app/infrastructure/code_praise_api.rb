@@ -68,14 +68,14 @@ module CodePraise
 
         def params_str(params)
           params.map { |key, value| "#{key}=#{value}" }.join('&')
-            .yield_self { |str| str ? '?' + str : '' }
+            .then { |str| str ? '?' + str : '' }
         end
 
         def call_api(method, resources = [], params = {})
           api_path = resources.empty? ? @api_host : @api_root
           url = [api_path, resources].flatten.join('/') + params_str(params)
           HTTP.headers('Accept' => 'application/json').send(method, url)
-            .yield_self { |http_response| Response.new(http_response) }
+            .then { |http_response| Response.new(http_response) }
         rescue StandardError
           raise "Invalid URL request: #{url}"
         end

@@ -1,16 +1,15 @@
 # frozen_string_literal: true
 
-require 'dry-validation'
+require_relative 'form_base'
 
 module CodePraise
   module Forms
-    UrlRequest = Dry::Validation.Params do
-      URL_REGEX = %r{(http[s]?)\:\/\/(www.|)?github\.com\/.*\/.*(?<!git)}.freeze
-
-      required(:remote_url).filled(format?: URL_REGEX)
-
-      configure do
-        config.messages_file = File.join(__dir__, 'errors/url_request.yml')
+    # url request
+    class UrlRequest < Dry::Validation::Contract
+      config.messages.load_paths << File.join(__dir__, 'errors/url_request.yml')
+      
+      params do
+        required(:remote_url).filled(format?: URL_REGEX)
       end
     end
   end
