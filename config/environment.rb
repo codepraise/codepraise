@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require 'roda'
-require 'econfig'
 require 'delegate'
+require 'figaro'
 
 module CodePraise
   # Environment-specific configuration
@@ -12,9 +12,15 @@ module CodePraise
     MONTH = 30 * DAY
     plugin :environments
 
-    extend Econfig::Shortcut
-    Econfig.env = environment.to_s
-    Econfig.root = '.'
+    Figaro.application = Figaro::Application.new(
+      environment: environment.to_s,
+      path: File.expand_path('config/secrets.yml')
+    )
+    Figaro.load
+
+    def self.config
+      Figaro.env
+    end
 
     use Rack::Session::Cookie, secret: config.SESSION_SECRET,
                                expire_after: MONTH
