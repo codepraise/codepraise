@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-ruby '2.7.3'
+ruby '3.1.1'
 
 # PRESENTATION LAYER
 gem 'slim', '~> 4.1'
 
 # APPLICATION LAYER
 # Web application related
-gem 'econfig', '~> 2.1'
+gem 'figaro', '~> 1.2'
 gem 'puma', '~> 5.5'
 gem 'roda', '~> 3.50'
 
