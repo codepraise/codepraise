@@ -13,7 +13,7 @@
     <input type="text" placeholder='https://github.com/OwnerName/ProjectName'>
     <span class='clickable' id='search-btn'><i class="fas fa-search-plus"></i></a></span>
 </div>
-<div class='example'><a href="<%=@example%>"></a></div>
+<div class='example'><a href="<%=@example%>">example</a></div>
 <div class="projects">
     <% @viewable_projects.each do |project| %>
         <div class="card bg-dark" id="<%= project.fullname %>">
