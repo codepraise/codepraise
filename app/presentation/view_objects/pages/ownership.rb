@@ -134,7 +134,7 @@ module Views
     def contributor_breakdown(email_id, folder)
       method_touched = folder.credit_share.productivity_credit['method_credits'][email_id].to_i
       line_count = folder.credit_share.productivity_credit['line_credits'][email_id].to_i
-      "MethoudToched: #{method_touched}<br>LineCount: #{line_count}"
+      "MethodTouched: #{method_touched}<br>LineCount: #{line_count}"
     end
 
     def method_touched(folder)
