@@ -2,30 +2,25 @@
     <%= partial('shares/progress_bar')  %>
 <% else %>
 <div class="dashboard">
-    <div class="top-bar ">
-        <div class="logo">
-            <a href="/">
-                <img id="logo2" src="https://i.imgur.com/Fupqc8I.png" alt="">
-                <span>CodePraise</span>
-            </a>
-        </div>
-        <div class="project_name">
-            <span>
-                <%= "#{@panel_view.project_owner} / #{@panel_view.project_name}" %>
-            </span>
-        </div>
-        <div class="tools">
-            <div class="message">
-                <div class="date">
-                    Updated at <%= @panel_view.updated_at %>
+    <div class="row">
+        <div class="top-bar">
+            <div class="col-md-3"> 
+                <div class="logo">
+                    <a href="/">
+                        <img id="logo2" src="https://i.imgur.com/Fupqc8I.png" alt="">
+                        <span>CodePraise</span>
+                    </a>
                 </div>
             </div>
-            <div class="dropdown">
-                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" id="update">Update</a>
-                </div>
+
+            <div class="col-md-8">
+                <span>
+                    <%= "#{@panel_view.project_owner} / #{@panel_view.project_name}" %>
+                </span> 
+            </div>
+
+            <div class="col-md-1"> 
+                <button class="btn btn-outline-warning btn-sm" type="button" id="update">Update</button>
             </div>
         </div>
     </div>
