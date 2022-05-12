@@ -41,7 +41,8 @@ function update_message(data){
 }
 
 function update_buttob(){
-  updateBtn = document.querySelector('.dropdown #update')
+  updateBtn = document.querySelector('.dashboard #update')
+  console.log(updateBtn)
   updateBtn.addEventListener('click', function(){
     main = document.querySelector('.main')
     project_name = main.dataset.project
