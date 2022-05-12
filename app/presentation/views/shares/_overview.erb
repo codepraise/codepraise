@@ -1,12 +1,15 @@
 <div class="overview page" id='overview'>
-    <div class="title-bar">
-        <div class="title">
-            Overview
-        </div>
-        <div class="coverage title">
-            <% unless @panel_view.test_coverage? %>
-            <span class='critical'><%= @panel_view.project_coverage %></span>
-            <% end %>
+    <div class="row">
+        <div class="title-bar">
+            <div class="col-md-8">
+                <div class="title">
+                    Overview
+                </div>
+            </div>
+
+            <div class="col-md-4"> 
+                Updated at <%= @panel_view.updated_at %>
+            </div>
         </div>
     </div>
     <div class="panel">
