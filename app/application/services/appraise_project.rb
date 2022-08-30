@@ -26,7 +26,7 @@ module CodePraise
         input[:response] = Gateway::Api.new(CodePraise::App.config)
           .appraise(input[:requested])
 
-        input[:response].success? ? Success(input) : Failure(response.message)
+        input[:response].success? ? Success(input) : Failure(input[:response].message)
       rescue StandardError
         Failure('Cannot appraise projects right now; please try again later')
       end

@@ -21,6 +21,20 @@ module CodePraise
             requested: path_request
           )
 
+          if result.failure? && (result.failure == 'Project not found')
+            url_request = Forms::UrlRequest.new.call({ "remote_url" => "https://github.com/#{owner_name}/#{project_name}" })
+            project_made = Service::AddProject.new.call(url_request)
+
+            add_result = project_made.value!
+            project = add_result.message
+            session[:watching].insert(0, project.fullname).uniq!
+
+            result = Service::AppraiseProject.new.call(
+              watched_list: session[:watching],
+              requested: path_request
+            )
+          end
+
           appraisal = OpenStruct.new(result.value!)
 
           @processing = Views::AppraisalProcessing.new(
