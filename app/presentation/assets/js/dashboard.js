@@ -40,7 +40,7 @@ function update_message(data){
   });
 }
 
-function update_buttob(){
+function update_button(){
   updateBtn = document.querySelector('.dashboard #update')
   console.log(updateBtn)
   updateBtn.addEventListener('click', function(){
@@ -48,7 +48,7 @@ function update_buttob(){
     project_name = main.dataset.project
     owner_name = main.dataset.owner
     console.log(`p: ${project_name}, o: ${owner_name}`)
-    ajax_call(`/appraisal/${owner_name}/${project_name}`, 'PUT', null, update_message)
+    location.href = `/appraisal/${owner_name}/${project_name}/update`
   })
 }
 

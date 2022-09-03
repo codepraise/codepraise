@@ -12,13 +12,17 @@ window.onload = function(){
     });
   }
 
+  if (in_path('update')) {
+    console.log('In the update path.')
+  }
+
   if (in_path('appraisal')) {
     $("[data-toggle=popover]").popover();
 
     console.log('In the appraisal path.')
     charts = create_all_chart()
-    change_page();
-    update_buttob();
+    // change_page();
+    update_button();
 
     if (in_path('overview') || in_path('productivity') || in_path('files') ){
       console.log('overview/productivity')
