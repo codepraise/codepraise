@@ -7,6 +7,34 @@ module CodePraise
 
     route('appraisal') do |routing|
       routing.on String, String do |owner_name, project_name|
+        @project_path = "#{App.config.APP_HOST}/appraisal/#{owner_name}/#{project_name}"
+        routing.is 'update' do
+          routing.get do
+            @path = 'appraisal'
+
+            result = Service::UpdateAppraisal.new.call(
+              owner_name: owner_name,
+              project_name: project_name
+            )
+
+            appraisal = OpenStruct.new(result.value!)
+
+            @processing = Views::AppraisalProcessing.new(
+              App.config, appraisal.response
+            )
+
+            @panel_view = PageHelper.new(appraisal, request)
+                                    .create_page
+
+            if request.params['type']
+              Value::Elements.new(request, @panel_view).to_json
+            else
+              view 'progress_bar', locals: { path: @path, processing: @processing,
+                                             project_path: @project_path, panel_view: @panel_view }
+            end
+          end
+        end
+
         routing.get do
           @path = 'appraisal'
 
@@ -46,15 +74,13 @@ module CodePraise
 
           if request.params['type']
             Value::Elements.new(request, @panel_view).to_json
+          elsif @processing.in_progress?
+            view 'progress_bar', locals: { path: @path, processing: @processing,
+                                           project_path: @project_path, panel_view: @panel_view }
           else
             view 'dashboard', locals: { path: @path, processing: @processing,
-                                        panel_view: @panel_view }
+                                        project_path: @project_path, panel_view: @panel_view }
           end
-        end
-
-        routing.put do
-          result = Service::UpdateAppraisal.call(owner_name, project_name)
-          result.to_json
         end
       end
     end
