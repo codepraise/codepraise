@@ -2,19 +2,22 @@ name: Deploy-To-Heroku
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, feature/* ]
 
 jobs:
   Deploy-To-Heroku:
     runs-on: ubuntu-latest
+    env:
+      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      DOCKER_DEFAULT_PLATFORM: linux/amd64 # heroku adopts x86_64, mac m1 chip need to set this env
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-      - name: Deploy to Heroku
-        uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
-          heroku_email: ${{secrets.HEROKU_EMAIL}}
-          branch: master
-          
+      - uses: actions/checkout@v2
+      - name: Login to Heroku
+        run: heroku container:login
+
+      - name: Push to Heroku Registry
+        run: heroku container:push web --app ${{ secrets.HEROKU_APP_NAME }}
+
+      - name: Release to Heroku
+        run: |
+          heroku container:release web --app ${{ secrets.HEROKU_APP_NAME }}
