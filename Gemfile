@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-ruby '3.1.1'
+ruby File.read('.ruby-version').strip
 
 # PRESENTATION LAYER
 gem 'slim', '~> 4.1'
