@@ -2,7 +2,7 @@ name: Deploy-To-Heroku
 
 on:
   push:
-    branches: [ master, feature/* ]
+    branches: [ master ]
 
 jobs:
   Deploy-To-Heroku:
