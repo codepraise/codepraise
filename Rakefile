@@ -31,7 +31,7 @@ end
 
 namespace :run do
   task :dev do
-    sh 'rackup -p 9292'
+    sh 'puma config.ru -p 9292'
   end
 
   task :test do
