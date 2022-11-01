@@ -38,7 +38,7 @@ module CodePraise
 
         routing.get do
           cache_control = Cache::Control.new(response)
-          cache_control.turn_on if Env.new(Api).production?
+          cache_control.turn_on if Env.new(App).production?
           if cache_control.on?
             if_none_match = request.env['HTTP_IF_NONE_MATCH']
             redis = CodePraise::Cache::Client.new(CodePraise::App.config)
