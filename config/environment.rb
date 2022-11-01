@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'rack/cache'
+require 'redis-rack-cache'
 require 'roda'
 require 'delegate'
 require 'figaro'
@@ -24,6 +26,11 @@ module CodePraise
 
     use Rack::Session::Cookie, secret: config.SESSION_SECRET,
                                expire_after: MONTH
+
+    use Rack::Cache,
+        verbose: true,
+        metastore: config.REDISCLOUD_URL + '/0/metastore',
+        entitystore: config.REDISCLOUD_URL + '/0/entitystore'
 
     configure :development, :test do
       require 'pry'

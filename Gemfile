@@ -12,6 +12,11 @@ gem 'figaro', '~> 1.2'
 gem 'puma', '~> 5.5'
 gem 'roda', '~> 3.50'
 
+# Cache
+gem 'rack-cache', '~> 1.13'
+gem 'redis', '~> 4.5'
+gem 'redis-rack-cache', '~> 2.2'
+
 # Controllers and services
 gem 'dry-monads', '~> 1.4'
 gem 'dry-transaction', '~> 0.13'
