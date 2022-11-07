@@ -25,6 +25,10 @@ module CodePraise
       def wipe
         @redis.del(key)
       end
+
+      def quit
+        @redis.quit
+      end
     end
   end
 end

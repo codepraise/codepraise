@@ -46,6 +46,7 @@ module CodePraise
             etag_value = redis.get(etag_key)
 
             if !if_none_match.nil? && !etag_value.nil? && if_none_match.include?(etag_value)
+              redis.quit
               response.status = 304
               return response.to_json
             end
@@ -96,6 +97,7 @@ module CodePraise
             if cache_control.on?
               etag_value = redis.get(etag_key)
               response['Etag'] = etag_value
+              redis.quit
             end
             view 'dashboard', locals: { path: @path, processing: @processing,
                                         project_path: @project_path, panel_view: @panel_view }
