@@ -1,13 +1,16 @@
 # frozen_string_literal: true
 
 require 'redis'
+require 'connection_pool'
 
 module CodePraise
   module Cache
     # Redis client utility
     class Client
       def initialize(config)
-        @redis = Redis.new(url: config.REDISCLOUD_URL)
+        @redis ||= ConnectionPool.new(size: 5, timeout: 5) do
+          Redis.new(url: config.REDIS_URL)
+        end
       end
 
       def keys
@@ -23,7 +26,7 @@ module CodePraise
       end
 
       def wipe
-        @redis.del(key)
+        keys.each { |key| @redis.del(key) }
       end
     end
   end

@@ -16,6 +16,7 @@ gem 'roda', '~> 3.50'
 gem 'rack-cache', '~> 1.13'
 gem 'redis', '~> 4.5'
 gem 'redis-rack-cache', '~> 2.2'
+gem 'connection_pool', '~> 2.2'
 
 # Controllers and services
 gem 'dry-monads', '~> 1.4'
